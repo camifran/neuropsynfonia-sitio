@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NeuroPsynfonía — Centro de Neurología y Psiquiatría Infantil en Temuco. Atención presencial y virtual para niños, niñas y adolescentes.">
+  <title>NeuroPsynfonía | Neurología y Psiquiatría Infantil · Temuco</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">
+    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <div class="nav-logo-text">
+      <span class="nav-brand">NeuroPsynfonía</span>
+      <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
+    </div>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#evaluacion">Evaluación</a></li>
+    <li><a href="#teleconsulta">Teleconsulta</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#pie">PIE</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Atención presencial y virtual disponible</div>
+    <h1 class="hero-title">Neuropsiquiatría infantil integrada en Temuco</h1>
+    <p class="hero-desc">Neurología y psiquiatría coordinadas para niños, niñas y adolescentes. Especialistas con formación nacional e internacional.</p>
+    <div class="hero-actions">
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary">Inscribirse como paciente</a>
+      <a href="#equipo" class="btn-secondary">Conocer al equipo</a>
+    </div>
+  </div>
+  <div class="hero-pills">
+    <div class="pill"><span class="pill-dot" style="background:#2AADB5"></span><div><div class="pill-label">Presencial</div><div class="pill-sub">Dinamarca 621, Temuco</div></div></div>
+    <div class="pill"><span class="pill-dot" style="background:#F272A0"></span><div><div class="pill-label">Virtual</div><div class="pill-sub">Google Meet</div></div></div>
+    <div class="pill"><span class="pill-dot" style="background:#F5C842"></span><div><div class="pill-label">WhatsApp</div><div class="pill-sub">+56 9 5188 0121</div></div></div>
+  </div>
+</section>
+
+<section class="section" id="equipo">
+  <div class="container">
+    <h2 class="section-title">Nuestro equipo</h2>
+    <p class="section-sub">Haz click en cada profesional para conocer su trayectoria completa</p>
+    <div class="team-grid">
+
+      <div class="prof-card ct" onclick="toggleBio(this)">
+        <div class="prof-main">
+          <img class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="prof-initials av-t" style="display:none">XB</div>
+          <div class="prof-info">
+            <div class="prof-name">Dra. Ximena Badilla Aburto</div>
+            <div class="prof-role rt">Neuróloga Infantil</div>
+            <div class="prof-ofic">Oficina 702 · consultas de 30 min</div>
+            <div class="prof-hint">▾ Ver trayectoria completa</div>
+          </div>
+        </div>
+        <div class="prof-bio">
+          <p>Médico Cirujano de la Universidad de la Frontera. Neuróloga Pediátrica de la Universidad de Chile, sede Oriente, formada en el Hospital Dr. Luis Calvo Mackenna. Diplomada en electroencefalografía pediátrica por la Clínica Integral de Epilepsia y Neurodesarrollo.</p>
+          <p>Ha presentado trabajos de investigación en múltiples congresos, destacando los Congresos Anuales de SOPNIA y las Jornadas Invernales de Epilepsia. Cuenta con formación en Docencia Efectiva otorgada por la Universidad de Chile.</p>
+          <p>Actualmente se desempeña en el Hospital de Lautaro y en el Hospital Hernán Henríquez Aravena, además de su práctica privada en NeuroPsynfonía. Es docente de la Universidad Mayor y de la Universidad de la Frontera.</p>
+          <p>Junto a la Dra. Cortés conformó la Unidad de Neuropsiquiatría Infantil del Hospital Intercultural de Nueva Imperial, pionera a nivel nacional en atenciones neuropsiquiátricas conjuntas en el sector público.</p>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="tag tag-t" onclick="event.stopPropagation()">Inscribirse →</a>
+        </div>
+      </div>
+
+      <div class="prof-card cr" onclick="toggleBio(this)">
+        <div class="prof-main">
+          <img class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="prof-initials av-r" style="display:none">CC</div>
+          <div class="prof-info">
+            <div class="prof-name">Dra. Camila Cortés Contreras</div>
+            <div class="prof-role rr">Psiquiatra Infantil y Adolescente</div>
+            <div class="prof-ofic">Oficina 801 · consultas de 45 min</div>
+            <div class="prof-hint">▾ Ver trayectoria completa</div>
+          </div>
+        </div>
+        <div class="prof-bio">
+          <p>Médico Cirujano de la Universidad de Concepción, especialista en Psiquiatría del Niño y del Adolescente de la Pontificia Universidad Católica de Chile. Diplomada en Salud Mental Perinatal de la Universidad de Chile y en Terapia Familiar del Niño por el Instituto Chileno de Terapia Familiar, institución donde actualmente cursa el Postítulo de Terapia Familiar y de Pareja.</p>
+          <p>Realizó pasantías internacionales en el Centre Hospitalier de Béziers (Francia) y en el Service de Psychiatrie de L'Enfant et de L'Adolescent del Hôpital Pitié-Salpêtrière, París.</p>
+          <p>Ha participado como expositora en Congresos de Médicos EDF, jornadas de educación médica (LACRE), Jornadas de APS y en instituciones como Bomberos de Chile.</p>
+          <p>En el sector público se desempeñó en dispositivos de atención primaria, secundaria y terciaria en las regiones del Bío-Bío, Ñuble, Metropolitana y Araucanía. Junto a la Dra. Badilla conformó la Unidad de Neuropsiquiatría Infantil del Hospital Intercultural de Nueva Imperial, pionera a nivel nacional en atenciones neuropsiquiátricas conjuntas en el sector público.</p>
+          <p>Es también Facilitadora de Biodanza de la Escuela de Biodanza Del Mar, y coordinó un taller de Biodanza para adolescentes en la Corta Estadía del Hospital Sótero del Río.</p>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="tag tag-r" onclick="event.stopPropagation()">Inscribirse →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section bg-gray" id="areas">
+  <div class="container">
+    <h2 class="section-title">Áreas de atención</h2>
+    <p class="section-sub">Abordaje neurológico y psiquiátrico coordinado cuando el caso lo requiere</p>
+    <div class="areas-grid">
+      <div class="area-card at">
+        <div class="area-name">Neurología pediátrica</div>
+        <div class="area-desc">Epilepsia, cefalea, trastornos del neurodesarrollo, trastornos metabólicos y genéticos, electroencefalografía pediátrica, entre otras 16 subáreas.</div>
+      </div>
+      <div class="area-card ar">
+        <div class="area-name">Psiquiatría infantil y adolescente</div>
+        <div class="area-desc">Se atienden todos los trastornos del área, incluyendo trastorno por déficit de atención e hiperactividad (TDAH), trastorno del espectro autista, trastornos de alimentación, ansiedad, trastornos del ánimo, trastornos de la conducta, salud mental perinatal y terapia familiar, entre otros.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="evaluacion">
+  <div class="container">
+    <h2 class="section-title">¿Cómo es el proceso de evaluación?</h2>
+    <p class="section-sub">Cada especialidad tiene su propio proceso — aquí te explicamos qué esperar en cada caso</p>
+    <div class="eval-grid">
+
+      <div class="eval-col">
+        <div class="eval-col-title t">Neurología pediátrica</div>
+        <div class="eval-timeline">
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-t">1</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Anamnesis y motivo de consulta</div>
+              <div class="edesc">Se recogen datos biográficos del paciente, el motivo de consulta, antecedentes del embarazo y parto, y antecedentes biomédicos personales y familiares.</div>
+            </div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-t">2</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Examen neurológico completo</div>
+              <div class="edesc">Se realiza un examen neurológico acucioso que incluye:
+                <ul class="exam-list">
+                  <li>Examen mental y conciencia abreviado</li>
+                  <li>Evaluación de pares craneanos</li>
+                  <li>Evaluación motora</li>
+                  <li>Evaluación sensitiva</li>
+                  <li>Evaluación del cerebelo</li>
+                  <li>Evaluación de estigmas neurocutáneos</li>
+                  <li>Reflejos arcaicos si corresponde</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-t">3</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Conclusiones y plan</div>
+              <div class="edesc">Se entregan conclusiones, indicaciones de tratamiento si corresponde, y solicitud de estudios o exámenes. En muchos casos es posible llegar a un diagnóstico y plan de tratamiento en la primera consulta.</div>
+            </div>
+          </div>
+        </div>
+        <div class="eval-nota">
+          <div class="eval-nota-t">¿Cuántas sesiones se necesitan?</div>
+          <div class="eval-nota-d">El número de consultas depende de cada paciente y su motivo de consulta. La neurología pediátrica abarca 16 subáreas (epilepsia, neurodesarrollo, trastornos metabólicos, genéticos, urgencias neurológicas y más). El seguimiento se programa según evolución.</div>
+        </div>
+        <div class="reserva-box">
+          <div class="reserva-title">Agendar con la Dra. Badilla</div>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-reserva btn-reserva-t">Inscribirse →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t">Solicitar hora →</a>
+        </div>
+      </div>
+
+      <div class="eval-col">
+        <div class="eval-col-title r">Psiquiatría infantil y adolescente</div>
+        <div class="eval-timeline">
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r1">1</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Primera sesión — Conocernos y plantear el motivo de consulta</div>
+              <div class="edesc">Asiste el paciente junto a sus padres o cuidadores. Es un espacio para conocerse y para que la familia plantee con sus propias palabras qué les preocupa. Al final de esta sesión se solicitan, según necesidad, exámenes complementarios, reportes de otros profesionales, información al colegio y un cuestionario a los padres para preparar la sesión de desarrollo.</div>
+            </div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r2">2</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Segunda sesión — Con el o la paciente</div>
+              <div class="edesc">Sesión individual con el niño, niña o adolescente. A través de la conversación o el juego se recaban antecedentes en sus propias palabras y se realiza el examen mental.</div>
+            </div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r3">3</div><div class="eval-line"></div></div>
+            <div class="eval-body">
+              <div class="etitle">Tercera sesión — Historia del desarrollo</div>
+              <div class="edesc">Con los padres o cuidadores, sin el paciente. Se recorre toda la historia del desarrollo desde antes del nacimiento hasta hoy, para entender cómo se enmarca lo que le ocurre dentro del contexto completo de su vida.</div>
+            </div>
+          </div>
+        </div>
+        <div class="eval-nota">
+          <div class="eval-nota-t">Después de la evaluación</div>
+          <div class="eval-nota-d">Se define la frecuencia de controles, que habitualmente comienza siendo mensual y se va espaciando según evolución. Se mantiene contacto con otros profesionales tratantes, siempre con autorización de los padres. La elaboración de informes puede tomar hasta 15 días hábiles.</div>
+        </div>
+        <div class="reserva-box">
+          <div class="reserva-title">Agendar con la Dra. Cortés</div>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-reserva btn-reserva-r">Inscribirse →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r">Solicitar teleconsulta →</a>
+          <div class="reserva-nota">Consulta presencial: lista de espera. Contáctanos por WhatsApp.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section bg-gray" id="consultas">
+  <div class="container">
+    <h2 class="section-title">Nuestras consultas</h2>
+    <p class="section-sub">Espacios diseñados para que niños, niñas, adolescentes y sus familias se sientan cómodos</p>
+    <div class="consultas-grid">
+      <div class="consulta-placeholder">
+        <div class="consulta-ph-inner"><span class="consulta-ph-icon">📸</span><span>Foto próximamente</span></div>
+        <div class="consulta-label">Consulta Dra. Badilla — Of. 702</div>
+      </div>
+      <div class="consulta-placeholder">
+        <div class="consulta-ph-inner"><span class="consulta-ph-icon">📸</span><span>Foto próximamente</span></div>
+        <div class="consulta-label">Consulta Dra. Cortés — Of. 801</div>
+      </div>
+      <div class="consulta-placeholder">
+        <div class="consulta-ph-inner"><span class="consulta-ph-icon">📸</span><span>Foto próximamente</span></div>
+        <div class="consulta-label">Recepción</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contacto">
+  <div class="container">
+    <h2 class="section-title">Cómo llegar</h2>
+    <p class="section-sub">Atendemos en el Edificio Dinamarca, en el centro de Temuco</p>
+    <div class="ubic-grid">
+      <div class="ubic-card">
+        <div class="ubic-title">Dirección y contacto</div>
+        <div class="ubic-row">
+          <div class="ubic-icon ui-t">📍</div>
+          <div class="ubic-text">Dinamarca 621, Temuco<br>Dra. Badilla Aburto → Oficina 702<br>Dra. Cortés Contreras → Oficina 801</div>
+        </div>
+        <div class="ubic-row">
+          <div class="ubic-icon ui-r">🚌</div>
+          <div class="ubic-text">Locomoción colectiva en la esquina de Av. Alemania con Dinamarca</div>
+        </div>
+        <div class="ubic-row">
+          <div class="ubic-icon ui-t">📱</div>
+          <div class="ubic-text">
+            <a href="https://wa.me/56951880121" target="_blank">+56 9 5188 0121</a> (WhatsApp)<br>
+            <a href="mailto:contacto@neuropsynfonia.cl">contacto@neuropsynfonia.cl</a>
+          </div>
+        </div>
+      </div>
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3148.12!2d-72.5980!3d-38.7369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d774a2e7b379%3A0x0!2sDinamarca+621%2C+Temuco!5e0!3m2!1ses!2scl!4v1" width="100%" height="220" style="border:0;border-radius:12px;display:block;" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-gray" id="teleconsulta">
+  <div class="container">
+    <h2 class="section-title">Condiciones para la teleconsulta</h2>
+    <p class="section-sub">Lea estos puntos antes de agendar una hora en modalidad virtual</p>
+    <div class="tele-grid">
+      <div class="tele-card"><div class="tele-num tn-t">1</div><div class="tele-text"><strong>Duración:</strong> Psiquiatría 45 min / Neurología 30 min desde el inicio acordado. Si llega tarde, el tiempo se descuenta. Si la profesional se atrasa, corre su tiempo completo.</div></div>
+      <div class="tele-card"><div class="tele-num tn-t">2</div><div class="tele-text"><strong>Acompañamiento:</strong> El niño, niña o adolescente debe estar con un adulto responsable. Se debe mantener privacidad respecto de otros familiares o amigos, salvo acuerdo previo.</div></div>
+      <div class="tele-card"><div class="tele-num tn-r">3</div><div class="tele-text"><strong>Vestimenta:</strong> Acorde a una consulta médica formal. Evite pijamas.</div></div>
+      <div class="tele-card"><div class="tele-num tn-r">4</div><div class="tele-text"><strong>Espacio:</strong> Lugar tranquilo, cómodo y sin interrupciones. Evite exteriores, automóviles, recostarse en cama o caminar durante la consulta.</div></div>
+      <div class="tele-card"><div class="tele-num tn-t">5</div><div class="tele-text"><strong>Dispositivo:</strong> Se requiere cámara y conexión estable. Se recomienda computador y verificar la conexión antes de la sesión. La cámara debe permanecer encendida.</div></div>
+      <div class="tele-card"><div class="tele-num tn-t">6</div><div class="tele-text"><strong>Urgencias:</strong> La teleconsulta es ambulatoria y puede no ser resolutiva ante situaciones de riesgo. En ese caso será derivado al centro hospitalario más cercano.</div></div>
+      <div class="tele-card"><div class="tele-num tn-r">7</div><div class="tele-text"><strong>Documentos:</strong> Tras la sesión recibirá por correo boleta, receta, solicitud de exámenes o derivaciones según corresponda.</div></div>
+      <div class="tele-card"><div class="tele-num tn-r">8</div><div class="tele-text"><strong>Informes:</strong> El tiempo de elaboración varía según el tipo de informe y la carga de trabajo, y pueden tomar hasta 15 días hábiles. Se entregan lo antes posible.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-teal" id="red">
+  <div class="container">
+    <h2 class="section-title">Red de apoyo y derivación</h2>
+    <p class="section-sub">Cuando el caso lo requiere, coordinamos con una red de profesionales de confianza</p>
+    <div class="red-grid">
+      <div class="red-tag"><span class="red-dot" style="background:#F272A0"></span>Psicología</div>
+      <div class="red-tag"><span class="red-dot" style="background:#2AADB5"></span>Fonoaudiología</div>
+      <div class="red-tag"><span class="red-dot" style="background:#F5C842"></span>Terapia ocupacional</div>
+      <div class="red-tag"><span class="red-dot" style="background:#F272A0"></span>Psicopedagogía</div>
+      <div class="red-tag"><span class="red-dot" style="background:#2AADB5"></span>Educación diferencial</div>
+      <div class="red-tag"><span class="red-dot" style="background:#F5C842"></span>Evaluación ADOS / ADI-R</div>
+      <div class="red-tag"><span class="red-dot" style="background:#F272A0"></span>Psiquiatría de adultos</div>
+      <div class="red-tag"><span class="red-dot" style="background:#2AADB5"></span>Neurología de adultos</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cuestionarios">
+  <div class="container">
+    <h2 class="section-title">Cuestionarios para profesores</h2>
+    <p class="section-sub">Instrumentos que los establecimientos educacionales pueden completar durante el proceso diagnóstico</p>
+    <div class="cuest-grid">
+      <div class="cuest-card">
+        <div class="cuest-label cl-t">Evaluación general</div>
+        <div class="cuest-name">Cuestionario Escolar</div>
+        <div class="cuest-desc">Permite al docente reportar conductas, rendimiento académico y funcionamiento social del estudiante en el contexto escolar.</div>
+        <a href="https://airtable.com/shru1xq8BPl6HHWdr" target="_blank" class="cbtn cb-t">Completar cuestionario →</a>
+      </div>
+      <div class="cuest-card">
+        <div class="cuest-label cl-r">Evaluación TDAH</div>
+        <div class="cuest-name">Conners para profesores</div>
+        <div class="cuest-desc">Escala estandarizada para evaluar síntomas de inatención e hiperactividad/impulsividad en el contexto escolar.</div>
+        <a href="https://airtable.com/shrgGYdq0Z6JLeS16" target="_blank" class="cbtn cb-r">Completar cuestionario →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-gray" id="documentos">
+  <div class="container">
+    <h2 class="section-title">Solicitud de documentos y requerimientos</h2>
+    <p class="section-sub">Próximamente disponible en línea</p>
+    <div class="placeholder-box">
+      <span class="placeholder-icon">🗂</span>
+      <div class="placeholder-text">Este formulario estará disponible pronto.<br>Por ahora, puedes solicitar documentos por WhatsApp o correo.</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
+        <a href="https://wa.me/56951880121" target="_blank" class="btn-primary">WhatsApp</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="btn-secondary">Correo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title">Preguntas frecuentes</h2>
+    <p class="section-sub">Todo lo que necesitas saber antes de tu primera consulta</p>
+    <div class="faq-list">
+      <div class="faq-item open" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Atienden pacientes nuevos en psiquiatría? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Actualmente la Dra. Cortés funciona con lista de espera para nuevos ingresos en psiquiatría presencial. Para teleconsulta, puedes inscribirte y solicitar hora directamente. Completa el formulario de inscripción y te contactaremos cuando haya disponibilidad presencial.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cuánto dura una consulta? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Las consultas de psiquiatría infantil duran 45 minutos. Las de neurología pediátrica duran 30 minutos. Esto aplica tanto en modalidad presencial como virtual.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cómo funciona el proceso de agendamiento? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">El proceso tiene dos pasos: primero debes inscribirte completando el formulario de inscripción. Una vez inscrito, podrás solicitar hora a través del formulario correspondiente. Recibirás un correo de confirmación del agendamiento — si no lo recibes, contáctanos por WhatsApp para verificar.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Atienden de forma presencial y virtual? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. Una vez que ingresas como paciente puedes elegir la modalidad que prefieras: presencial en Edificio Dinamarca (Temuco) o virtual vía Google Meet, y puedes cambiar entre ambas según tu preferencia.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Trabajan con Fonasa o solo con isapres? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Atendemos de forma particular. Si tienes isapre, puedes solicitar reembolso según las condiciones de tu plan. Consulta directamente con tu seguro de salud.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cómo se realiza el pago? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Puedes pagar por transferencia bancaria o con tarjeta a través de Flow (con un pequeño recargo). El detalle del pago se entrega dentro del proceso de agendamiento. Importante: el pago por sí solo no completa el agendamiento — debes completar también el formulario de solicitud de hora y esperar la confirmación por correo.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Emiten informes para colegios o SENADIS? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. Elaboramos informes clínicos, informes para establecimientos educacionales y el Informe Biomédico Funcional (IBF) requerido por SENADIS. Los informes se entregan una vez completado el proceso de evaluación y pueden tomar hasta 15 días hábiles.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Pueden atender si vivimos fuera de Temuco? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. La modalidad virtual nos permite atender a familias de toda Chile. La primera consulta también puede realizarse en línea.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-gray" id="pie">
+  <div class="container">
+    <h2 class="section-title">Evaluaciones PIE</h2>
+    <p class="section-sub">Evaluaciones para Programas de Integración Escolar realizadas por ambas especialistas</p>
+    <div class="pie-grid">
+      <div class="pie-info">
+        <div class="pie-item"><div class="pie-icon" style="background:#E2F5F6">⏱</div><div><div class="pie-item-title">Duración</div><div class="pie-item-desc">30 minutos por evaluación</div></div></div>
+        <div class="pie-item"><div class="pie-icon" style="background:#FDE8F2">💰</div><div><div class="pie-item-title">Valor</div><div class="pie-item-desc">$60.000 por evaluación</div></div></div>
+        <div class="pie-item"><div class="pie-icon" style="background:#FEF8DC">📋</div><div><div class="pie-item-title">Facturación</div><div class="pie-item-desc">No realizamos contratos de honorarios. Se factura a través de nuestra sociedad médica: Badilla & Cortés Servicios Neuropsiquiátricos Infantiles SpA.</div></div></div>
+        <div class="pie-item"><div class="pie-icon" style="background:#E2F5F6">📄</div><div><div class="pie-item-title">Informe</div><div class="pie-item-desc">Se entrega al final de la atención o a la brevedad posible.</div></div></div>
+        <div class="pie-item"><div class="pie-icon" style="background:#FDE8F2">📞</div><div><div class="pie-item-title">Coordinación</div><div class="pie-item-desc">Contáctenos directamente por WhatsApp o correo para coordinar.</div></div></div>
+      </div>
+      <div class="pie-contact">
+        <div class="pie-contact-title">¿Eres representante de un establecimiento educacional?</div>
+        <p>Contáctanos para coordinar la evaluación PIE de tus estudiantes. Ambas profesionales están disponibles para este tipo de evaluación.</p>
+        <a href="https://wa.me/56951880121" target="_blank" class="btn-primary" style="display:inline-block;margin-top:16px">Contactar por WhatsApp</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="btn-secondary" style="display:inline-block;margin-top:10px">Enviar email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>¿Quieres agendar una consulta?</h3>
+    <p>Modalidad presencial o virtual a elección</p>
+  </div>
+  <div class="cta-actions">
+    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© Badilla & Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2025</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
