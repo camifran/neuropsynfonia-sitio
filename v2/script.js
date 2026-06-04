@@ -12,12 +12,17 @@ function toggleBio(card) {
 // Menú hamburguesa
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
+const navCtas = document.querySelector('.nav-ctas');
 if (hamburger && navLinks) {
   hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+    const open = navLinks.classList.toggle('open');
+    if (navCtas) navCtas.classList.toggle('mobile-open', open);
   });
   navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      if (navCtas) navCtas.classList.remove('mobile-open');
+    });
   });
 }
 
