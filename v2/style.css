@@ -310,13 +310,11 @@ a { color: inherit; text-decoration: none; }
   .nav-links.open { display: flex; }
   .nav-links li { border-top: 0.5px solid #f0f0f0; }
   .nav-links a { display: block; padding: 14px 4px; font-size: 16px; }
-  .nav-hamburger { display: flex; }
-  .nav-ctas { display: none; order: 4; width: 100%; }
-  .nav-ctas.mobile-open { display: flex; flex-direction: column; align-items: stretch; padding: 12px 4px; border-top: 0.5px solid #f0f0f0; gap: 8px; }
-  .nav-ctas.mobile-open .nav-ctas-label { font-size: 13px; color: #888; }
-  .nav-ctas.mobile-open .nav-ctas-btns { flex-direction: column; gap: 8px; }
-  .nav-ctas.mobile-open .nav-cta,
-  .nav-ctas.mobile-open .nav-cta-outline { text-align: center; display: block; }
+  .nav-hamburger { display: flex; order: 3; }
+  .nav-ctas { order: 2; flex-direction: row; align-items: center; gap: 6px; }
+  .nav-ctas-label { display: none; }
+  .nav-ctas-btns { gap: 6px; }
+  .nav-cta, .nav-cta-outline { padding: 7px 11px; font-size: 13px; }
   .hero { padding: 36px 20px 32px; flex-direction: column; }
   .hero-pills { flex-direction: row; flex-wrap: wrap; }
   .pill { flex: 1; min-width: 140px; }
