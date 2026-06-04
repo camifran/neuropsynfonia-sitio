@@ -9,12 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="../img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
     <div class="nav-logo-text">
       <span class="nav-brand">NeuroPsynfonía</span>
       <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
@@ -31,7 +32,7 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li class="active"><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="agendar.html#formularios" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
@@ -97,8 +98,35 @@
   </div>
 </div>
 
-<footer class="footer">
-  <p>© Badilla & Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2026</p>
+<footer class="footer footer-full">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">NeuroPsynfonía</div>
+      <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
+      <div class="footer-contact-list">
+        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
+        <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Páginas</div>
+      <a href="index.html" class="footer-link">Inicio</a>
+      <a href="especialistas.html" class="footer-link">Especialistas</a>
+      <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neuro o psiq?</a>
+      <a href="colegios.html" class="footer-link">Para colegios</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Agendar</div>
+      <a href="agendar.html" class="footer-link">Cómo agendar</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Psiquiatría</a>
+      <a href="pacientes.html" class="footer-link">Para pacientes actuales</a>
+    </div>
+  </div>
+  <div class="footer-copy">© Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2026</div>
 </footer>
 
 <script src="script.js"></script>

@@ -1,4 +1,4 @@
-// NeuroPsynfonía — script.js
+// NeuroPsynfonía v2 — script.js
 
 // Bio expandible en tarjetas del equipo
 function toggleBio(card) {
@@ -16,7 +16,6 @@ if (hamburger && navLinks) {
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('open');
   });
-  // Cerrar menú al hacer click en un enlace
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => navLinks.classList.remove('open'));
   });

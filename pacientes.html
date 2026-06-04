@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Para pacientes de NeuroPsynfonía — agenda tu próxima hora, solicita recetas, informes y más.">
+  <title>Para pacientes | NeuroPsynfonía</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <div class="nav-logo-text">
+      <span class="nav-brand">NeuroPsynfonía</span>
+      <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
+    </div>
+  </a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="especialistas.html">Especialistas</a></li>
+    <li><a href="como-funciona.html">Cómo funciona</a></li>
+    <li><a href="agendar.html">Agendar hora</a></li>
+    <li class="active"><a href="pacientes.html">Para pacientes</a></li>
+    <li><a href="colegios.html">Para colegios</a></li>
+  </ul>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <h1 class="page-hero-title">Para pacientes</h1>
+    <p class="page-hero-sub">Todo lo que necesitas si ya formas parte de NeuroPsynfonía: agendamiento, recetas, informes y más.</p>
+  </div>
+</div>
+
+<!-- AGENDAR PRÓXIMA HORA — diferenciado -->
+<section class="section bg-gray">
+  <div class="container">
+    <h2 class="section-title">Agendar próxima hora</h2>
+    <p class="section-sub">Elige tu especialista y modalidad</p>
+    <div class="quickaccess-grid">
+      <div class="quickaccess-card qa-new">
+        <div class="qa-label" style="color:var(--teal-d)">Neurología — Dra. Badilla</div>
+        <div class="qa-desc">Agenda directamente tu próxima hora, presencial o virtual.</div>
+        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t" style="text-align:center">Solicitar hora →</a>
+      </div>
+      <div class="quickaccess-card qa-existing">
+        <div class="qa-label" style="color:var(--rosa-d)">Psiquiatría — Dra. Cortés</div>
+        <div class="qa-desc">Solicita tu próxima hora o teleconsulta.</div>
+        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Solicitar hora →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLICITUDES (recetas, informes) -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Solicitudes</h2>
+    <p class="section-sub">Recetas, informes y consultas para pacientes en curso</p>
+    <div class="pacientes-grid" style="margin-bottom:32px">
+      <div class="paciente-card">
+        <div class="paciente-card-icon">💬</div>
+        <div class="paciente-card-title">Solicitud de información</div>
+        <div class="paciente-card-desc">Consultas sobre el estado del caso, indicaciones, resultados de exámenes u otras aclaraciones.</div>
+        <div class="paciente-card-plazo"><i class="ti ti-clock" style="font-size:13px;vertical-align:-1px"></i> Plazo: hasta 7 días hábiles</div>
+      </div>
+      <div class="paciente-card">
+        <div class="paciente-card-icon">💊</div>
+        <div class="paciente-card-title">Recetas</div>
+        <div class="paciente-card-desc">Renovación u otras solicitudes de receta médica.</div>
+        <div class="paciente-card-plazo"><i class="ti ti-clock" style="font-size:13px;vertical-align:-1px"></i> Plazo: hasta 7 días hábiles</div>
+      </div>
+      <div class="paciente-card">
+        <div class="paciente-card-icon">📋</div>
+        <div class="paciente-card-title">Informes clínicos</div>
+        <div class="paciente-card-desc">Para uso personal, médico u otros profesionales tratantes.</div>
+        <div class="paciente-card-plazo"><i class="ti ti-clock" style="font-size:13px;vertical-align:-1px"></i> Plazo: hasta 15 días hábiles</div>
+      </div>
+      <div class="paciente-card">
+        <div class="paciente-card-icon">🏫</div>
+        <div class="paciente-card-title">Informes educacionales e IBF</div>
+        <div class="paciente-card-desc">Para establecimientos educacionales, PIE o el Informe Biomédico Funcional (SENADIS).</div>
+        <div class="paciente-card-plazo"><i class="ti ti-clock" style="font-size:13px;vertical-align:-1px"></i> Plazo: hasta 15 días hábiles</div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pag2qo43Mu5USmu6E/form" target="_blank" class="btn-primary">Completar formulario de solicitud →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CUESTIONARIOS PARA PROFESORES -->
+<section class="section bg-gray">
+  <div class="container">
+    <h2 class="section-title">Cuestionarios para profesores</h2>
+    <p class="section-sub">Instrumentos que los docentes pueden completar durante el proceso diagnóstico</p>
+    <div class="cuest-grid">
+      <div class="cuest-card">
+        <div class="cuest-label cl-t">Evaluación general</div>
+        <div class="cuest-name">Cuestionario Escolar</div>
+        <div class="cuest-desc">Permite al docente reportar conductas, rendimiento académico y funcionamiento social del estudiante en el contexto escolar.</div>
+        <a href="https://airtable.com/shru1xq8BPl6HHWdr" target="_blank" class="cbtn cb-t">Completar cuestionario →</a>
+      </div>
+      <div class="cuest-card">
+        <div class="cuest-label cl-r">Evaluación TDAH</div>
+        <div class="cuest-name">Conners para profesores</div>
+        <div class="cuest-desc">Escala estandarizada para evaluar síntomas de inatención e hiperactividad/impulsividad en el contexto escolar.</div>
+        <a href="https://airtable.com/shrgGYdq0Z6JLeS16" target="_blank" class="cbtn cb-r">Completar cuestionario →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>¿Necesitas contactarnos directamente?</h3>
+    <p>Estamos disponibles por WhatsApp y correo</p>
+  </div>
+  <div class="cta-actions">
+    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
+  </div>
+</div>
+
+<footer class="footer footer-full">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">NeuroPsynfonía</div>
+      <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
+      <div class="footer-contact-list">
+        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
+        <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Páginas</div>
+      <a href="index.html" class="footer-link">Inicio</a>
+      <a href="especialistas.html" class="footer-link">Especialistas</a>
+      <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neuro o psiq?</a>
+      <a href="colegios.html" class="footer-link">Para colegios</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Agendar</div>
+      <a href="agendar.html" class="footer-link">Cómo agendar</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Psiquiatría</a>
+      <a href="pacientes.html" class="footer-link">Para pacientes actuales</a>
+    </div>
+  </div>
+  <div class="footer-copy">© Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2026</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

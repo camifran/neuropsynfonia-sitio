@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agenda tu hora en NeuroPsynfonía — inscríbete como paciente y solicita tu hora con la Dra. Badilla o la Dra. Cortés.">
+  <title>Agendar hora | NeuroPsynfonía</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <div class="nav-logo-text">
+      <span class="nav-brand">NeuroPsynfonía</span>
+      <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
+    </div>
+  </a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="especialistas.html">Especialistas</a></li>
+    <li><a href="como-funciona.html">Cómo funciona</a></li>
+    <li class="active"><a href="agendar.html">Agendar hora</a></li>
+    <li><a href="pacientes.html">Para pacientes</a></li>
+    <li><a href="colegios.html">Para colegios</a></li>
+  </ul>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <h1 class="page-hero-title">Agendar hora</h1>
+    <p class="page-hero-sub">El proceso es distinto según la especialidad — elige a continuación.</p>
+  </div>
+</div>
+
+<!-- ACCESO DIRECTO — diferenciado neuro / psiq -->
+<section class="section bg-gray">
+  <div class="container">
+    <div class="quickaccess-grid">
+
+      <!-- NEUROLOGÍA: acceso directo -->
+      <div class="quickaccess-card qa-new">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <span class="agendar-dot" style="background:var(--teal);width:10px;height:10px;border-radius:50%;flex-shrink:0"></span>
+          <div class="qa-label" style="color:var(--teal-d)">Neurología pediátrica</div>
+        </div>
+        <div class="qa-desc">Puedes agendar directamente, sin inscripción previa.</div>
+        <div class="espera-badge espera-t"><i class="ti ti-check"></i> Sin lista de espera</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t" style="text-align:center">Solicitar hora — Dra. Badilla (presencial/virtual) →</a>
+        </div>
+        <div style="font-size:13px;color:#888;margin-top:6px">Recibirás confirmación por correo.</div>
+      </div>
+
+      <!-- PSIQUIATRÍA: inscripción primero -->
+      <div class="quickaccess-card qa-existing">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <span class="agendar-dot" style="background:var(--rosa);width:10px;height:10px;border-radius:50%;flex-shrink:0"></span>
+          <div class="qa-label" style="color:var(--rosa-d)">Psiquiatría infantil y adolescente</div>
+        </div>
+        <div class="qa-desc">Paciente nuevo: primero inscríbete. Te contactamos en ~10 días hábiles para la primera hora presencial. Para teleconsulta, puedes agendar directamente.</div>
+        <div class="espera-badge espera-r"><i class="ti ti-clock"></i> ~10 días hábiles para presencial</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse (paciente nuevo) →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa — Dra. Cortés →</a>
+        </div>
+        <div style="font-size:13px;color:#888;margin-top:6px">¿Ya eres paciente? Solicita hora igual que para teleconsulta.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PASOS POR ESPECIALIDAD -->
+<section class="section" id="como-agendar">
+  <div class="container">
+    <h2 class="section-title">¿Cómo funciona el agendamiento?</h2>
+    <p class="section-sub">El proceso varía según la especialidad</p>
+    <div class="agendar-split" style="margin-top:8px">
+
+      <div class="agendar-col agendar-col-t">
+        <div class="agendar-col-header">
+          <span class="agendar-dot" style="background:var(--teal)"></span>
+          <span class="agendar-col-title">Neurología pediátrica</span>
+        </div>
+        <div class="eval-timeline" style="margin-top:16px">
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-t">1</div><div class="eval-line"></div></div>
+            <div class="eval-body"><div class="etitle">Solicita tu hora</div><div class="edesc">Completa el formulario de solicitud de hora de la Dra. Badilla — presencial u online. No se requiere inscripción previa.</div></div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-t">2</div></div>
+            <div class="eval-body"><div class="etitle">Confirmación por correo</div><div class="edesc">Recibirás un correo con la confirmación. Si no llega, contáctanos por WhatsApp.</div></div>
+          </div>
+        </div>
+        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t" style="text-align:center;margin-top:16px">Solicitar hora →</a>
+      </div>
+
+      <div class="agendar-col agendar-col-r">
+        <div class="agendar-col-header">
+          <span class="agendar-dot" style="background:var(--rosa)"></span>
+          <span class="agendar-col-title">Psiquiatría infantil</span>
+        </div>
+        <div class="eval-timeline" style="margin-top:16px">
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r1">1</div><div class="eval-line"></div></div>
+            <div class="eval-body"><div class="etitle">Inscríbete como paciente</div><div class="edesc">Completa el formulario de inscripción con los datos del niño o adolescente. Solo toma unos minutos.</div></div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r2">2</div><div class="eval-line"></div></div>
+            <div class="eval-body"><div class="etitle">Te contactamos</div><div class="edesc">Revisamos tu solicitud y te contactamos en <strong>aproximadamente 10 días hábiles</strong> para coordinar la primera hora presencial.</div></div>
+          </div>
+          <div class="eval-step">
+            <div class="eval-left"><div class="eval-num en-r3">3</div></div>
+            <div class="eval-body"><div class="etitle">Solicita tu hora</div><div class="edesc">Una vez inscrito, puedes solicitar horas de seguimiento directamente. Recibirás confirmación por correo.</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VALORES Y PAGO -->
+<section class="section bg-gray" id="formularios">
+  <div class="container">
+    <h2 class="section-title">Valores y pago</h2>
+    <p class="section-sub">Atención particular · pago por transferencia o tarjeta</p>
+    <div class="quickaccess-grid" style="margin-bottom:20px">
+      <div class="quickaccess-card qa-new">
+        <div class="qa-label" style="color:var(--teal-d)">Neurología pediátrica</div>
+        <div style="font-size:32px;font-weight:700;color:var(--dark);font-family:var(--font-heading)">$65.000</div>
+        <div class="qa-desc">Dra. Ximena Badilla · 30 minutos · Oficina 702</div>
+      </div>
+      <div class="quickaccess-card qa-existing">
+        <div class="qa-label" style="color:var(--rosa-d)">Psiquiatría infantil y adolescente</div>
+        <div style="font-size:32px;font-weight:700;color:var(--dark);font-family:var(--font-heading)">$95.000</div>
+        <div class="qa-desc">Dra. Camila Cortés · 45 minutos · Oficina 801</div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:#888;line-height:1.7">
+      Atendemos de forma particular. Si tienes Isapre, puedes solicitar reembolso según las condiciones de tu plan.<br>
+      El pago por sí solo no completa el agendamiento — debes completar el formulario y esperar confirmación por correo.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title">Preguntas frecuentes</h2>
+    <p class="section-sub">Todo lo que necesitas saber antes de tu primera consulta</p>
+    <div class="faq-list">
+      <div class="faq-item open" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cómo es el agendamiento en neurología? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">En neurología puedes agendar directamente: completa el formulario de solicitud de hora y recibirás confirmación por correo. No hay inscripción previa ni lista de espera.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cómo es el agendamiento en psiquiatría? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Para psiquiatría presencial, el proceso tiene dos pasos: inscríbete y te contactaremos en aproximadamente 10 días hábiles para la primera hora. Para teleconsulta con la Dra. Cortés, puedes solicitar hora directamente sin esperar.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cuánto dura una consulta? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Las consultas de psiquiatría infantil duran 45 minutos. Las de neurología pediátrica duran 30 minutos. Esto aplica tanto en modalidad presencial como virtual.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Atienden de forma presencial y virtual? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. Una vez que ingresas como paciente puedes elegir la modalidad que prefieras: presencial en Edificio Dinamarca (Temuco) o virtual vía Google Meet, y puedes cambiar entre ambas según tu preferencia.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Trabajan con Fonasa o solo con Isapres? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Atendemos de forma particular. Si tienes Isapre, puedes solicitar reembolso según las condiciones de tu plan. Consulta directamente con tu seguro de salud.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Cómo se realiza el pago? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Puedes pagar por transferencia bancaria o con tarjeta a través de Flow (con un pequeño recargo). El detalle del pago se entrega dentro del proceso de agendamiento. Importante: el pago por sí solo no completa el agendamiento — debes completar también el formulario de solicitud de hora y esperar la confirmación por correo.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Emiten informes para colegios o SENADIS? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. Elaboramos informes clínicos, informes para establecimientos educacionales y el Informe Biomédico Funcional (IBF) requerido por SENADIS. Los informes se entregan una vez completado el proceso de evaluación y pueden tomar hasta 15 días hábiles.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Pueden atender si vivimos fuera de Temuco? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. La modalidad virtual nos permite atender a familias de toda Chile. La primera consulta también puede realizarse en línea.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-bar">
+  <div class="cta-text">
+    <h3>¿Tienes dudas antes de inscribirte?</h3>
+    <p>Escríbenos por WhatsApp o correo</p>
+  </div>
+  <div class="cta-actions">
+    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
+  </div>
+</div>
+
+<footer class="footer footer-full">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">NeuroPsynfonía</div>
+      <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
+      <div class="footer-contact-list">
+        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
+        <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Páginas</div>
+      <a href="index.html" class="footer-link">Inicio</a>
+      <a href="especialistas.html" class="footer-link">Especialistas</a>
+      <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neuro o psiq?</a>
+      <a href="colegios.html" class="footer-link">Para colegios</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Agendar</div>
+      <a href="agendar.html" class="footer-link">Cómo agendar</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Psiquiatría</a>
+      <a href="pacientes.html" class="footer-link">Para pacientes actuales</a>
+    </div>
+  </div>
+  <div class="footer-copy">© Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2026</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
