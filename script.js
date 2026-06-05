@@ -21,6 +21,15 @@ if (hamburger && navLinks) {
   });
 }
 
+// Copiar link al portapapeles
+function copiarLink(url, btn) {
+  navigator.clipboard.writeText(url).then(() => {
+    const original = btn.textContent;
+    btn.textContent = '¡Copiado!';
+    setTimeout(() => btn.textContent = original, 2000);
+  });
+}
+
 // Navbar sombra al hacer scroll
 window.addEventListener('scroll', () => {
   const navbar = document.getElementById('navbar');
