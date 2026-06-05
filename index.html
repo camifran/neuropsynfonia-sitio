@@ -15,7 +15,7 @@
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <img src="../img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
     <div class="nav-logo-text">
       <span class="nav-brand">NeuroPsynfonía</span>
       <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
@@ -40,6 +40,7 @@
     <div class="hero-badge"><span class="badge-dot"></span>Atención presencial y virtual disponible</div>
     <h1 class="hero-title">Neuropsiquiatría infantil integrada en Temuco</h1>
     <p class="hero-desc">Neurología y psiquiatría coordinadas para niños, niñas y adolescentes. Especialistas con formación nacional e internacional.</p>
+    <div class="hero-note"><strong>Neurología:</strong> agenda directa, sin espera. &nbsp;·&nbsp; <strong>Psiquiatría:</strong> inscríbete y te contactamos en ~10 días hábiles.</div>
     <div class="hero-actions">
       <a href="agendar.html" class="btn-primary">Ver cómo agendar</a>
       <a href="especialistas.html" class="btn-secondary">Conocer al equipo</a>
@@ -102,7 +103,7 @@
     <p class="section-sub">Dos especialistas con formación nacional e internacional trabajando de forma coordinada</p>
     <div class="team-grid">
       <a href="especialistas.html" class="prof-card-mini ct">
-        <img class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img class="prof-photo" src="../img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="prof-initials av-t" style="display:none">XB</div>
         <div>
           <div class="prof-name">Dra. Ximena Badilla Aburto</div>
@@ -112,7 +113,7 @@
         </div>
       </a>
       <a href="especialistas.html" class="prof-card-mini cr">
-        <img class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img class="prof-photo" src="../img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="prof-initials av-r" style="display:none">CC</div>
         <div>
           <div class="prof-name">Dra. Camila Cortés Contreras</div>
@@ -171,6 +172,7 @@
         </div>
       </div>
     </div>
+    <p style="margin-top:20px;font-size:15px;color:#555">¿Quieres saber qué especialista es el punto de entrada para tu caso? <a href="atencion-conjunta.html" style="color:var(--teal);font-weight:600">Ver guía condición por condición →</a></p>
   </div>
 </section>
 
@@ -245,7 +247,7 @@
       <a href="index.html" class="footer-link">Inicio</a>
       <a href="especialistas.html" class="footer-link">Especialistas</a>
       <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
-      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neuro o psiq?</a>
       <a href="colegios.html" class="footer-link">Para colegios</a>
     </div>
     <div class="footer-col">
@@ -253,14 +255,15 @@
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
       <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
       <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Teleconsulta Psiquiatría</a>
-      <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Psiquiatría</a>
+      <a href="pacientes.html" class="footer-link">Para pacientes actuales</a>
     </div>
   </div>
   <div class="footer-copy">© Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA — NeuroPsynfonía 2019–2026</div>
 </footer>
 
 <script src="script.js"></script>
+<div id="guia-orientacion" style="display:none"></div>
 <script src="assets/js/guia-orientacion.js"></script>
 <script>
 // Mostrar solo las 3 primeras condiciones en el home como preview

@@ -46,26 +46,36 @@ a { color: inherit; text-decoration: none; }
 .hero {
   display: flex; gap: 36px; align-items: center;
   padding: 56px 36px 48px;
-  background: linear-gradient(135deg, #FDE8F2 0%, #E2F5F6 60%, #FEF8DC 100%);
+  background-image: url('../img/hero.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
   flex-wrap: wrap;
 }
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.72);
+  pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
 .hero-content { flex: 1; min-width: 280px; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #fff; border: 0.5px solid var(--rosa); border-radius: 20px;
+  background: rgba(255,255,255,0.9); border: 0.5px solid var(--rosa); border-radius: 20px;
   padding: 6px 16px; font-size: 15px; color: var(--rosa); margin-bottom: 18px;
 }
 .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
 .hero-title { font-family: var(--font-heading); font-size: clamp(22px, 3vw, 30px); font-weight: 700; color: var(--dark); line-height: 1.25; margin-bottom: 14px; }
 .hero-desc { font-size: 17px; color: #2a6a70; line-height: 1.75; max-width: 500px; }
-.hero-note { font-size: 15px; color: #555; background: #fff; border-radius: 10px; padding: 14px 18px; margin-top: 18px; border-left: 3px solid var(--teal); max-width: 500px; line-height: 1.7; }
+.hero-note { font-size: 15px; color: #555; background: rgba(255,255,255,0.88); border-radius: 10px; padding: 14px 18px; margin-top: 18px; border-left: 3px solid var(--teal); max-width: 500px; line-height: 1.7; }
 .hero-actions { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
 .btn-primary { background: var(--teal); color: #fff; padding: 13px 24px; border-radius: 9px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
 .btn-primary:hover { background: var(--teal-d); color: #fff; }
-.btn-secondary { background: transparent; color: var(--rosa); padding: 13px 24px; border-radius: 9px; font-size: 16px; font-weight: 600; border: 2px solid var(--rosa); cursor: pointer; transition: background 0.2s; display: inline-block; }
+.btn-secondary { background: rgba(255,255,255,0.85); color: var(--rosa); padding: 13px 24px; border-radius: 9px; font-size: 16px; font-weight: 600; border: 2px solid var(--rosa); cursor: pointer; transition: background 0.2s; display: inline-block; }
 .btn-secondary:hover { background: var(--rosa-l); }
 .hero-pills { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
-.pill { background: #fff; border-radius: 11px; border: 0.5px solid #ddd; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+.pill { background: rgba(255,255,255,0.88); border-radius: 11px; border: 0.5px solid #ddd; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
 .pill-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .pill-label { font-size: 15px; font-weight: 600; color: var(--dark); }
 .pill-sub { font-size: 13px; color: #777; }
