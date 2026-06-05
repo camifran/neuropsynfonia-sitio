@@ -55,7 +55,7 @@ a { color: inherit; text-decoration: none; }
 .hero::before {
   content: '';
   position: absolute; inset: 0;
-  background: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.45);
   pointer-events: none;
 }
 .hero > * { position: relative; z-index: 1; }
