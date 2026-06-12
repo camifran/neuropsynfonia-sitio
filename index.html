@@ -3,19 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2AADB5">
   <meta name="description" content="NeuroPsynfonía — Centro de Neurología y Psiquiatría Infantil en Temuco. Atención presencial y virtual para niños, niñas y adolescentes.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NeuroPsynfonía | Neurología y Psiquiatría Infantil · Temuco">
+  <meta property="og:description" content="Centro de Neurología y Psiquiatría Infantil en Temuco. Atención presencial y virtual para niños, niñas y adolescentes.">
+  <meta property="og:url" content="https://camifran.github.io/neuropsynfonia-sitio/">
+  <meta property="og:image" content="https://camifran.github.io/neuropsynfonia-sitio/img/hero.webp">
+  <meta property="og:locale" content="es_CL">
   <title>NeuroPsynfonía | Neurología y Psiquiatría Infantil · Temuco</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/tabler-icons.min.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "NeuroPsynfonía",
+    "description": "Centro de neurología y psiquiatría infantil en Temuco. Atención presencial y virtual para niños, niñas y adolescentes.",
+    "url": "https://camifran.github.io/neuropsynfonia-sitio/",
+    "telephone": "+56951880121",
+    "email": "contacto@neuropsynfonia.cl",
+    "image": "https://camifran.github.io/neuropsynfonia-sitio/img/hero.webp",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Dinamarca 621",
+      "addressLocality": "Temuco",
+      "addressRegion": "Araucanía",
+      "addressCountry": "CL"
+    },
+    "medicalSpecialty": ["Neurology", "Psychiatry"],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+        "opens": "10:30",
+        "closes": "16:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "10:30",
+        "closes": "16:30"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <img src="img/logo.webp" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
     <div class="nav-logo-text">
       <span class="nav-brand">NeuroPsynfonía</span>
       <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
@@ -32,7 +74,7 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <section class="hero">
@@ -48,7 +90,7 @@
   <div class="hero-pills">
     <div class="pill"><span class="pill-dot" style="background:#2AADB5"></span><div><div class="pill-label">Presencial</div><div class="pill-sub">Dinamarca 621, Temuco</div></div></div>
     <div class="pill"><span class="pill-dot" style="background:#F272A0"></span><div><div class="pill-label">Virtual</div><div class="pill-sub">Google Meet</div></div></div>
-    <div class="pill"><span class="pill-dot" style="background:#F5C842"></span><div><div class="pill-label">WhatsApp</div><div class="pill-sub">+56 9 5188 0121</div></div></div>
+    <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="pill"><span class="pill-dot" style="background:#F5C842"></span><div><div class="pill-label">WhatsApp</div><div class="pill-sub">+56 9 5188 0121</div></div></a>
   </div>
 </section>
 
@@ -70,7 +112,7 @@
           <div class="asm"><span class="asm-num sn-2">2</span><span class="asm-text">Recibes confirmación por correo</span></div>
           <div class="asm"><span class="asm-num sn-3">3</span><span class="asm-text">¡Listo! Nos vemos en la consulta</span></div>
         </div>
-        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-primary" style="margin-top:auto">Agendar con Dra. Badilla →</a>
+        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-primary" style="margin-top:auto">Agendar con Dra. Badilla →</a>
       </div>
 
       <div class="agendar-col agendar-col-r">
@@ -85,8 +127,8 @@
           <div class="asm"><span class="asm-num sn-3">3</span><span class="asm-text">Solicitas hora y confirmas por correo</span></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
         </div>
       </div>
 
@@ -102,7 +144,7 @@
     <p class="section-sub">Dos especialistas con formación nacional e internacional trabajando de forma coordinada</p>
     <div class="team-grid">
       <a href="especialistas.html" class="prof-card-mini ct">
-        <img class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img loading="lazy" class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="prof-initials av-t" style="display:none">XB</div>
         <div>
           <div class="prof-name">Dra. Ximena Badilla Aburto</div>
@@ -112,7 +154,7 @@
         </div>
       </a>
       <a href="especialistas.html" class="prof-card-mini cr">
-        <img class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img loading="lazy" class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="prof-initials av-r" style="display:none">CC</div>
         <div>
           <div class="prof-name">Dra. Camila Cortés Contreras</div>
@@ -218,13 +260,35 @@
   </div>
 </section>
 
+<!-- DÓNDE ESTAMOS -->
+<section class="section bg-gray" id="donde-estamos">
+  <div class="container">
+    <h2 class="section-title">Dónde estamos</h2>
+    <p class="section-sub">Dinamarca 621, Temuco — Centro Médico y Dental</p>
+    <div class="consultas-fotos-grid" style="margin-bottom:18px">
+      <div class="consulta-placeholder">
+        <img loading="lazy" src="img/edificio.webp" alt="Edificio Dinamarca 621, Temuco" style="width:100%;height:220px;object-fit:cover;object-position:center 30%;display:block;">
+        <div class="consulta-label">Edificio Dinamarca 621, Temuco</div>
+      </div>
+      <div class="consulta-placeholder">
+        <img loading="lazy" src="img/consulta-cortes.webp" alt="Consulta Dra. Cortés — Oficina 801" style="width:100%;height:220px;object-fit:cover;display:block;">
+        <div class="consulta-label">Nuestras consultas</div>
+      </div>
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3148.12!2d-72.5980!3d-38.7369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d774a2e7b379%3A0x0!2sDinamarca+621%2C+Temuco!5e0!3m2!1ses!2scl!4v1" width="100%" height="252" style="border:0;border-radius:12px;display:block;" allowfullscreen loading="lazy" title="Mapa — Dinamarca 621, Temuco"></iframe>
+      </div>
+    </div>
+    <p style="font-size:15px;color:#555">¿Vienes por primera vez? <a href="como-funciona.html#contacto" style="color:var(--teal);font-weight:600">Ver cómo llegar y horarios →</a></p>
+  </div>
+</section>
+
 <div class="cta-bar">
   <div class="cta-text">
     <h3>¿Quieres agendar una consulta?</h3>
     <p>Modalidad presencial o virtual a elección</p>
   </div>
   <div class="cta-actions">
-    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="cbtn-wa">WhatsApp</a>
     <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
   </div>
 </div>
@@ -236,25 +300,25 @@
       <div class="footer-brand">NeuroPsynfonía</div>
       <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
       <div class="footer-contact-list">
-        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
         <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
         <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
       </div>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Páginas</div>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
       <a href="index.html" class="footer-link">Inicio</a>
       <a href="especialistas.html" class="footer-link">Especialistas</a>
       <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
-      <a href="atencion-conjunta.html" class="footer-link">¿Neuro o psiq?</a>
       <a href="colegios.html" class="footer-link">Para colegios</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Psiquiatría</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>

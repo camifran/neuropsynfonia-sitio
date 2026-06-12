@@ -310,6 +310,18 @@ a { color: inherit; text-decoration: none; }
 .cbtn-mail { background: #ffffff; color: #1A3A3C; padding: 13px 22px; border-radius: 9px; font-size: 15px; font-weight: 700; border: 2px solid #ffffff; display: inline-block; transition: background 0.2s; }
 .cbtn-mail:hover { background: #e8f8f8; color: #1A3A3C; }
 
+/* BOTÓN FLOTANTE WHATSAPP */
+.wa-float {
+  position: fixed; bottom: 22px; right: 22px; z-index: 90;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.wa-float:hover { transform: scale(1.07); box-shadow: 0 6px 18px rgba(0,0,0,0.28); color: #fff; }
+
 /* FOOTER */
 .footer { background: #111f20; padding: 22px 36px; text-align: center; font-size: 14px; color: #6a9a9c; }
 

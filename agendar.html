@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2AADB5">
   <meta name="description" content="Agenda tu hora en NeuroPsynfonía — inscríbete como paciente y solicita tu hora con la Dra. Badilla o la Dra. Cortés.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Agendar hora | NeuroPsynfonía">
+  <meta property="og:description" content="Agenda tu hora en NeuroPsynfonía — Neurología $65.000 / Psiquiatría $95.000. Presencial o virtual, Temuco.">
+  <meta property="og:url" content="https://camifran.github.io/neuropsynfonia-sitio/agendar.html">
+  <meta property="og:image" content="https://camifran.github.io/neuropsynfonia-sitio/img/hero.webp">
+  <meta property="og:locale" content="es_CL">
   <title>Agendar hora | NeuroPsynfonía</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/tabler-icons.min.css">
 </head>
 <body>
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <img src="img/logo.webp" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
     <div class="nav-logo-text">
       <span class="nav-brand">NeuroPsynfonía</span>
       <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
@@ -32,7 +40,7 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
@@ -56,7 +64,7 @@
         <div class="qa-desc">Puedes agendar directamente, sin inscripción previa.</div>
         <div class="espera-badge espera-t"><i class="ti ti-check"></i> Sin lista de espera</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t" style="text-align:center">Solicitar hora — Dra. Badilla (presencial/virtual) →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-t" style="text-align:center">Solicitar hora — Dra. Badilla (presencial/virtual) →</a>
         </div>
         <div style="font-size:13px;color:#888;margin-top:6px">Recibirás confirmación por correo.</div>
       </div>
@@ -70,8 +78,8 @@
         <div class="qa-desc">Paciente nuevo: primero inscríbete. Te contactamos en ~10 días hábiles para la primera hora presencial. Para teleconsulta, puedes agendar directamente.</div>
         <div class="espera-badge espera-r"><i class="ti ti-clock"></i> ~10 días hábiles para presencial</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse (paciente nuevo) →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa — Dra. Cortés →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse (paciente nuevo) →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa — Dra. Cortés →</a>
         </div>
         <div style="font-size:13px;color:#888;margin-top:6px">¿Ya eres paciente? Solicita hora igual que para teleconsulta.</div>
       </div>
@@ -102,7 +110,7 @@
             <div class="eval-body"><div class="etitle">Confirmación por correo</div><div class="edesc">Recibirás un correo con la confirmación. Si no llega, contáctanos por WhatsApp.</div></div>
           </div>
         </div>
-        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="btn-reserva btn-reserva-t" style="text-align:center;margin-top:16px">Solicitar hora →</a>
+        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-t" style="text-align:center;margin-top:16px">Solicitar hora →</a>
       </div>
 
       <div class="agendar-col agendar-col-r">
@@ -125,8 +133,8 @@
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
         </div>
       </div>
 
@@ -206,7 +214,7 @@
     <p>Escríbenos por WhatsApp o correo</p>
   </div>
   <div class="cta-actions">
-    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="cbtn-wa">WhatsApp</a>
     <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
   </div>
 </div>
@@ -217,25 +225,25 @@
       <div class="footer-brand">NeuroPsynfonía</div>
       <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
       <div class="footer-contact-list">
-        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
         <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
         <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
       </div>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Páginas</div>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
       <a href="index.html" class="footer-link">Inicio</a>
       <a href="especialistas.html" class="footer-link">Especialistas</a>
       <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
-      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
       <a href="colegios.html" class="footer-link">Para colegios</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Teleconsulta Psiquiatría</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>

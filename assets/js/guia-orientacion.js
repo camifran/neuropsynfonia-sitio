@@ -124,7 +124,7 @@
     {
       id: 'cefalea',
       titulo: 'Cefalea y dolor de cabeza recurrente',
-      icono: 'ti-pulse',
+      icono: 'ti-head-side',
       color: COLORS.rosa,
       colorLight: COLORS.rosaLight,
       neuro: [
@@ -321,7 +321,7 @@
               ${señalesHTML(d.neuro, COLORS.tealDark)}
             </div>
             <div class="np-col">
-              <span class="np-badge np-badge-psiq">La Dra. Cortés · Psiquiatría infantojuvenil</span>
+              <span class="np-badge np-badge-psiq">La Dra. Cortés · Psiquiatría Infantil y Adolescente</span>
               ${señalesHTML(d.psiq, COLORS.rosaDark)}
             </div>
           </div>
@@ -353,7 +353,7 @@
       </p>
       <div class="np-leyenda">
         <div class="np-leyenda-item"><div class="np-dot" style="background:${COLORS.teal}"></div> Neurología pediátrica · la Dra. Badilla</div>
-        <div class="np-leyenda-item"><div class="np-dot" style="background:${COLORS.rosa}"></div> Psiquiatría infantojuvenil · la Dra. Cortés</div>
+        <div class="np-leyenda-item"><div class="np-dot" style="background:${COLORS.rosa}"></div> Psiquiatría Infantil y Adolescente · la Dra. Cortés</div>
         <div class="np-leyenda-item"><div class="np-dot" style="background:${COLORS.dorado}"></div> Evaluación conjunta</div>
       </div>
       ${datos.map(cardHTML).join('')}

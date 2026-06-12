@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2AADB5">
   <meta name="description" content="Conoce al equipo de NeuroPsynfonía — Dra. Ximena Badilla (Neuróloga) y Dra. Camila Cortés (Psiquiatra Infantil), Temuco.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Especialistas | NeuroPsynfonía">
+  <meta property="og:description" content="Conoce al equipo — Dra. Ximena Badilla (Neuróloga Infantil) y Dra. Camila Cortés (Psiquiatra Infantil y Adolescente), Temuco.">
+  <meta property="og:url" content="https://camifran.github.io/neuropsynfonia-sitio/especialistas.html">
+  <meta property="og:image" content="https://camifran.github.io/neuropsynfonia-sitio/img/hero.webp">
+  <meta property="og:locale" content="es_CL">
   <title>Especialistas | NeuroPsynfonía</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/tabler-icons.min.css">
 </head>
 <body>
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo.png" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <img src="img/logo.webp" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
     <div class="nav-logo-text">
       <span class="nav-brand">NeuroPsynfonía</span>
       <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
@@ -32,7 +40,7 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesitas hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbete</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
@@ -48,7 +56,7 @@
 
       <div class="prof-card ct" onclick="toggleBio(this)">
         <div class="prof-main">
-          <img class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img loading="lazy" class="prof-photo" src="img/ximena.jpg" alt="Dra. Ximena Badilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="prof-initials av-t" style="display:none">XB</div>
           <div class="prof-info">
             <div class="prof-name">Dra. Ximena Badilla Aburto</div>
@@ -62,13 +70,14 @@
           <p>Ha presentado trabajos de investigación en múltiples congresos, destacando los Congresos Anuales de SOPNIA y las Jornadas Invernales de Epilepsia. Cuenta con formación en Docencia Efectiva otorgada por la Universidad de Chile.</p>
           <p>Actualmente se desempeña en el Hospital de Lautaro y en el Hospital Hernán Henríquez Aravena, además de su práctica privada en NeuroPsynfonía. Es docente de la Universidad Mayor y de la Universidad de la Frontera.</p>
           <p>Junto a la Dra. Cortés conformó la Unidad de Neuropsiquiatría Infantil del Hospital Intercultural de Nueva Imperial, pionera a nivel nacional en atenciones neuropsiquiátricas conjuntas en el sector público.</p>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="tag tag-t" onclick="event.stopPropagation()">Agendar hora directamente →</a>
+          <p style="font-size:14px;color:#888">Registro Superintendencia de Salud N° 392719 · Colmed 37504-7 · <a href="https://rnpi.superdesalud.gob.cl" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600" onclick="event.stopPropagation()">Verificar en el RNPI →</a></p>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="tag tag-t" onclick="event.stopPropagation()">Agendar hora directamente →</a>
         </div>
       </div>
 
       <div class="prof-card cr" onclick="toggleBio(this)">
         <div class="prof-main">
-          <img class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img loading="lazy" class="prof-photo" src="img/camila.jpg" alt="Dra. Camila Cortés" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="prof-initials av-r" style="display:none">CC</div>
           <div class="prof-info">
             <div class="prof-name">Dra. Camila Cortés Contreras</div>
@@ -83,7 +92,8 @@
           <p>Ha participado como expositora en Congresos de Médicos EDF, jornadas de educación médica (LACRE), Jornadas de APS y en instituciones como Bomberos de Chile.</p>
           <p>En el sector público se desempeñó en dispositivos de atención primaria, secundaria y terciaria en las regiones del Bío-Bío, Ñuble, Metropolitana y Araucanía. Junto a la Dra. Badilla conformó la Unidad de Neuropsiquiatría Infantil del Hospital Intercultural de Nueva Imperial, pionera a nivel nacional en atenciones neuropsiquiátricas conjuntas en el sector público.</p>
           <p>Es también Facilitadora de Biodanza de la Escuela de Biodanza Del Mar, y coordinó un taller de Biodanza para adolescentes en la Corta Estadía del Hospital Sótero del Río.</p>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="tag tag-r" onclick="event.stopPropagation()">Inscribirse (~10 días de espera presencial) →</a>
+          <p style="font-size:14px;color:#888">Registro Superintendencia de Salud N° 187230 · Colmed 30422-0 · <a href="https://rnpi.superdesalud.gob.cl" target="_blank" rel="noopener" style="color:var(--rosa);font-weight:600" onclick="event.stopPropagation()">Verificar en el RNPI →</a></p>
+          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="tag tag-r" onclick="event.stopPropagation()">Inscribirse (~10 días de espera presencial) →</a>
         </div>
       </div>
 
@@ -116,7 +126,7 @@
     <p>Modalidad presencial o virtual a elección</p>
   </div>
   <div class="cta-actions">
-    <a href="https://wa.me/56951880121" target="_blank" class="cbtn-wa">WhatsApp</a>
+    <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="cbtn-wa">WhatsApp</a>
     <a href="mailto:contacto@neuropsynfonia.cl" class="cbtn-mail">Enviar email</a>
   </div>
 </div>
@@ -127,25 +137,25 @@
       <div class="footer-brand">NeuroPsynfonía</div>
       <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
       <div class="footer-contact-list">
-        <a href="https://wa.me/56951880121" target="_blank" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
         <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
         <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
       </div>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Páginas</div>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
       <a href="index.html" class="footer-link">Inicio</a>
       <a href="especialistas.html" class="footer-link">Especialistas</a>
       <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
-      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
       <a href="colegios.html" class="footer-link">Para colegios</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" class="footer-link">Hora Teleconsulta Psiquiatría</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>

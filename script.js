@@ -37,3 +37,32 @@ window.addEventListener('scroll', () => {
     navbar.style.boxShadow = window.scrollY > 10 ? '0 2px 12px rgba(0,0,0,0.07)' : 'none';
   }
 });
+
+// FAQs accesibles por teclado
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.setAttribute('tabindex', '0');
+  item.setAttribute('role', 'button');
+  item.setAttribute('aria-expanded', item.classList.contains('open'));
+  item.addEventListener('click', () => {
+    item.setAttribute('aria-expanded', item.classList.contains('open'));
+  });
+  item.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      item.classList.toggle('open');
+      item.setAttribute('aria-expanded', item.classList.contains('open'));
+    }
+  });
+});
+
+// Botón flotante de WhatsApp
+(function () {
+  const wa = document.createElement('a');
+  wa.className = 'wa-float';
+  wa.href = 'https://wa.me/56951880121';
+  wa.target = '_blank';
+  wa.rel = 'noopener';
+  wa.setAttribute('aria-label', 'Escríbenos por WhatsApp');
+  wa.innerHTML = '<i class="ti ti-brand-whatsapp" aria-hidden="true"></i>';
+  document.body.appendChild(wa);
+})();
