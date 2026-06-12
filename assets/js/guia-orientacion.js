@@ -124,7 +124,7 @@
     {
       id: 'cefalea',
       titulo: 'Cefalea y dolor de cabeza recurrente',
-      icono: 'ti-head-side',
+      icono: 'ti-activity-heartbeat',
       color: COLORS.rosa,
       colorLight: COLORS.rosaLight,
       neuro: [
