@@ -1,2 +1,52 @@
 archivo-img/
 .DS_Store
+
+# Gate A - exclusiones seguras 20260611
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Entorno / secretos
+.env
+.env.*
+!.env.example
+
+# Sistema
+
+# Logs
+logs/
+*.log
+
+# Outputs / temporales
+output/
+outputs/
+tmp/
+temp/
+.cache/
+.ipynb_checkpoints/
+
+# Backups
+backups/
+*.bak
+*.backup
+.gitignore.backup_*
+
+# Bases locales
+*.sqlite
+*.sqlite3
+*.db
+
+# Node si aplica
+node_modules/
+dist/
+build/
