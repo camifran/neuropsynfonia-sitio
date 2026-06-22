@@ -43,7 +43,19 @@ git push -u origin main
 - [ ] ximena.jpg (foto Dra. Badilla)
 - [ ] Fotos de las consultas (cuando llegue el fotógrafo)
 
+## URL de retorno de pagos Flow (pago-listo.html)
+
+### Configuración temporal (sitio en GitHub Pages)
+- **Página:** `pago-listo.html`
+- **URL retorno:** `https://camifran.github.io/neuropsynfonia-sitio/pago-listo.html`
+
+### Configuración final (cuando sitio esté en neuropsynfonia.cl)
+- **URL retorno:** `https://www.neuropsynfonia.cl/pago-listo.html`
+
+> **TODO:** Actualizar urlReturn en Flow sandbox cuando el sitio se despliegue a producción
+
 ## Pendiente
 - [ ] Formulario de control psiquiatría presencial (cuando esté listo)
 - [ ] Formulario de solicitud de documentos
 - [ ] Fotos de las consultas y recepción
+- [ ] Actualizar urlReturn de Flow a neuropsynfonia.cl cuando sitio sea productivo
