@@ -349,7 +349,7 @@
 
     el.innerHTML = `
       <p class="np-guia-intro">
-        Algunas condiciones del neurodesarrollo y la salud mental infantil se ubican en la frontera entre la neurología y la psiquiatría. Esta guía orienta cuál es el punto de entrada más adecuado según lo que estás observando en tu hijo o hija. Cuando es necesario, coordinamos la evaluación entre ambas especialistas.
+        Algunas condiciones del neurodesarrollo y la salud mental infantil se ubican en la frontera entre la neurología y la psiquiatría. Esta guía orienta cuál es el punto de entrada más adecuado según lo que está observando en su hijo o hija. Cuando es necesario, coordinamos la evaluación entre ambas especialistas.
       </p>
       <div class="np-leyenda">
         <div class="np-leyenda-item"><div class="np-dot" style="background:${COLORS.teal}"></div> Neurología pediátrica · la Dra. Badilla</div>
