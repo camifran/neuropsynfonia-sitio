@@ -62,7 +62,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   wa.href = 'https://wa.me/56951880121';
   wa.target = '_blank';
   wa.rel = 'noopener';
-  wa.setAttribute('aria-label', 'Escríbenos por WhatsApp');
+  wa.setAttribute('aria-label', 'Escríbanos por WhatsApp');
   wa.innerHTML = '<i class="ti ti-brand-whatsapp" aria-hidden="true"></i>';
   document.body.appendChild(wa);
 })();
