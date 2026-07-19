@@ -5,3 +5,5 @@
 El nodo principal de trabajo y automatización es el **Mac mini** (`ssh mini`, o Tailscale desde fuera de casa); la MacBook puede estar apagada. GitHub (`camifran/*`, repos privados) es la fuente de verdad: `git pull` al empezar la sesión, commit + push al terminar. Las automatizaciones (LaunchAgents del mini) solo hacen pull — nunca editar su árbol de trabajo sin pausar el agente. Los secretos (`.env`) se copian por `scp`, nunca por git.
 
 Contexto completo: repo `camifran/contextos-ia` → `projects/infra-mac-mini-trabajo-remoto.md`.
+
+**Comportamiento por defecto según dónde corre la sesión:** si corre en la MacBook, el estado operativo (servicios, LaunchAgents, logs) se consulta y modifica en el mini vía `ssh mini`, y toda edición local termina en commit + push + pull en el mini. Si corre en el mini, trabajar localmente respetando la pausa de agentes activos.
