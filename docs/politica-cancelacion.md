@@ -28,6 +28,11 @@ Conserva el mismo plazo y agrega el desglose por medio de pago. Se aplica
 **solo a pagos hechos después de reemplazar el texto vigente** — no de forma
 retroactiva.
 
+Actualización 29-ago-2026: "transferencia directa" es solo la que llega a la
+cuenta de la consulta sin pasar por Flow. La transferencia ofrecida **dentro del
+link de Flow** también paga comisión de recaudación (tarifa menor que la de
+tarjeta), así que el texto agrupa todos los medios pagados vía Flow.
+
 > **Política de cancelación y reembolsos**
 >
 > - Puede **reagendar o cancelar** avisando hasta el **mediodía (12:00) del día
@@ -37,7 +42,8 @@ retroactiva.
 > - Si pide la devolución, la forma del reembolso depende de cómo pagó:
 >   - **Pago por transferencia bancaria directa**: se devuelve el **monto íntegro**
 >     por transferencia a la cuenta que nos indique, sin descuentos.
->   - **Pago con tarjeta a través de Flow**: el reembolso se procesa por Flow y
+>   - **Pago a través de Flow** (tarjeta, transferencia u otro medio ofrecido en
+>     la plataforma de pago): el reembolso se procesa por Flow y
 >     **se descuentan los costos operativos no recuperables del medio de pago**:
 >     la comisión de recaudación del pago original y el cargo por reembolso de
 >     Flow ($240, IVA incluido). El monto exacto a devolver se informa por correo
