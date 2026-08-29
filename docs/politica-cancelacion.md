@@ -1,32 +1,33 @@
 # Política de cancelación y reembolsos
 
-Esta política no vive en el sitio (`neuropsynfonia.cl`): se publica en el
-formulario de Airtable **"Solicitud Teleconsulta Psiquiatría Infantil"**, junto
-al campo Comprobante de Pago. Este documento la deja registrada en el repo del
-sitio para que quede como referencia del negocio, junto al resto de la
-documentación institucional (`privacidad.html`, condiciones de teleconsulta en
-`como-funciona.html`).
+Esta política se publica en dos lugares: el formulario de Airtable
+**"Solicitud Teleconsulta Psiquiatría Infantil"** (junto al campo Comprobante
+de Pago) y, desde el 29-ago-2026, la página **`terminos.html`** del sitio
+(sección "Reagendamiento y cancelación"), enlazada desde el footer de todas
+las páginas. Este documento la deja registrada en el repo como referencia del
+negocio, junto al resto de la documentación institucional (`privacidad.html`,
+condiciones de teleconsulta en `como-funciona.html`).
 
 La contraparte técnica (trazabilidad de reembolsos en Airtable, estado
 `Reembolsado` en el Worker, cálculo de comisiones Flow) está en
 [`neuropsynfonia-flow/docs/politica-cancelacion.md`](https://github.com/camifran/neuropsynfonia-flow/blob/main/docs/politica-cancelacion.md).
 
-## Política vigente hoy (publicada en el formulario Airtable)
+## Texto histórico (ya reemplazado en el formulario)
 
-> Si cancela hasta el mediodía (12h) del día hábil anterior al día de su reserva, se
-> le devolverá la totalidad del pago o se utilizará como pago de otra hora según su
-> preferencia. Posterior a ello no se realizará devolución. (Ej: si tiene una hora un
-> lunes, se devolverá el dinero mientras avise el viernes anterior antes de las 12h.)
+El formulario publicaba antes: cancelando hasta el mediodía del día hábil
+anterior "se le devolverá la totalidad del pago". Camila lo reemplazó por el
+texto nuevo (confirmado el 29-ago-2026; el reemplazo fue anterior). Los pagos
+hechos **bajo el texto antiguo** se reembolsan al 100 %, absorbiendo la
+consulta las comisiones de Flow; el descuento de costos aplica solo a pagos
+posteriores al reemplazo.
 
-Mientras este texto siga publicado, todo pago hecho bajo él se reembolsa al
-**100 %** si se cancela a tiempo — la consulta absorbe cualquier comisión de
-Flow, no el paciente.
+## Texto vigente (publicado en el formulario y en terminos.html)
 
-## Texto nuevo (pendiente de publicar en el formulario Airtable)
-
-Conserva el mismo plazo y agrega el desglose por medio de pago. Se aplica
-**solo a pagos hechos después de reemplazar el texto vigente** — no de forma
-retroactiva.
+Conserva el mismo plazo y agrega el desglose por medio de pago. Nota: el
+formulario tiene la versión previa a la corrección del 29-ago ("Pago con
+tarjeta a través de Flow"); falta actualizar esa línea a "Pago a través de
+Flow (tarjeta, transferencia u otro medio…)" para cubrir la transferencia
+dentro del link de Flow. `terminos.html` ya tiene la versión corregida.
 
 Actualización 29-ago-2026: "transferencia directa" es solo la que llega a la
 cuenta de la consulta sin pasar por Flow. La transferencia ofrecida **dentro del
@@ -59,8 +60,8 @@ tarjeta), así que el texto agrupa todos los medios pagados vía Flow.
 
 ## Dónde vive publicada
 
-- **Hoy**: campo de texto junto a "Comprobante de Pago" en el formulario
-  Airtable de teleconsulta (`pagQHD0CK3rYef9oD/form`, base `appo5rFiYgYkeThb0`).
-- **No está** replicada en ninguna página del sitio (`agendar.html`,
-  `como-funciona.html`, etc.) — si se decide publicarla también ahí, actualizar
-  este documento con el enlace a la sección correspondiente.
+- Campo de texto junto a "Comprobante de Pago" en el formulario Airtable de
+  teleconsulta (`pagQHD0CK3rYef9oD/form`, base `appo5rFiYgYkeThb0`) — versión
+  previa a la corrección del 29-ago (pendiente el ajuste de la línea de Flow).
+- `terminos.html` del sitio, sección "Reagendamiento y cancelación" — versión
+  vigente completa, enlazada desde el footer de todas las páginas.
