@@ -54,8 +54,13 @@ git push -u origin main
 
 > **TODO:** Actualizar urlReturn en Flow sandbox cuando el sitio se despliegue a producción
 
+## Políticas hacia las familias (registro)
+
+- **28-10-2026, comunicación y urgencias** (aprobado por Camila y Ximena): sección 8 de `terminos.html`. Canales oficiales: WhatsApp de secretaría y contacto@; los correos directos a una profesional pueden tardar hasta una semana; recetas, informes y documentos se piden solo por el formulario de solicitudes (`pacientes.html#solicitudes`); las dudas sobre el tratamiento se resuelven en controles; el centro no atiende urgencias (SAMU 131); los números personales no son canal de contacto.
+- **28-10-2026, sin plazos comprometidos** (decisión de Camila): ninguna página promete plazo para informes ni solicitudes, y lo dicen explícitamente (`terminos.html` sección 6, `pacientes.html`, `como-funciona.html`, `agendar.html`). Se quitó la tarjeta «Solicitud de información» de `pacientes.html` y esa opción del formulario de Airtable.
+- Reagendamiento, cancelación y reembolsos: ver `docs/politica-cancelacion.md`.
+
 ## Pendiente
 - [ ] Formulario de control psiquiatría presencial (cuando esté listo)
-- [ ] Formulario de solicitud de documentos
 - [ ] Fotos de las consultas y recepción
 - [ ] Actualizar urlReturn de Flow a neuropsynfonia.cl cuando sitio sea productivo
