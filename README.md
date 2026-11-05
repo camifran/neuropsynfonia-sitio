@@ -58,6 +58,7 @@ git push -u origin main
 
 - **28-10-2026, comunicación y urgencias** (aprobado por Camila y Ximena): sección 8 de `terminos.html`. Canales oficiales: WhatsApp de secretaría y contacto@; los correos directos a una profesional pueden tardar hasta una semana; recetas, informes y documentos se piden solo por el formulario de solicitudes (`pacientes.html#solicitudes`); las dudas sobre el tratamiento se resuelven en controles; el centro no atiende urgencias (SAMU 131); los números personales no son canal de contacto.
 - **28-10-2026, sin plazos comprometidos** (decisión de Camila): ninguna página promete plazo para informes ni solicitudes, y lo dicen explícitamente (`terminos.html` sección 6, `pacientes.html`, `como-funciona.html`, `agendar.html`). Se quitó la tarjeta «Solicitud de información» de `pacientes.html` y esa opción del formulario de Airtable.
+- **04-11-2026, puerta del formulario de solicitudes** (decisión de Camila): `pacientes.html` lleva a `solicitud-documentos.html`, que pide RUT y fecha de nacimiento del paciente y abre el formulario solo si calzan con una ficha, sin exigir ingreso con una doctora. Si no calzan, deriva al WhatsApp de secretaría. Ruta en `neuropsynfonia-flow` (ítem 104 de `mejoras-airtable`).
 - Reagendamiento, cancelación y reembolsos: ver `docs/politica-cancelacion.md`.
 
 ## Pendiente
