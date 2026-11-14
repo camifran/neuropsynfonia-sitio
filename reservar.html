@@ -47,6 +47,8 @@
   .rs-nota{font-size:15px;color:#555;line-height:1.6;margin:0}
   .rs-pasos{font-size:14px;color:#2a6a70;margin:0}
   @media(min-width:600px){.rs-opciones.rs-dos{grid-template-columns:1fr 1fr}.rs-card{padding:32px}}
+  .rs-btn-sec{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:11px 24px;border-radius:9px;font-size:16px;font-weight:600;cursor:pointer;text-align:center}
+  .rs-btn-sec:disabled{opacity:.6;cursor:default}
 </style>
 </head>
 <body>
@@ -134,7 +136,8 @@
         <div id="rs-sindev" class="rs-msg rs-aviso" hidden><p>Esta hora ya está dentro del plazo de cancelación: si la cancela, no tiene devolución.</p></div>
         <p class="rs-nota">Antes de pagar, lea nuestra política de cancelación y devoluciones en los <a class="rs-link" href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
         <p class="rs-nota">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
-        <button type="button" class="btn-primary rs-btn" id="rs-b3">Pagar y reservar</button>
+        <button type="button" class="btn-primary rs-btn" id="rs-b3">Pagar por transferencia</button>
+        <button type="button" class="rs-btn rs-btn-sec" id="rs-b3b">Pagar con tarjeta u otro medio</button>
         <button type="button" class="rs-sec" id="rs-v2">Volver y elegir otra hora</button>
       </div>
 
@@ -453,13 +456,12 @@
   // ---------- Paso 3 ----------
   $('rs-v2').addEventListener('click', function () { limpiarMsg(); irAPaso(1); });
 
-  $('rs-b3').addEventListener('click', function () {
+  function pagar(b, medio) {
     if (est.ocupado) return;
     limpiarMsg();
-    var b = $('rs-b3');
     bloquear(b, 'Reservando...');
     var sigue = false;
-    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad })
+    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio })
       .then(function (r) {
         var d = r.datos;
         if (r.ok && d && d.ok === true && typeof d.urlPago === 'string' && /^https:\/\//.test(d.urlPago)) {
@@ -496,7 +498,9 @@
       })
       .catch(function () { mostrarMsg(MSG_RED); })
       .then(function () { if (!sigue) liberar(b); });
-  });
+  }
+  $('rs-b3').addEventListener('click', function () { pagar($('rs-b3'), 'transferencia'); });
+  $('rs-b3b').addEventListener('click', function () { pagar($('rs-b3b'), 'tarjeta'); });
 
   function recargarTrasTomada(b) {
     est.ocupado = true;
@@ -515,7 +519,7 @@
 
   // Al volver desde Flow con el botón "atrás", la página puede restaurarse con el botón bloqueado.
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b1')); }
+    if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b3b')); liberar($('rs-b1')); }
   });
 
   if (est.oferta) {
