@@ -49,6 +49,10 @@
   @media(min-width:600px){.rs-opciones.rs-dos{grid-template-columns:1fr 1fr}.rs-card{padding:32px}}
   .rs-btn-sec{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:11px 24px;border-radius:9px;font-size:16px;font-weight:600;cursor:pointer;text-align:center}
   .rs-btn-sec:disabled{opacity:.6;cursor:default}
+  .rs-mis{display:flex;flex-direction:column;gap:14px}
+  .rs-hora-card{border:1.5px solid #cfd8d9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .rs-hora-card .rs-resumen{font-size:15px}
+  .rs-titulo{font-size:18px;font-weight:700;color:#1A3A3C;margin:0}
 </style>
 </head>
 <body>
@@ -108,6 +112,7 @@
           <input class="rs-input" id="rs-correo" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="254" required>
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
+        <button type="button" class="rs-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
       </form>
 
       <!-- Paso 2 -->
@@ -140,6 +145,46 @@
         <button type="button" class="btn-primary rs-btn" id="rs-b3">Pagar por transferencia</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-b3b">Pagar con tarjeta u otro medio</button>
         <button type="button" class="rs-sec" id="rs-v2">Volver y elegir otra hora</button>
+      </div>
+
+      <!-- Mis horas: lista -->
+      <div id="rs-pm" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <h2 class="rs-titulo" id="rs-pm-titulo" tabindex="-1">Sus horas</h2>
+        <div id="rs-pm-lista" class="rs-mis"></div>
+        <button type="button" class="rs-sec" id="rs-pm-volver">Volver al inicio</button>
+      </div>
+
+      <!-- Mis horas: cancelar -->
+      <div id="rs-pc" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <dl class="rs-resumen">
+          <dt>Paciente</dt><dd id="rs-c-paciente"></dd>
+          <dt>Doctora</dt><dd id="rs-c-doctora"></dd>
+          <dt>Día y hora</dt><dd id="rs-c-hora"></dd>
+          <dt>Modalidad</dt><dd id="rs-c-modalidad"></dd>
+        </dl>
+        <div id="rs-c-aviso" class="rs-msg"></div>
+        <button type="button" class="btn-primary rs-btn" id="rs-bc">Cancelar la hora</button>
+        <button type="button" class="rs-sec" id="rs-c-volver">Volver</button>
+      </div>
+
+      <!-- Mis horas: confirmar el cambio -->
+      <div id="rs-pk" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <dl class="rs-resumen">
+          <dt>Paciente</dt><dd id="rs-k-paciente"></dd>
+          <dt>Doctora</dt><dd id="rs-k-doctora"></dd>
+          <dt>Hora actual</dt><dd id="rs-k-actual"></dd>
+          <dt>Hora nueva</dt><dd id="rs-k-nueva"></dd>
+          <dt>Modalidad</dt><dd id="rs-k-modalidad"></dd>
+        </dl>
+        <p class="rs-nota">No tiene que pagar de nuevo: su pago pasa a la hora nueva.</p>
+        <button type="button" class="btn-primary rs-btn" id="rs-bk">Confirmar el cambio</button>
+        <button type="button" class="rs-sec" id="rs-k-volver">Volver y elegir otra hora</button>
+      </div>
+
+      <!-- Mis horas: resultado -->
+      <div id="rs-pf" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <div class="rs-msg" id="rs-f-msg" tabindex="-1"></div>
+        <button type="button" class="rs-sec" id="rs-f-volver">Ver mis horas</button>
       </div>
 
       <noscript>
@@ -201,15 +246,25 @@
   var PASOS = ['Paso 1 de 3: identificación', 'Paso 2 de 3: elegir hora', 'Paso 3 de 3: resumen y pago'];
   // Con el enlace del correo de la lista de espera (?oferta=...) no hay identificación: son 2 pasos.
   var PASOS_OFERTA = ['', 'Paso 1 de 2: elegir hora', 'Paso 2 de 2: resumen y pago'];
+  // Cambio de una hora ya pagada («Mis horas»): no se paga de nuevo.
+  var PASOS_CAMBIO = { 1: 'Paso 1 de 2: elegir la hora nueva', 5: 'Paso 2 de 2: confirmar el cambio' };
+  var PASOS_MIS = { 3: 'Mis horas', 4: 'Cancelar la hora', 6: '' };
   var CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
   // Estado sólo en memoria: nada de RUT, correo ni token va a localStorage.
   var est = { rut: '', correo: '', doctora: '', token: '', paciente: '', horas: [], hora: null, modalidad: '', ocupado: false, oferta: '' };
   // El enlace del correo trae un token firmado (7 días); se guarda sólo en memoria y se usa en /agenda/oferta.
   est.oferta = new URLSearchParams(window.location.search).get('oferta') || '';
+  // «Mis horas»: el enlace ?mis=... (120 días) entra sin pedir datos; la sesión de 30 minutos va sólo en memoria.
+  est.enlaceMis = est.oferta ? '' : (new URLSearchParams(window.location.search).get('mis') || '');
+  est.sesion = '';
+  est.mis = [];
+  est.nombreMis = '';
+  est.cambio = null;   // la hora que se está cambiando
+  est.cancelar = null; // la hora que se está cancelando
 
   var $ = function (id) { return document.getElementById(id); };
-  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3')];
+  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf')];
   var msg = $('rs-msg');
 
   function enlace(url, texto) { return '<a href="' + url + '" target="_blank" rel="noopener">' + texto + '</a>'; }
@@ -231,9 +286,10 @@
       p.hidden = !visible;
       p.style.display = visible ? 'flex' : 'none';
     });
-    $('rs-pasos').textContent = est.oferta ? PASOS_OFERTA[n] : PASOS[n];
+    $('rs-pasos').textContent = n >= 3 ? PASOS_MIS[n] || PASOS_CAMBIO[n] || '' :
+      est.cambio ? PASOS_CAMBIO[n] || '' : est.oferta ? PASOS_OFERTA[n] : PASOS[n];
     if (enfocar !== false) {
-      var destino = pasos[n].querySelector('input:not([type=radio]),input[type=radio]:checked,button,input');
+      var destino = pasos[n].querySelector('input:not([type=radio]),input[type=radio]:checked,button,input'); // (sin uso: el foco va al título)
       var titulo = $('rs-pasos');
       titulo.setAttribute('tabindex', '-1');
       titulo.focus();
@@ -385,7 +441,7 @@
     var caja = $('rs-horas-caja');
     caja.innerHTML = '';
     var mod = document.querySelectorAll('input[name=modalidad]');
-    Array.prototype.forEach.call(mod, function (m) { m.checked = false; });
+    Array.prototype.forEach.call(mod, function (m) { m.checked = !!est.cambio && m.value === est.cambio.modalidad; });
     if (!est.horas.length) {
       caja.innerHTML = '<div class="rs-msg"><p>Por ahora no hay horas disponibles con ' + DOCTORAS[est.doctora] + '.</p><p>' + CONTACTO + '</p></div>';
       $('rs-modalidad').hidden = true;
@@ -402,7 +458,9 @@
     });
     var intro = document.createElement('p');
     intro.className = 'rs-nota';
-    intro.textContent = est.oferta
+    intro.textContent = est.cambio
+      ? 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para cambiar su hora del ' + est.cambio.inicioChile + '. Elija una y la modalidad.'
+      : est.oferta
       ? 'Estas son las horas disponibles para la primera consulta de ' + (nombreVisible(est.paciente) || 'el paciente') + '. La hora queda para la primera familia que complete el pago.'
       : 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para ' + (est.paciente || 'el paciente') + '. Elija una.';
     caja.appendChild(intro);
@@ -434,7 +492,11 @@
   }
 
   if (est.oferta) $('rs-v1').hidden = true;
-  $('rs-v1').addEventListener('click', function () { limpiarMsg(); irAPaso(0); });
+  $('rs-v1').addEventListener('click', function () {
+    limpiarMsg();
+    if (est.cambio) { salirDeCambio(); pintarMis(); irAPaso(3); return; }
+    irAPaso(0);
+  });
 
   $('rs-b2').addEventListener('click', function () {
     limpiarMsg();
@@ -445,6 +507,15 @@
     est.hora = est.horas[Number(h.value)];
     est.modalidad = m.value;
     var p = partesHora(est.hora);
+    if (est.cambio) {
+      $('rs-k-paciente').textContent = est.paciente || 'Paciente';
+      $('rs-k-doctora').textContent = DOCTORAS[est.doctora];
+      $('rs-k-actual').textContent = est.cambio.inicioChile;
+      $('rs-k-nueva').textContent = p.dia + ', ' + p.hora;
+      $('rs-k-modalidad').textContent = est.modalidad;
+      irAPaso(5);
+      return;
+    }
     $('rs-r-paciente').textContent = est.paciente || 'Paciente';
     $('rs-r-doctora').textContent = DOCTORAS[est.doctora];
     $('rs-r-hora').textContent = p.dia + ', ' + p.hora;
@@ -518,6 +589,304 @@
     });
   }
 
+  // ---------- Mis horas: cambiar o cancelar una hora ya pagada ----------
+  var MSG_ENLACE_VENCIDO = '<p>Este enlace ya no está vigente. Puede ingresar el RUT del paciente y el correo para ver sus horas.</p><p>' + CONTACTO + '</p>';
+  var MSG_SESION = '<p>Pasaron más de 30 minutos y la sesión venció. Por seguridad, vuelva a ingresar los datos para ver sus horas.</p>';
+  var TXT_CANCEL_DENTRO = 'Su hora se cancelará. La devolución de su pago será revisada por la doctora y recibirá un correo con el monto. Si pagó por Flow, se descuentan los costos del medio de pago.';
+  var TXT_CANCEL_FUERA = function (plazo) { return 'El plazo para cancelar con devolución venció el ' + plazo + '. Si confirma, su hora se cancela sin devolución, según los términos y condiciones.'; };
+
+  function salirDeCambio() {
+    est.cambio = null;
+    est.horas = [];
+    est.hora = null;
+    $('rs-v1').textContent = 'Volver y cambiar los datos';
+  }
+
+  function sesionVencida() {
+    est.sesion = '';
+    salirDeCambio();
+    est.cancelar = null;
+    if (est.enlaceMis) {
+      // El enlace del correo sigue vigente: se vuelve a entrar sin pedir datos.
+      cargarMis(function () { mostrarMsg('<p>Pasaron más de 30 minutos y la sesión venció. Estas son sus horas de nuevo.</p>'); });
+      return;
+    }
+    irAPaso(0);
+    mostrarMsg(MSG_SESION);
+  }
+
+  // Pide las horas de la familia: con el enlace del correo, o con el RUT y el correo que escribió.
+  function cargarMis(alTerminar) {
+    var cuerpo = est.enlaceMis ? { enlace: est.enlaceMis } : { rut: est.rut, correo: est.correo };
+    return post('/agenda/mis-horas', cuerpo)
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return false; }
+        if (r.status === 401 || r.status === 403) {
+          est.enlaceMis = '';
+          irAPaso(0);
+          mostrarMsg(MSG_ENLACE_VENCIDO);
+          return false;
+        }
+        if (r.ok && d && d.ok === true && typeof d.token === 'string' && Array.isArray(d.horas)) {
+          est.sesion = d.token;
+          est.nombreMis = (d.paciente && d.paciente.nombre) || '';
+          est.mis = d.horas;
+          pintarMis();
+          irAPaso(3);
+          if (alTerminar) alTerminar();
+          return true;
+        }
+        if (r.ok && d && d.ok === false) { irAPaso(0); mostrarMsg(MSG_NEGATIVA); return false; }
+        mostrarMsg(MSG_RED);
+        return false;
+      })
+      .catch(function () { mostrarMsg(MSG_RED); return false; });
+  }
+
+  function lineaHora(h) {
+    var p = partesHora(h);
+    return p.dia + ', ' + p.hora;
+  }
+
+  function filaResumen(dl, titulo, valor) {
+    var dt = document.createElement('dt'); dt.textContent = titulo;
+    var dd = document.createElement('dd'); dd.textContent = valor;
+    dl.appendChild(dt); dl.appendChild(dd);
+  }
+
+  function pintarMis() {
+    var lista = $('rs-pm-lista');
+    lista.innerHTML = '';
+    var nombre = nombreVisible(est.nombreMis);
+    $('rs-pm-titulo').textContent = nombre ? 'Horas de ' + nombre : 'Sus horas';
+    if (!est.mis.length) {
+      var vacio = document.createElement('div');
+      vacio.className = 'rs-msg';
+      vacio.innerHTML = '<p>No encontramos horas pagadas y vigentes para cambiar o cancelar desde aquí.</p><p>' + CONTACTO + '</p>';
+      lista.appendChild(vacio);
+      return;
+    }
+    est.mis.forEach(function (h) {
+      var card = document.createElement('div');
+      card.className = 'rs-hora-card';
+      var dl = document.createElement('dl');
+      dl.className = 'rs-resumen';
+      filaResumen(dl, 'Doctora', h.doctoraNombre || DOCTORAS[h.doctora]);
+      filaResumen(dl, 'Día y hora', lineaHora(h));
+      filaResumen(dl, 'Modalidad', h.modalidad);
+      card.appendChild(dl);
+      if (h.puedeCambiar) {
+        var bc = document.createElement('button');
+        bc.type = 'button';
+        bc.className = 'btn-primary rs-btn';
+        bc.textContent = 'Cambiar';
+        bc.setAttribute('aria-label', 'Cambiar la hora del ' + lineaHora(h));
+        bc.addEventListener('click', function () { iniciarCambio(h, bc); });
+        card.appendChild(bc);
+      } else {
+        var nota = document.createElement('p');
+        nota.className = 'rs-nota';
+        nota.textContent = 'El plazo para cambiar esta hora venció el ' + h.plazoTexto + '.';
+        card.appendChild(nota);
+      }
+      if (h.puedeCancelar) {
+        var bx = document.createElement('button');
+        bx.type = 'button';
+        bx.className = 'rs-btn rs-btn-sec';
+        bx.textContent = 'Cancelar';
+        bx.setAttribute('aria-label', 'Cancelar la hora del ' + lineaHora(h));
+        bx.addEventListener('click', function () { iniciarCancelar(h); });
+        card.appendChild(bx);
+      }
+      lista.appendChild(card);
+    });
+  }
+
+  function iniciarCambio(h, boton) {
+    if (est.ocupado) return;
+    limpiarMsg();
+    bloquear(boton, 'Buscando horas...');
+    post('/agenda/horas-para-cambio', { token: est.sesion, solicitudId: h.solicitudId })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 401) { liberar(boton); sesionVencida(); return; }
+        if (r.ok && d && d.ok === true && Array.isArray(d.horas)) {
+          est.cambio = h;
+          est.doctora = h.doctora;
+          est.paciente = est.nombreMis;
+          est.horas = d.horas;
+          est.hora = null;
+          $('rs-v1').textContent = 'Volver a mis horas';
+          pintarHoras();
+          irAPaso(1);
+          return;
+        }
+        if (d && d.motivo === 'fuera_de_plazo') {
+          h.puedeCambiar = false; h.dentroDePlazo = false;
+          pintarMis();
+          mostrarMsg('<p>El plazo para cambiar esta hora venció el ' + (h.plazoTexto || '') + '.</p>');
+          return;
+        }
+        if (d && d.motivo === 'no_disponible') {
+          mostrarMsg('<p>Esta hora ya no se puede cambiar desde la página.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(boton); });
+  }
+
+  $('rs-k-volver').addEventListener('click', function () { limpiarMsg(); irAPaso(1); });
+
+  $('rs-bk').addEventListener('click', function () {
+    if (est.ocupado || !est.cambio || !est.hora) return;
+    limpiarMsg();
+    var b = $('rs-bk');
+    bloquear(b, 'Cambiando...');
+    post('/agenda/cambiar', { token: est.sesion, solicitudId: est.cambio.solicitudId, bloqueId: est.hora.bloqueId, modalidad: est.modalidad })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 401) { liberar(b); sesionVencida(); return; }
+        if (r.ok && d && d.ok === true) {
+          var nueva = typeof d.inicioChile === 'string' ? d.inicioChile : '';
+          salirDeCambio();
+          mostrarFinal('<p>Su hora quedó cambiada. Le llegará la confirmación por correo.</p>' + (nueva ? '<p>Hora nueva: ' + nueva.replace(/[<>&]/g, '') + '.</p>' : ''));
+          return;
+        }
+        var motivo = d && d.motivo;
+        if (motivo === 'hora_tomada') {
+          // Se vuelven a pedir las horas libres y se muestra lo que quede.
+          est.ocupado = false;
+          post('/agenda/horas-para-cambio', { token: est.sesion, solicitudId: est.cambio.solicitudId }).then(function (r2) {
+            if (r2.ok && r2.datos && r2.datos.ok === true && Array.isArray(r2.datos.horas)) {
+              est.horas = r2.datos.horas; est.hora = null;
+              pintarHoras();
+              irAPaso(1);
+              mostrarMsg('<p>Lo sentimos: otra familia tomó esa hora hace un momento. Estas son las horas que siguen disponibles.</p>');
+            } else {
+              mostrarMsg(MSG_RED);
+            }
+          }).catch(function () { mostrarMsg(MSG_RED); });
+          return;
+        }
+        if (motivo === 'fuera_de_plazo') {
+          var h = est.cambio;
+          h.puedeCambiar = false; h.dentroDePlazo = false;
+          salirDeCambio();
+          pintarMis();
+          irAPaso(3);
+          mostrarMsg('<p>El plazo para cambiar esta hora venció el ' + (h.plazoTexto || '') + '.</p>');
+          return;
+        }
+        if (motivo === 'no_disponible') {
+          salirDeCambio();
+          pintarMis();
+          irAPaso(3);
+          mostrarMsg('<p>Esta hora ya no se puede cambiar desde la página.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        if (motivo === 'revisar') {
+          mostrarMsg('<p>No pudimos terminar el cambio. Por favor no vuelva a intentarlo desde aquí.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        if (motivo === 'token_vencido' || motivo === 'token_invalido') { liberar(b); sesionVencida(); return; }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(b); });
+  });
+
+  function mostrarFinal(html) {
+    $('rs-f-msg').innerHTML = html;
+    irAPaso(6, false);
+    var f = $('rs-f-msg');
+    f.focus();
+    if (window.scrollTo) window.scrollTo({ top: 0 });
+  }
+
+  function iniciarCancelar(h) {
+    limpiarMsg();
+    est.cancelar = h;
+    $('rs-c-paciente').textContent = nombreVisible(est.nombreMis) || 'Paciente';
+    $('rs-c-doctora').textContent = h.doctoraNombre || DOCTORAS[h.doctora];
+    $('rs-c-hora').textContent = lineaHora(h);
+    $('rs-c-modalidad').textContent = h.modalidad;
+    var aviso = $('rs-c-aviso');
+    aviso.className = h.dentroDePlazo ? 'rs-msg' : 'rs-msg rs-aviso';
+    aviso.innerHTML = '';
+    var pa = document.createElement('p');
+    pa.textContent = h.dentroDePlazo ? TXT_CANCEL_DENTRO : TXT_CANCEL_FUERA(h.plazoTexto);
+    aviso.appendChild(pa);
+    irAPaso(4);
+  }
+
+  $('rs-c-volver').addEventListener('click', function () { limpiarMsg(); est.cancelar = null; irAPaso(3); });
+
+  $('rs-bc').addEventListener('click', function () {
+    if (est.ocupado || !est.cancelar) return;
+    limpiarMsg();
+    var b = $('rs-bc');
+    var h = est.cancelar;
+    bloquear(b, 'Cancelando...');
+    post('/agenda/cancelar', { token: est.sesion, solicitudId: h.solicitudId })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 401) { liberar(b); sesionVencida(); return; }
+        if (r.ok && d && d.ok === true) {
+          est.mis = est.mis.filter(function (x) { return x.solicitudId !== h.solicitudId; });
+          est.cancelar = null;
+          mostrarFinal(d.devolucion === 'pendiente'
+            ? '<p>Su hora quedó cancelada. La doctora revisará la devolución de su pago y recibirá un correo con el monto.</p>'
+            : '<p>Su hora quedó cancelada, sin devolución.</p>');
+          return;
+        }
+        if (d && d.motivo === 'no_disponible') {
+          est.mis = est.mis.filter(function (x) { return x.solicitudId !== h.solicitudId; });
+          est.cancelar = null;
+          pintarMis();
+          irAPaso(3);
+          mostrarMsg('<p>Esta hora ya no se puede cancelar desde la página; puede que ya esté cancelada.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(b); });
+  });
+
+  $('rs-f-volver').addEventListener('click', function () {
+    if (est.ocupado) return;
+    limpiarMsg();
+    var b = $('rs-f-volver');
+    bloquear(b, 'Buscando sus horas...');
+    cargarMis().then(function () { liberar(b); });
+  });
+  $('rs-pm-volver').addEventListener('click', function () {
+    limpiarMsg();
+    est.enlaceMis = '';
+    est.sesion = '';
+    irAPaso(0);
+  });
+
+  // Desde el paso 1: "Ya tengo una hora" usa el mismo RUT y correo.
+  $('rs-bmis').addEventListener('click', function () {
+    if (est.ocupado) return;
+    limpiarMsg();
+    var rut = $('rs-rut').value;
+    var correo = $('rs-correo').value.trim();
+    if (!rutValido(rut)) { mostrarMsg('<p>El RUT no es válido. Revise los números y el dígito verificador, y que sea el del paciente.</p>'); $('rs-rut').focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) { mostrarMsg('<p>El correo no es válido. Escríbalo completo, por ejemplo nombre@correo.cl.</p>'); $('rs-correo').focus(); return; }
+    est.rut = rut; est.correo = correo; est.enlaceMis = '';
+    var b = $('rs-bmis');
+    bloquear(b, 'Buscando sus horas...');
+    cargarMis().then(function () { liberar(b); });
+  });
+
   // Al volver desde Flow con el botón "atrás", la página puede restaurarse con el botón bloqueado.
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b3b')); liberar($('rs-b1')); }
@@ -529,6 +898,12 @@
     ocultarPasos('Cargando las horas disponibles...');
     cargarOferta().then(function (ok) {
       if (!ok && $('rs-p2').hidden && $('rs-p3').hidden) $('rs-pasos').textContent = '';
+    });
+  } else if (est.enlaceMis) {
+    // Entra por el enlace «Mis horas» del correo: sin pedir datos.
+    ocultarPasos('Cargando sus horas...');
+    cargarMis().then(function (ok) {
+      if (!ok && pasos.every(function (p) { return p.hidden; })) irAPaso(0, false);
     });
   } else {
     irAPaso(0, false);
