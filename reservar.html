@@ -189,10 +189,14 @@
   var REGISTRO = 'https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL';
   var DOCTORAS = { cortes: 'Dra. Camila Cortés', badilla: 'Dra. Ximena Badilla' };
   var PASOS = ['Paso 1 de 3: identificación', 'Paso 2 de 3: elegir hora', 'Paso 3 de 3: resumen y pago'];
+  // Con el enlace del correo de la lista de espera (?oferta=...) no hay identificación: son 2 pasos.
+  var PASOS_OFERTA = ['', 'Paso 1 de 2: elegir hora', 'Paso 2 de 2: resumen y pago'];
   var CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
   // Estado sólo en memoria: nada de RUT, correo ni token va a localStorage.
-  var est = { rut: '', correo: '', doctora: '', token: '', paciente: '', horas: [], hora: null, modalidad: '', ocupado: false };
+  var est = { rut: '', correo: '', doctora: '', token: '', paciente: '', horas: [], hora: null, modalidad: '', ocupado: false, oferta: '' };
+  // El enlace del correo trae un token firmado (7 días); se guarda sólo en memoria y se usa en /agenda/oferta.
+  est.oferta = new URLSearchParams(window.location.search).get('oferta') || '';
 
   var $ = function (id) { return document.getElementById(id); };
   var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3')];
@@ -204,13 +208,20 @@
   function mostrarMsg(html) { msg.innerHTML = html; msg.hidden = false; }
   function limpiarMsg() { msg.hidden = true; msg.innerHTML = ''; }
 
+  // Oculta todos los pasos (enlace sin vigencia, horas ya tomadas o cargando).
+  function ocultarPasos(texto) {
+    pasos.forEach(function (p) { p.hidden = true; p.style.display = 'none'; });
+    $('rs-pasos').textContent = texto || '';
+  }
+
   function irAPaso(n, enfocar) {
+    if (est.oferta && n === 0) n = 1; // con oferta no existe el paso de identificación
     pasos.forEach(function (p, i) {
       var visible = i === n;
       p.hidden = !visible;
       p.style.display = visible ? 'flex' : 'none';
     });
-    $('rs-pasos').textContent = PASOS[n];
+    $('rs-pasos').textContent = est.oferta ? PASOS_OFERTA[n] : PASOS[n];
     if (enfocar !== false) {
       var destino = pasos[n].querySelector('input:not([type=radio]),input[type=radio]:checked,button,input');
       var titulo = $('rs-pasos');
@@ -266,6 +277,45 @@
   var MSG_LIMITE = '<p>Demasiados intentos. Espere un minuto y vuelva a probar.</p>';
   var MSG_NEGATIVA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
     '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'este formulario') + '.</p>';
+
+  // ---------- Oferta de la lista de espera ----------
+  var MSG_OFERTA_VENCIDA = '<p>Este enlace ya no está vigente. Sigue en la lista de espera y le avisaremos cuando se libere otra hora.</p><p>' + CONTACTO + '</p>';
+  var MSG_OFERTA_TOMADAS = '<p>Las horas que le ofrecimos ya fueron tomadas. Sigue en la lista de espera y le avisaremos cuando se libere otra.</p>';
+
+  function nombreVisible(nombre) { return (nombre || '').replace(/\s*\(\d+\)\s*$/, '').trim(); }
+
+  // Pide las horas de la oferta. `alTerminar` se llama sólo si quedan horas por mostrar.
+  function cargarOferta(alTerminar) {
+    return post('/agenda/oferta', { oferta: est.oferta })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return false; }
+        if (r.status === 401 || r.status === 403) {
+          ocultarPasos();
+          mostrarMsg(MSG_OFERTA_VENCIDA);
+          return false;
+        }
+        if (r.ok && d && d.ok === true && typeof d.token === 'string' && Array.isArray(d.horas)) {
+          est.doctora = 'cortes';
+          est.token = d.token;
+          est.paciente = (d.paciente && d.paciente.nombre) || '';
+          est.horas = d.horas;
+          est.hora = null;
+          if (!est.horas.length) {
+            ocultarPasos();
+            mostrarMsg(MSG_OFERTA_TOMADAS);
+            return false;
+          }
+          pintarHoras();
+          irAPaso(1);
+          if (alTerminar) alTerminar();
+          return true;
+        }
+        mostrarMsg(MSG_RED);
+        return false;
+      })
+      .catch(function () { mostrarMsg(MSG_RED); return false; });
+  }
 
   // ---------- Paso 1 ----------
   var doctoraUrl = new URLSearchParams(window.location.search).get('doctora');
@@ -342,7 +392,9 @@
     });
     var intro = document.createElement('p');
     intro.className = 'rs-nota';
-    intro.textContent = 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para ' + (est.paciente || 'el paciente') + '. Elija una.';
+    intro.textContent = est.oferta
+      ? 'Estas son las horas disponibles para la primera consulta de ' + (nombreVisible(est.paciente) || 'el paciente') + '. La hora queda para la primera familia que complete el pago.'
+      : 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para ' + (est.paciente || 'el paciente') + '. Elija una.';
     caja.appendChild(intro);
     grupos.forEach(function (g, gi) {
       var fs = document.createElement('fieldset');
@@ -371,6 +423,7 @@
     });
   }
 
+  if (est.oferta) $('rs-v1').hidden = true;
   $('rs-v1').addEventListener('click', function () { limpiarMsg(); irAPaso(0); });
 
   $('rs-b2').addEventListener('click', function () {
@@ -414,6 +467,14 @@
           est.ocupado = false;
           return recargarTrasTomada(b);
         }
+        if (est.oferta && (motivo === 'token_vencido' || motivo === 'token_invalido')) {
+          // La sesión de 30 minutos venció, pero el enlace del correo sigue vigente: se piden las horas de nuevo.
+          est.token = '';
+          est.ocupado = false;
+          return cargarOferta(function () {
+            mostrarMsg('<p>Pasaron más de 30 minutos y la sesión venció. Estas son las horas que siguen disponibles.</p>');
+          });
+        }
         if (motivo === 'token_vencido' || motivo === 'token_invalido') {
           est.token = '';
           irAPaso(0);
@@ -433,6 +494,12 @@
 
   function recargarTrasTomada(b) {
     est.ocupado = true;
+    if (est.oferta) {
+      // Vuelve a pedir la oferta y muestra lo que quede; si no queda nada, lo dice cargarOferta.
+      return cargarOferta(function () {
+        mostrarMsg('<p>Lo sentimos: otra familia tomó esa hora hace un momento. Estas son las horas que siguen disponibles.</p>');
+      });
+    }
     return cargarHoras(b, function () {
       mostrarMsg('<p>Lo sentimos: otra familia tomó esa hora hace un momento. Estas son las horas que siguen disponibles.</p>');
     }).then(function (ok) {
@@ -445,7 +512,16 @@
     if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b1')); }
   });
 
-  irAPaso(0, false);
+  if (est.oferta) {
+    // Entra por el enlace del correo: salta la identificación y pide las horas ofrecidas.
+    est.doctora = 'cortes';
+    ocultarPasos('Cargando las horas disponibles...');
+    cargarOferta().then(function (ok) {
+      if (!ok && $('rs-p2').hidden && $('rs-p3').hidden) $('rs-pasos').textContent = '';
+    });
+  } else {
+    irAPaso(0, false);
+  }
 })();
 </script>
 
