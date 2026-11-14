@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2AADB5">
+  <meta name="description" content="Reserve y pague su hora con la Dra. Cortés o la Dra. Badilla en un solo paso.">
+  <title>Reservar hora | NeuroPsynfonía</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/favicon.png?v=2" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://www.neuropsynfonia.cl/reservar.html">
+<style>
+  .rs-card{background:#fff;border:0.5px solid #e0e0e0;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:20px}
+  .rs-card[hidden],.rs-paso[hidden],.rs-msg[hidden]{display:none}
+  .rs-label,.rs-legend{display:block;font-size:15px;font-weight:600;color:#1A3A3C;margin-bottom:6px;padding:0}
+  .rs-input{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #cfd8d9;border-radius:9px;font-size:16px;font-family:'Nunito Sans',sans-serif;color:#1A3A3C;background:#fff}
+  .rs-fieldset{border:0;margin:0;padding:0;min-width:0}
+  .rs-opciones{display:grid;gap:10px}
+  .rs-op{position:relative}
+  .rs-op input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .rs-op span{display:block;padding:13px 14px;border:1.5px solid #cfd8d9;border-radius:10px;font-size:15px;line-height:1.4;color:#1A3A3C;background:#fff}
+  .rs-op span b{display:block;font-size:16px}
+  .rs-op input:checked+span{border-color:#2AADB5;background:#eaf7f8}
+  .rs-op input:focus-visible+span,.rs-btn:focus-visible,.rs-input:focus-visible,.rs-link:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
+  .rs-dia{font-family:var(--font-heading,inherit);font-size:16px;font-weight:700;color:#1A3A3C;margin:0 0 8px;text-transform:capitalize}
+  .rs-horas{display:flex;flex-wrap:wrap;gap:8px}
+  .rs-horas .rs-op{flex:0 0 auto}
+  .rs-horas .rs-op span{padding:11px 16px;text-align:center;min-width:76px}
+  .rs-horas .rs-op span small{display:block;font-size:13px;color:#2a6a70;margin-top:2px}
+  .rs-fila{display:flex;gap:10px;flex-wrap:wrap}
+  .rs-btn{font-family:inherit;text-align:center;width:100%}
+  .rs-btn[disabled]{opacity:.7;cursor:not-allowed}
+  .rs-sec{background:none;border:0;color:#2a6a70;font:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:underline;padding:6px 0;align-self:flex-start}
+  .rs-msg{border-radius:9px;padding:14px 16px;font-size:15px;line-height:1.6;background:#FDF3E7;border:0.5px solid #f0d9b5;color:#5c4a2a}
+  .rs-msg p{margin:0}.rs-msg p+p{margin-top:10px}
+  .rs-msg a,.rs-link{color:#1d7f86;font-weight:600}
+  .rs-aviso{background:#FBE9E9;border-color:#e8b9b9;color:#6b2323;font-weight:600}
+  .rs-resumen{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:16px;color:#1A3A3C}
+  .rs-resumen dt{font-weight:600}.rs-resumen dd{margin:0}
+  .rs-total{font-size:20px;font-weight:700}
+  .rs-nota{font-size:15px;color:#555;line-height:1.6;margin:0}
+  .rs-pasos{font-size:14px;color:#2a6a70;margin:0}
+  @media(min-width:600px){.rs-opciones.rs-dos{grid-template-columns:1fr 1fr}.rs-card{padding:32px}}
+</style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo.webp" alt="Logo NeuroPsynfonía" class="nav-logo-img" onerror="this.style.display='none'">
+    <div class="nav-logo-text">
+      <span class="nav-brand">NeuroPsynfonía</span>
+      <span class="nav-sub">Neurología · Psiquiatría Infantil · Temuco</span>
+    </div>
+  </a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="especialistas.html">Especialistas</a></li>
+    <li><a href="como-funciona.html">Cómo funciona</a></li>
+    <li><a href="agendar.html">Agendar hora</a></li>
+    <li><a href="pacientes.html">Para pacientes</a></li>
+    <li><a href="colegios.html">Para colegios</a></li>
+  </ul>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <h1 class="page-hero-title">Reservar hora</h1>
+    <p class="page-hero-sub">Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container" style="max-width: 600px; margin: 0 auto;">
+    <div class="rs-card">
+
+      <p class="rs-pasos" id="rs-pasos" aria-live="polite"></p>
+
+      <div id="rs-msg" class="rs-msg" role="alert" aria-live="assertive" hidden></div>
+
+      <!-- Paso 1 -->
+      <form id="rs-p1" class="rs-paso" novalidate style="display:flex;flex-direction:column;gap:18px">
+        <fieldset class="rs-fieldset">
+          <legend class="rs-legend">Doctora</legend>
+          <div class="rs-opciones">
+            <label class="rs-op"><input type="radio" name="doctora" value="cortes"><span><b>Dra. Camila Cortés</b>Psiquiatría infantojuvenil</span></label>
+            <label class="rs-op"><input type="radio" name="doctora" value="badilla"><span><b>Dra. Ximena Badilla</b>Neurología infantil</span></label>
+          </div>
+        </fieldset>
+        <div>
+          <label class="rs-label" for="rs-rut">RUT del paciente</label>
+          <input class="rs-input" id="rs-rut" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" required>
+        </div>
+        <div>
+          <label class="rs-label" for="rs-correo">Correo del adulto responsable</label>
+          <input class="rs-input" id="rs-correo" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="254" required>
+        </div>
+        <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
+      </form>
+
+      <!-- Paso 2 -->
+      <div id="rs-p2" class="rs-paso" hidden style="display:none;flex-direction:column;gap:20px">
+        <div id="rs-horas-caja" style="display:flex;flex-direction:column;gap:20px"></div>
+        <fieldset class="rs-fieldset" id="rs-modalidad">
+          <legend class="rs-legend">Modalidad</legend>
+          <div class="rs-opciones rs-dos">
+            <label class="rs-op"><input type="radio" name="modalidad" value="Presencial"><span><b>Presencial</b>En la consulta, Dinamarca 621, Temuco</span></label>
+            <label class="rs-op"><input type="radio" name="modalidad" value="Virtual"><span><b>Virtual</b>Por videollamada</span></label>
+          </div>
+        </fieldset>
+        <button type="button" class="btn-primary rs-btn" id="rs-b2">Continuar</button>
+        <button type="button" class="rs-sec" id="rs-v1">Volver y cambiar los datos</button>
+      </div>
+
+      <!-- Paso 3 -->
+      <div id="rs-p3" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <dl class="rs-resumen">
+          <dt>Paciente</dt><dd id="rs-r-paciente"></dd>
+          <dt>Doctora</dt><dd id="rs-r-doctora"></dd>
+          <dt>Día y hora</dt><dd id="rs-r-hora"></dd>
+          <dt>Modalidad</dt><dd id="rs-r-modalidad"></dd>
+          <dt>Valor</dt><dd class="rs-total" id="rs-r-valor"></dd>
+        </dl>
+        <div id="rs-sindev" class="rs-msg rs-aviso" hidden><p>Esta hora ya está dentro del plazo de cancelación: si la cancela, no tiene devolución.</p></div>
+        <p class="rs-nota">Antes de pagar, lea nuestra política de cancelación y devoluciones en los <a class="rs-link" href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
+        <p class="rs-nota">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
+        <button type="button" class="btn-primary rs-btn" id="rs-b3">Pagar y reservar</button>
+        <button type="button" class="rs-sec" id="rs-v2">Volver y elegir otra hora</button>
+      </div>
+
+      <noscript>
+        <p class="rs-nota">Esta página necesita JavaScript. Si no puede activarlo, escríbanos por <a class="rs-link" href="https://wa.me/56951880121" target="_blank" rel="noopener">WhatsApp al +56 9 5188 0121</a>.</p>
+      </noscript>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER AMPLIADO -->
+<footer class="footer footer-full">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">NeuroPsynfonía</div>
+      <div class="footer-brand-sub">Neurología · Psiquiatría Infantil · Temuco</div>
+      <div class="footer-contact-list">
+        <a href="https://wa.me/56951880121" target="_blank" rel="noopener" class="footer-contact-item"><i class="ti ti-brand-whatsapp"></i> +56 9 5188 0121</a>
+        <a href="mailto:contacto@neuropsynfonia.cl" class="footer-contact-item"><i class="ti ti-mail"></i> contacto@neuropsynfonia.cl</a>
+        <div class="footer-contact-item"><i class="ti ti-map-pin"></i> Dinamarca 621, Temuco</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Páginas</div>
+      <a href="atencion-conjunta.html" class="footer-link">¿Neurología o Psiquiatría?</a>
+      <a href="index.html" class="footer-link">Inicio</a>
+      <a href="especialistas.html" class="footer-link">Especialistas</a>
+      <a href="como-funciona.html" class="footer-link">Cómo funciona</a>
+      <a href="colegios.html" class="footer-link">Para colegios</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Agendar hora</div>
+      <a href="agendar.html" class="footer-link">Cómo agendar</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
+      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
+      <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
+    </div>
+  </div>
+  <div class="footer-copy">© Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA · NeuroPsynfonía 2019-2026 · <a href="privacidad.html" style="color:#7fc8cc">Política de privacidad</a> · <a href="terminos.html" style="color:#7fc8cc">Términos y condiciones</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+(function () {
+  // URL del Worker. Hoy apunta al sandbox; se cambia a producción
+  // (https://neuropsynfonia-flow.neuropsynfonia.workers.dev) al publicar.
+  var WORKER_URL = 'https://neuropsynfonia-flow-sandbox.neuropsynfonia.workers.dev';
+
+  var WA = 'https://wa.me/56951880121';
+  var REGISTRO = 'https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL';
+  var DOCTORAS = { cortes: 'Dra. Camila Cortés', badilla: 'Dra. Ximena Badilla' };
+  var PASOS = ['Paso 1 de 3: identificación', 'Paso 2 de 3: elegir hora', 'Paso 3 de 3: resumen y pago'];
+  var CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+
+  // Estado sólo en memoria: nada de RUT, correo ni token va a localStorage.
+  var est = { rut: '', correo: '', doctora: '', token: '', paciente: '', horas: [], hora: null, modalidad: '', ocupado: false };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3')];
+  var msg = $('rs-msg');
+
+  function enlace(url, texto) { return '<a href="' + url + '" target="_blank" rel="noopener">' + texto + '</a>'; }
+  var CONTACTO = 'Escríbanos por ' + enlace(WA, 'WhatsApp al +56 9 5188 0121') + ' y secretaría le ayudará.';
+
+  function mostrarMsg(html) { msg.innerHTML = html; msg.hidden = false; }
+  function limpiarMsg() { msg.hidden = true; msg.innerHTML = ''; }
+
+  function irAPaso(n, enfocar) {
+    pasos.forEach(function (p, i) {
+      var visible = i === n;
+      p.hidden = !visible;
+      p.style.display = visible ? 'flex' : 'none';
+    });
+    $('rs-pasos').textContent = PASOS[n];
+    if (enfocar !== false) {
+      var destino = pasos[n].querySelector('input:not([type=radio]),input[type=radio]:checked,button,input');
+      var titulo = $('rs-pasos');
+      titulo.setAttribute('tabindex', '-1');
+      titulo.focus();
+      if (window.scrollTo) window.scrollTo({ top: 0 });
+    }
+  }
+
+  function bloquear(boton, texto) {
+    est.ocupado = true;
+    boton.disabled = true;
+    boton.dataset.texto = boton.textContent;
+    boton.textContent = texto;
+    boton.setAttribute('aria-busy', 'true');
+  }
+  function liberar(boton) {
+    est.ocupado = false;
+    boton.disabled = false;
+    if (boton.dataset.texto) boton.textContent = boton.dataset.texto;
+    boton.removeAttribute('aria-busy');
+  }
+
+  function rutValido(valor) {
+    var limpio = valor.toUpperCase().replace(/[^0-9K]/g, '');
+    if (!/^[0-9]{6,9}[0-9K]$/.test(limpio)) return false;
+    var suma = 0, factor = 2;
+    for (var i = limpio.length - 2; i >= 0; i--) {
+      suma += Number(limpio.charAt(i)) * factor;
+      factor = factor === 7 ? 2 : factor + 1;
+    }
+    var resto = 11 - (suma % 11);
+    var esperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
+    return limpio.charAt(limpio.length - 1) === esperado;
+  }
+
+  function post(ruta, cuerpo) {
+    return fetch(WORKER_URL + ruta, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cuerpo),
+      cache: 'no-store',
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer'
+    }).then(function (r) {
+      return r.json().catch(function () { return null; }).then(function (datos) {
+        return { status: r.status, ok: r.ok, datos: datos };
+      });
+    });
+  }
+
+  var MSG_RED = '<p>No pudimos completar la operación en este momento. Revise su conexión y vuelva a intentar.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
+  var MSG_LIMITE = '<p>Demasiados intentos. Espere un minuto y vuelva a probar.</p>';
+  var MSG_NEGATIVA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
+    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'este formulario') + '.</p>';
+
+  // ---------- Paso 1 ----------
+  var doctoraUrl = new URLSearchParams(window.location.search).get('doctora');
+  if (doctoraUrl === 'cortes' || doctoraUrl === 'badilla') {
+    document.querySelector('input[name=doctora][value=' + doctoraUrl + ']').checked = true;
+  }
+
+  function cargarHoras(boton, alTerminar) {
+    return post('/agenda/horas', { rut: est.rut, correo: est.correo, doctora: est.doctora })
+      .then(function (r) {
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return false; }
+        var d = r.datos;
+        if (r.ok && d && d.ok === true && typeof d.token === 'string' && Array.isArray(d.horas)) {
+          est.token = d.token;
+          est.paciente = (d.paciente && d.paciente.nombre) || '';
+          est.horas = d.horas;
+          est.hora = null;
+          pintarHoras();
+          irAPaso(1);
+          if (alTerminar) alTerminar();
+          return true;
+        }
+        if (r.ok && d && d.ok === false) { mostrarMsg(MSG_NEGATIVA); return false; }
+        mostrarMsg(MSG_RED);
+        return false;
+      })
+      .catch(function () { mostrarMsg(MSG_RED); return false; });
+  }
+
+  $('rs-p1').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (est.ocupado) return;
+    limpiarMsg();
+    var sel = document.querySelector('input[name=doctora]:checked');
+    var rut = $('rs-rut').value;
+    var correo = $('rs-correo').value.trim();
+    if (!sel) { mostrarMsg('<p>Elija con qué doctora desea la hora.</p>'); return; }
+    if (!rutValido(rut)) { mostrarMsg('<p>El RUT no es válido. Revise los números y el dígito verificador, y que sea el del paciente.</p>'); $('rs-rut').focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) { mostrarMsg('<p>El correo no es válido. Escríbalo completo, por ejemplo nombre@correo.cl.</p>'); $('rs-correo').focus(); return; }
+    est.doctora = sel.value; est.rut = rut; est.correo = correo;
+    var b = $('rs-b1');
+    bloquear(b, 'Buscando horas...');
+    cargarHoras(b).then(function () { liberar(b); });
+  });
+
+  // ---------- Paso 2 ----------
+  function partesHora(h) {
+    var t = typeof h.inicioChile === 'string' ? h.inicioChile : '';
+    var i = t.lastIndexOf(',');
+    if (i > 0) return { dia: t.slice(0, i).trim(), hora: t.slice(i + 1).trim() };
+    var f = new Intl.DateTimeFormat('es-CL', { timeZone: 'America/Santiago', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(h.inicio));
+    var hh = new Intl.DateTimeFormat('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(h.inicio));
+    return { dia: f, hora: hh };
+  }
+
+  function pintarHoras() {
+    var caja = $('rs-horas-caja');
+    caja.innerHTML = '';
+    var mod = document.querySelectorAll('input[name=modalidad]');
+    Array.prototype.forEach.call(mod, function (m) { m.checked = false; });
+    if (!est.horas.length) {
+      caja.innerHTML = '<div class="rs-msg"><p>Por ahora no hay horas disponibles con ' + DOCTORAS[est.doctora] + '.</p><p>' + CONTACTO + '</p></div>';
+      $('rs-modalidad').hidden = true;
+      $('rs-b2').hidden = true;
+      return;
+    }
+    $('rs-modalidad').hidden = false;
+    $('rs-b2').hidden = false;
+    var grupos = [], porDia = {};
+    est.horas.forEach(function (h, idx) {
+      var p = partesHora(h);
+      if (!porDia[p.dia]) { porDia[p.dia] = { dia: p.dia, items: [] }; grupos.push(porDia[p.dia]); }
+      porDia[p.dia].items.push({ idx: idx, hora: p.hora, valor: h.valor });
+    });
+    var intro = document.createElement('p');
+    intro.className = 'rs-nota';
+    intro.textContent = 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para ' + (est.paciente || 'el paciente') + '. Elija una.';
+    caja.appendChild(intro);
+    grupos.forEach(function (g, gi) {
+      var fs = document.createElement('fieldset');
+      fs.className = 'rs-fieldset';
+      var lg = document.createElement('legend');
+      lg.className = 'rs-dia';
+      lg.textContent = g.dia;
+      fs.appendChild(lg);
+      var cont = document.createElement('div');
+      cont.className = 'rs-horas';
+      g.items.forEach(function (it) {
+        var lab = document.createElement('label');
+        lab.className = 'rs-op';
+        var inp = document.createElement('input');
+        inp.type = 'radio'; inp.name = 'hora'; inp.value = String(it.idx);
+        var sp = document.createElement('span');
+        sp.textContent = it.hora;
+        var sm = document.createElement('small');
+        sm.textContent = typeof it.valor === 'number' ? CLP.format(it.valor) : '';
+        sp.appendChild(sm);
+        lab.appendChild(inp); lab.appendChild(sp);
+        cont.appendChild(lab);
+      });
+      fs.appendChild(cont);
+      caja.appendChild(fs);
+    });
+  }
+
+  $('rs-v1').addEventListener('click', function () { limpiarMsg(); irAPaso(0); });
+
+  $('rs-b2').addEventListener('click', function () {
+    limpiarMsg();
+    var h = document.querySelector('input[name=hora]:checked');
+    var m = document.querySelector('input[name=modalidad]:checked');
+    if (!h) { mostrarMsg('<p>Elija el día y la hora de su consulta.</p>'); return; }
+    if (!m) { mostrarMsg('<p>Elija si la consulta será presencial o virtual.</p>'); return; }
+    est.hora = est.horas[Number(h.value)];
+    est.modalidad = m.value;
+    var p = partesHora(est.hora);
+    $('rs-r-paciente').textContent = est.paciente || 'Paciente';
+    $('rs-r-doctora').textContent = DOCTORAS[est.doctora];
+    $('rs-r-hora').textContent = p.dia + ', ' + p.hora;
+    $('rs-r-modalidad').textContent = est.modalidad;
+    $('rs-r-valor').textContent = typeof est.hora.valor === 'number' ? CLP.format(est.hora.valor) : '';
+    $('rs-sindev').hidden = est.hora.sinDevolucion !== true;
+    irAPaso(2);
+  });
+
+  // ---------- Paso 3 ----------
+  $('rs-v2').addEventListener('click', function () { limpiarMsg(); irAPaso(1); });
+
+  $('rs-b3').addEventListener('click', function () {
+    if (est.ocupado) return;
+    limpiarMsg();
+    var b = $('rs-b3');
+    bloquear(b, 'Reservando...');
+    var sigue = false;
+    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.ok && d && d.ok === true && typeof d.urlPago === 'string' && /^https:\/\//.test(d.urlPago)) {
+          sigue = true; // el botón queda bloqueado hasta salir de la página
+          window.location.assign(d.urlPago);
+          return;
+        }
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        var motivo = d && d.motivo;
+        if (motivo === 'hora_tomada') {
+          est.ocupado = false;
+          return recargarTrasTomada(b);
+        }
+        if (motivo === 'token_vencido' || motivo === 'token_invalido') {
+          est.token = '';
+          irAPaso(0);
+          mostrarMsg('<p>Pasaron más de 30 minutos desde que verificó los datos y la sesión venció. Por seguridad, vuelva a ingresarlos para ver las horas.</p>');
+          return;
+        }
+        if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA); return; }
+        if (motivo === 'flow_no_disponible') {
+          mostrarMsg('<p>El sistema de pago no está disponible en este momento. Su hora no quedó retenida. Vuelva a intentar en unos minutos.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { if (!sigue) liberar(b); });
+  });
+
+  function recargarTrasTomada(b) {
+    est.ocupado = true;
+    return cargarHoras(b, function () {
+      mostrarMsg('<p>Lo sentimos: otra familia tomó esa hora hace un momento. Estas son las horas que siguen disponibles.</p>');
+    }).then(function (ok) {
+      if (!ok) irAPaso(0);
+    });
+  }
+
+  // Al volver desde Flow con el botón "atrás", la página puede restaurarse con el botón bloqueado.
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b1')); }
+  });
+
+  irAPaso(0, false);
+})();
+</script>
+
+</body>
+</html>
