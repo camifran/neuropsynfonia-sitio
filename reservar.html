@@ -53,6 +53,15 @@
   .rs-hora-card{border:1.5px solid #cfd8d9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff}
   .rs-hora-card .rs-resumen{font-size:15px}
   .rs-titulo{font-size:18px;font-weight:700;color:#1A3A3C;margin:0}
+  .rs-ayuda{font-size:14px;color:#555;line-height:1.5;margin:0 0 6px}
+  .rs-error{font-size:14px;color:#8a1f1f;font-weight:600;margin:5px 0 0}
+  .rs-error[hidden]{display:none}
+  .rs-input[aria-invalid=true]{border-color:#b33a3a;background:#fff8f8}
+  textarea.rs-input{min-height:120px;resize:vertical;line-height:1.5}
+  .rs-check{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.55;color:#1A3A3C}
+  .rs-check input{flex:0 0 auto;width:22px;height:22px;margin:2px 0 0}
+  .rs-check input:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
+  .rs-check a{color:#1d7f86;font-weight:600}
 </style>
 </head>
 <body>
@@ -188,6 +197,138 @@
         <button type="button" class="rs-sec" id="rs-f-volver">Ver mis horas</button>
       </div>
 
+      <!-- Inscripción del paciente nuevo -->
+      <form id="rs-pi" class="rs-paso" novalidate hidden style="display:none;flex-direction:column;gap:18px" autocomplete="on">
+        <h2 class="rs-titulo" id="rs-pi-titulo" tabindex="-1">Inscripción del paciente</h2>
+        <p class="rs-nota">No encontramos una ficha con ese RUT. Para continuar, complete los datos del paciente.</p>
+        <p class="rs-nota">Por favor no escriba todo el texto en mayúsculas.</p>
+
+        <div data-campo="modalidadRequerida">
+          <label class="rs-label" for="ri-modalidadRequerida">Modalidad requerida</label>
+          <p class="rs-ayuda" id="ri-modalidadRequerida-a">La modalidad de atención que prefiere para la primera sesión. Si necesita una hora pronto, le recomendamos seleccionar "Cualquiera": una vez que ingresa como paciente puede cambiar de modalidad según su preferencia, todas las veces que lo desee.</p>
+          <select class="rs-input" id="ri-modalidadRequerida" required aria-describedby="ri-modalidadRequerida-a ri-modalidadRequerida-e">
+            <option value="">Seleccione</option>
+            <option>Presencial</option>
+            <option>Virtual</option>
+            <option>Cualquiera</option>
+          </select>
+          <p class="rs-error" id="ri-modalidadRequerida-e" hidden></p>
+        </div>
+        <div data-campo="nombres">
+          <label class="rs-label" for="ri-nombres">Nombres</label>
+          <input class="rs-input" id="ri-nombres" type="text" maxlength="80" autocomplete="given-name" required aria-describedby="ri-nombres-e">
+          <p class="rs-error" id="ri-nombres-e" hidden></p>
+        </div>
+        <div data-campo="apellidoPaterno">
+          <label class="rs-label" for="ri-apellidoPaterno">Apellido paterno</label>
+          <input class="rs-input" id="ri-apellidoPaterno" type="text" maxlength="80" autocomplete="off" required aria-describedby="ri-apellidoPaterno-e">
+          <p class="rs-error" id="ri-apellidoPaterno-e" hidden></p>
+        </div>
+        <div data-campo="apellidoMaterno">
+          <label class="rs-label" for="ri-apellidoMaterno">Apellido materno</label>
+          <input class="rs-input" id="ri-apellidoMaterno" type="text" maxlength="80" autocomplete="off" required aria-describedby="ri-apellidoMaterno-e">
+          <p class="rs-error" id="ri-apellidoMaterno-e" hidden></p>
+        </div>
+        <div data-campo="genero">
+          <label class="rs-label" for="ri-genero">Género</label>
+          <select class="rs-input" id="ri-genero" required aria-describedby="ri-genero-e">
+            <option value="">Seleccione</option>
+            <option>Mujer</option>
+            <option>Hombre</option>
+            <option>Mujer Trans</option>
+            <option>Hombre Trans</option>
+            <option>No Binario</option>
+          </select>
+          <p class="rs-error" id="ri-genero-e" hidden></p>
+        </div>
+        <div data-campo="rut">
+          <label class="rs-label" for="ri-rut">RUT del paciente</label>
+          <input class="rs-input" id="ri-rut" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="ri-rut-e">
+          <p class="rs-error" id="ri-rut-e" hidden></p>
+        </div>
+        <div data-campo="fechaNacimiento">
+          <label class="rs-label" for="ri-fechaNacimiento">Fecha de nacimiento</label>
+          <input class="rs-input" id="ri-fechaNacimiento" type="date" autocomplete="off" required aria-describedby="ri-fechaNacimiento-e">
+          <p class="rs-error" id="ri-fechaNacimiento-e" hidden></p>
+        </div>
+        <div data-campo="direccion">
+          <label class="rs-label" for="ri-direccion">Dirección</label>
+          <input class="rs-input" id="ri-direccion" type="text" maxlength="160" autocomplete="street-address" required aria-describedby="ri-direccion-e">
+          <p class="rs-error" id="ri-direccion-e" hidden></p>
+        </div>
+        <div data-campo="comuna">
+          <label class="rs-label" for="ri-comuna">Comuna</label>
+          <select class="rs-input" id="ri-comuna" required aria-describedby="ri-comuna-e"><option value="">Seleccione</option></select>
+          <p class="rs-error" id="ri-comuna-e" hidden></p>
+        </div>
+        <div data-campo="adultoResponsable">
+          <label class="rs-label" for="ri-adultoResponsable">Adulto responsable</label>
+          <p class="rs-ayuda" id="ri-adultoResponsable-a">Nombre completo</p>
+          <input class="rs-input" id="ri-adultoResponsable" type="text" maxlength="160" autocomplete="off" required aria-describedby="ri-adultoResponsable-a ri-adultoResponsable-e">
+          <p class="rs-error" id="ri-adultoResponsable-e" hidden></p>
+        </div>
+        <div data-campo="rutAdulto">
+          <label class="rs-label" for="ri-rutAdulto">RUT del adulto responsable</label>
+          <input class="rs-input" id="ri-rutAdulto" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="ri-rutAdulto-e">
+          <p class="rs-error" id="ri-rutAdulto-e" hidden></p>
+        </div>
+        <div data-campo="relacion">
+          <label class="rs-label" for="ri-relacion">Relación con el adulto responsable</label>
+          <select class="rs-input" id="ri-relacion" required aria-describedby="ri-relacion-e">
+            <option value="">Seleccione</option>
+            <option>Madre</option><option>Padre</option><option>Abuelo</option><option>Abuela</option>
+            <option>Madrastra</option><option>Padrastro</option><option>Tío</option><option>Tía</option>
+            <option>Tercero Significativo</option><option>Tutor Legal</option>
+          </select>
+          <p class="rs-error" id="ri-relacion-e" hidden></p>
+        </div>
+        <div data-campo="telefono">
+          <label class="rs-label" for="ri-telefono">Teléfono</label>
+          <p class="rs-ayuda" id="ri-telefono-a">Formato +569XXXXXXXX</p>
+          <input class="rs-input" id="ri-telefono" type="tel" inputmode="tel" maxlength="30" autocomplete="tel" required aria-describedby="ri-telefono-a ri-telefono-e">
+          <p class="rs-error" id="ri-telefono-e" hidden></p>
+        </div>
+        <div data-campo="correo">
+          <label class="rs-label" for="ri-correo">Correo</label>
+          <p class="rs-ayuda" id="ri-correo-a">Del adulto responsable</p>
+          <input class="rs-input" id="ri-correo" type="email" inputmode="email" maxlength="120" autocomplete="email" autocapitalize="none" spellcheck="false" required aria-describedby="ri-correo-a ri-correo-e">
+          <p class="rs-error" id="ri-correo-e" hidden></p>
+        </div>
+        <div data-campo="establecimiento">
+          <label class="rs-label" for="ri-establecimiento">Establecimiento educacional</label>
+          <input class="rs-input" id="ri-establecimiento" type="text" maxlength="160" autocomplete="off" required aria-describedby="ri-establecimiento-e">
+          <p class="rs-error" id="ri-establecimiento-e" hidden></p>
+        </div>
+        <div data-campo="profesionalDeriva">
+          <label class="rs-label" for="ri-profesionalDeriva">Profesional que deriva (opcional)</label>
+          <p class="rs-ayuda" id="ri-profesionalDeriva-a">En caso de que alguien los haya derivado, especifique su nombre aquí.</p>
+          <input class="rs-input" id="ri-profesionalDeriva" type="text" maxlength="160" autocomplete="off" aria-describedby="ri-profesionalDeriva-a ri-profesionalDeriva-e">
+          <p class="rs-error" id="ri-profesionalDeriva-e" hidden></p>
+        </div>
+        <div data-campo="motivo">
+          <label class="rs-label" for="ri-motivo">Motivo de consulta</label>
+          <p class="rs-ayuda" id="ri-motivo-a">Breve descripción de su motivo de consulta.</p>
+          <textarea class="rs-input" id="ri-motivo" maxlength="3000" autocomplete="off" required aria-describedby="ri-motivo-a ri-motivo-e"></textarea>
+          <p class="rs-error" id="ri-motivo-e" hidden></p>
+        </div>
+        <div data-campo="acepta">
+          <label class="rs-check" for="ri-acepta">
+            <input type="checkbox" id="ri-acepta" required aria-describedby="ri-acepta-e">
+            <span>Acepto que Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA (NeuroPsynfonía) trate los datos personales y de salud proporcionados en este formulario con el fin de gestionar la inscripción, coordinar atenciones médicas, mantener registros clínicos y administrativos, y comunicarse conmigo respecto del proceso de atención. Declaro haber leído y aceptado la <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a>.</span>
+          </label>
+          <p class="rs-error" id="ri-acepta-e" hidden></p>
+        </div>
+
+        <button type="submit" class="btn-primary rs-btn" id="rs-bi">Inscribir y continuar</button>
+        <button type="button" class="rs-sec" id="rs-vi">Volver</button>
+      </form>
+
+      <!-- Inscripción: pantalla final (lista de espera o modo de prueba) -->
+      <div id="rs-pl" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <div class="rs-msg" id="rs-l-msg" tabindex="-1"></div>
+        <a class="rs-sec" href="index.html">Ir al inicio</a>
+      </div>
+
       <noscript>
         <p class="rs-nota">Esta página necesita JavaScript. Si no puede activarlo, escríbanos por <a class="rs-link" href="https://wa.me/56951880121" target="_blank" rel="noopener">WhatsApp al +56 9 5188 0121</a>.</p>
       </noscript>
@@ -250,7 +391,7 @@
   var PASOS_OFERTA = ['', 'Paso 1 de 2: elegir hora', 'Paso 2 de 2: resumen y pago'];
   // Cambio de una hora ya pagada («Mis horas»): no se paga de nuevo.
   var PASOS_CAMBIO = { 1: 'Paso 1 de 2: elegir la hora nueva', 5: 'Paso 2 de 2: confirmar el cambio' };
-  var PASOS_MIS = { 3: 'Mis horas', 4: 'Cancelar la hora', 6: '' };
+  var PASOS_MIS = { 3: 'Mis horas', 4: 'Cancelar la hora', 6: '', 7: 'Inscripción del paciente', 8: '' };
   var CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
   // Estado sólo en memoria: nada de RUT, correo ni token va a localStorage.
@@ -269,7 +410,7 @@
   est.cancelar = null; // la hora que se está cancelando
 
   var $ = function (id) { return document.getElementById(id); };
-  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf')];
+  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf'), $('rs-pi'), $('rs-pl')];
   var msg = $('rs-msg');
 
   function enlace(url, texto) { return '<a href="' + url + '" target="_blank" rel="noopener">' + texto + '</a>'; }
@@ -346,6 +487,10 @@
 
   var MSG_RED = '<p>No pudimos completar la operación en este momento. Revise su conexión y vuelva a intentar.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
   var MSG_LIMITE = '<p>Demasiados intentos. Espere un minuto y vuelva a probar.</p>';
+  // Con ficha y otro correo no tiene sentido ofrecer inscribirse: sin el enlace al formulario.
+  var MSG_NEGATIVA_FICHA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
+    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
+  // «Mis horas» no distingue si hay ficha: ahí se mantiene el enlace al formulario.
   var MSG_NEGATIVA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
     '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'este formulario') + '.</p>';
 
@@ -428,7 +573,8 @@
           if (alTerminar) alTerminar();
           return true;
         }
-        if (r.ok && d && d.ok === false) { mostrarMsg(MSG_NEGATIVA); return false; }
+        if (r.ok && d && d.ok === false && d.inscribir === true) { abrirInscripcion(); return false; }
+        if (r.ok && d && d.ok === false) { mostrarMsg(MSG_NEGATIVA_FICHA); return false; }
         mostrarMsg(MSG_RED);
         return false;
       })
@@ -450,6 +596,191 @@
     var b = $('rs-b1');
     bloquear(b, 'Buscando horas...');
     cargarHoras(b).then(function () { liberar(b); });
+  });
+
+
+  // ---------- Inscripción de un paciente nuevo ----------
+  // Los datos viven sólo en los campos del formulario: nada va a localStorage ni a la URL.
+  var CAMPOS_INSC = ['modalidadRequerida', 'nombres', 'apellidoPaterno', 'apellidoMaterno', 'genero', 'rut', 'fechaNacimiento',
+    'direccion', 'comuna', 'adultoResponsable', 'rutAdulto', 'relacion', 'telefono', 'correo', 'establecimiento',
+    'profesionalDeriva', 'motivo', 'acepta'];
+  var COMUNAS = ['Ancud', 'Angol', 'Carahue', 'Chol Chol', 'Chonchi', 'Collipulli', 'Cunco', 'Curacautín', 'Imperial', 'Labranza',
+    'Lautaro', 'Loncoche', 'Nueva Imperial', 'Padre Las Casas', 'Pitrufquén', 'Pucón', 'Saavedra', 'Teodoro Schmidt', 'Tirúa',
+    'Toltén', 'Victoria', 'Vilcún', 'Villarrica', 'Coyhaique', 'Traiguén', 'Osorno', 'Panguipulli', 'Lanco', 'Maipú', 'Lota',
+    'Puerto Natales', 'Quellón', 'Ercilla'];
+  // Temuco primero, el resto en orden alfabético y «Otra» al final.
+  COMUNAS.sort(function (a, b) { return a.localeCompare(b, 'es'); });
+  ['Temuco'].concat(COMUNAS, ['Otra']).forEach(function (c) {
+    var o = document.createElement('option');
+    o.textContent = c;
+    $('ri-comuna').appendChild(o);
+  });
+
+  var ETIQUETAS_INSC = {
+    modalidadRequerida: 'la modalidad requerida', nombres: 'los nombres', apellidoPaterno: 'el apellido paterno',
+    apellidoMaterno: 'el apellido materno', genero: 'el género', rut: 'el RUT del paciente', fechaNacimiento: 'la fecha de nacimiento',
+    direccion: 'la dirección', comuna: 'la comuna', adultoResponsable: 'el nombre del adulto responsable',
+    rutAdulto: 'el RUT del adulto responsable', relacion: 'la relación con el adulto responsable', telefono: 'el teléfono',
+    correo: 'el correo', establecimiento: 'el establecimiento educacional', profesionalDeriva: 'el profesional que deriva',
+    motivo: 'el motivo de consulta', acepta: 'la aceptación del tratamiento de datos'
+  };
+
+  function limpiarErroresInsc() {
+    CAMPOS_INSC.forEach(function (c) {
+      var el = $('ri-' + c), er = $('ri-' + c + '-e');
+      el.removeAttribute('aria-invalid');
+      er.hidden = true;
+      er.textContent = '';
+    });
+  }
+
+  function marcarErrorInsc(campo, texto) {
+    var el = $('ri-' + campo), er = $('ri-' + campo + '-e');
+    if (!el || !er) return;
+    el.setAttribute('aria-invalid', 'true');
+    er.textContent = texto;
+    er.hidden = false;
+  }
+
+  // Fecha de hoy y de hace 30 años, AAAA-MM-DD, para limitar el selector de fecha.
+  function limitesFecha() {
+    var hoy = new Date();
+    function f(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+    var min = new Date(hoy.getFullYear() - 30, hoy.getMonth(), hoy.getDate());
+    return { max: f(hoy), min: f(min) };
+  }
+
+  function fechaValida(v, lim) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+    if (!m) return false;
+    var d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (d.getFullYear() !== Number(m[1]) || d.getMonth() !== Number(m[2]) - 1 || d.getDate() !== Number(m[3])) return false;
+    return v <= lim.max && v >= lim.min;
+  }
+
+  function leerInsc() {
+    var v = {};
+    CAMPOS_INSC.forEach(function (c) {
+      var el = $('ri-' + c);
+      v[c] = c === 'acepta' ? el.checked : el.value.trim();
+    });
+    return v;
+  }
+
+  // Devuelve { campo: mensaje } con lo que no pasa la revisión.
+  function revisarInsc(v) {
+    var e = {}, lim = limitesFecha();
+    ['modalidadRequerida', 'genero', 'comuna', 'relacion'].forEach(function (c) { if (!v[c]) e[c] = 'Seleccione una opción.'; });
+    ['nombres', 'apellidoPaterno', 'apellidoMaterno', 'direccion', 'adultoResponsable', 'establecimiento', 'motivo'].forEach(function (c) {
+      if (!v[c]) e[c] = 'Este dato es obligatorio.';
+    });
+    if (!rutValido(v.rut)) e.rut = 'El RUT no es válido. Revise los números y el dígito verificador.';
+    if (!rutValido(v.rutAdulto)) e.rutAdulto = 'El RUT no es válido. Revise los números y el dígito verificador.';
+    if (!fechaValida(v.fechaNacimiento, lim)) e.fechaNacimiento = 'Ingrese una fecha de nacimiento válida.';
+    var digitos = v.telefono.replace(/\D/g, '').length;
+    if (digitos < 8 || digitos > 15) e.telefono = 'Ingrese un teléfono válido, por ejemplo +56912345678.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.correo)) e.correo = 'El correo no es válido. Escríbalo completo, por ejemplo nombre@correo.cl.';
+    if (!v.acepta) e.acepta = 'Para continuar debe aceptar el tratamiento de los datos.';
+    return e;
+  }
+
+  function mostrarErroresInsc(errores) {
+    var lista = CAMPOS_INSC.filter(function (c) { return errores[c]; });
+    if (!lista.length) return;
+    lista.forEach(function (c) { marcarErrorInsc(c, errores[c]); });
+    mostrarMsg('<p>Revise los datos marcados e intente de nuevo.</p>');
+    $('ri-' + lista[0]).focus();
+  }
+
+  function abrirInscripcion() {
+    limpiarMsg();
+    limpiarErroresInsc();
+    var lim = limitesFecha();
+    $('ri-fechaNacimiento').max = lim.max;
+    $('ri-fechaNacimiento').min = lim.min;
+    $('ri-rut').value = est.rut;
+    $('ri-correo').value = est.correo;
+    $('rs-bi').textContent = est.doctora === 'badilla' ? 'Inscribir y continuar' : 'Inscribir';
+    irAPaso(7, false);
+    var t = $('rs-pi-titulo');
+    t.focus();
+    if (window.scrollTo) window.scrollTo({ top: 0 });
+  }
+
+  function mostrarFinalInsc(html) {
+    $('rs-l-msg').innerHTML = html;
+    irAPaso(8, false);
+    $('rs-l-msg').focus();
+    if (window.scrollTo) window.scrollTo({ top: 0 });
+  }
+
+  $('rs-vi').addEventListener('click', function () { limpiarMsg(); irAPaso(0); });
+
+  $('rs-pi').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (est.ocupado) return;
+    limpiarMsg();
+    limpiarErroresInsc();
+    var v = leerInsc();
+    var errores = revisarInsc(v);
+    if (Object.keys(errores).length) { mostrarErroresInsc(errores); return; }
+    var cuerpo = {
+      doctora: est.doctora, modalidadRequerida: v.modalidadRequerida, nombres: v.nombres, apellidoPaterno: v.apellidoPaterno,
+      apellidoMaterno: v.apellidoMaterno, genero: v.genero, rut: v.rut, fechaNacimiento: v.fechaNacimiento, direccion: v.direccion,
+      comuna: v.comuna, adultoResponsable: v.adultoResponsable, rutAdulto: v.rutAdulto, relacion: v.relacion, telefono: v.telefono,
+      correo: v.correo, establecimiento: v.establecimiento, motivo: v.motivo, acepta: true
+    };
+    if (v.profesionalDeriva) cuerpo.profesionalDeriva = v.profesionalDeriva;
+    var b = $('rs-bi');
+    bloquear(b, 'Inscribiendo...');
+    post('/agenda/inscribir', cuerpo)
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 400 && d && Array.isArray(d.campos) && d.campos.length) {
+          var malos = {};
+          d.campos.forEach(function (c) {
+            if (CAMPOS_INSC.indexOf(c) !== -1) malos[c] = 'Revise ' + ETIQUETAS_INSC[c] + '.';
+          });
+          if (Object.keys(malos).length) { mostrarErroresInsc(malos); return; }
+        }
+        if (r.ok && d && d.ok === true) {
+          if (d.siguiente === 'horas' && typeof d.token === 'string' && Array.isArray(d.horas)) {
+            // Se continúa como si las horas vinieran de /agenda/horas; el correo y el RUT quedan para la reserva.
+            est.rut = v.rut; est.correo = v.correo;
+            est.token = d.token;
+            est.paciente = (d.paciente && d.paciente.nombre) || '';
+            est.horas = d.horas;
+            est.hora = null;
+            pintarHoras();
+            irAPaso(1);
+            return;
+          }
+          if (d.siguiente === 'lista_espera') {
+            mostrarFinalInsc('<p>La inscripción quedó registrada. El paciente queda en lista de espera con la Dra. Camila Cortés: cuando se libere una hora, recibirá un correo para reservarla y pagarla en línea.</p>');
+            return;
+          }
+          if (d.siguiente === 'prueba') {
+            mostrarFinalInsc('<p>Modo de prueba: los datos son válidos, pero no se creó ninguna ficha.</p>');
+            return;
+          }
+        }
+        if (d && d.motivo === 'ya_inscrito') {
+          mostrarMsg('<p>Ya existe una ficha con ese RUT. Si el correo que ingresó no es el registrado, escríbanos por ' + enlace(WA, 'WhatsApp al +56 9 5188 0121') + ' y secretaría le ayudará.</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(b); });
+  });
+
+  // Al corregir un campo marcado, se le quita la marca.
+  CAMPOS_INSC.forEach(function (c) {
+    var el = $('ri-' + c);
+    var quitar = function () { el.removeAttribute('aria-invalid'); $('ri-' + c + '-e').hidden = true; };
+    el.addEventListener('input', quitar);
+    el.addEventListener('change', quitar);
   });
 
   // ---------- Paso 2 ----------
@@ -586,7 +917,7 @@
           mostrarMsg('<p>Pasaron más de 30 minutos desde que verificó los datos y la sesión venció. Por seguridad, vuelva a ingresarlos para ver las horas.</p>');
           return;
         }
-        if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA); return; }
+        if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA_FICHA); return; }
         if (motivo === 'flow_no_disponible') {
           mostrarMsg('<p>El sistema de pago no está disponible en este momento. Su hora no quedó retenida. Vuelva a intentar en unos minutos.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>');
           return;
