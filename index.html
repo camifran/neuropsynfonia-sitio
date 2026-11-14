@@ -107,13 +107,13 @@
           <span class="agendar-dot" style="background:var(--teal)"></span>
           <span class="agendar-col-title">Neurología pediátrica</span>
         </div>
-        <div class="agendar-col-desc">Puede agendar hora directamente, sin inscripción previa.</div>
+        <div class="agendar-col-desc">Puede reservar y pagar su hora en línea si el paciente está inscrito.</div>
         <div class="agendar-steps-mini">
-          <div class="asm"><span class="asm-num sn-1">1</span><span class="asm-text">Solicite su hora en el formulario</span></div>
-          <div class="asm"><span class="asm-num sn-2">2</span><span class="asm-text">Recibirá confirmación por correo</span></div>
+          <div class="asm"><span class="asm-num sn-1">1</span><span class="asm-text">Reserve y pague su hora en línea</span></div>
+          <div class="asm"><span class="asm-num sn-2">2</span><span class="asm-text">La hora queda confirmada y recibirá un correo</span></div>
           <div class="asm"><span class="asm-num sn-3">3</span><span class="asm-text">Listo. Le esperamos en la consulta.</span></div>
         </div>
-        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-primary" style="margin-top:auto">Agendar con Dra. Badilla →</a>
+        <a href="reservar.html?doctora=badilla" class="btn-primary" style="margin-top:auto">Agendar con Dra. Badilla →</a>
       </div>
 
       <div class="agendar-col agendar-col-r">
@@ -125,11 +125,11 @@
         <div class="agendar-steps-mini">
           <div class="asm"><span class="asm-num sn-1">1</span><span class="asm-text">Complete el formulario de inscripción</span></div>
           <div class="asm"><span class="asm-num sn-2">2</span><span class="asm-text">Le contactamos en ~10 días hábiles</span></div>
-          <div class="asm"><span class="asm-num sn-3">3</span><span class="asm-text">Solicite su hora y confirme por correo</span></div>
+          <div class="asm"><span class="asm-num sn-3">3</span><span class="asm-text">Reserve y pague su hora en línea</span></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
           <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
+          <a href="reservar.html?doctora=cortes" class="btn-reserva btn-reserva-r" style="text-align:center">Reservar hora (ya soy paciente) →</a>
         </div>
       </div>
 
@@ -238,11 +238,11 @@
     <div class="faq-list">
       <div class="faq-item open" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cómo funciona el agendamiento en neurología? <span class="faq-toggle">+</span></div>
-        <div class="faq-a">En neurología puede agendar directamente: complete el formulario de solicitud de hora y recibirá confirmación por correo. No hay lista de espera ni inscripción previa requerida.</div>
+        <div class="faq-a">En neurología puede reservar directamente, si el paciente está inscrito: elige la modalidad y la hora, paga en el mismo paso y la hora queda confirmada, con un correo de aviso. No hay lista de espera.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cómo funciona el agendamiento en psiquiatría? <span class="faq-toggle">+</span></div>
-        <div class="faq-a">En psiquiatría el proceso tiene dos pasos: primero inscríbase completando el formulario de inscripción. Le contactaremos en aproximadamente 10 días hábiles para coordinar su primera hora presencial. Para teleconsulta, puede solicitar hora directamente sin esperar.</div>
+        <div class="faq-a">En psiquiatría el proceso tiene dos pasos: primero inscríbase completando el formulario de inscripción. Le contactaremos en aproximadamente 10 días hábiles para coordinar su primera hora presencial. Quienes ya tuvieron su primera sesión con la Dra. Cortés pueden reservar y pagar sus horas en línea, presencial o virtual, sin esperar.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Atienden de forma presencial y virtual? <span class="faq-toggle">+</span></div>
@@ -318,8 +318,9 @@
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
       <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
+      <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
+      <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
+      <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>

@@ -81,8 +81,8 @@
 
 <div class="page-hero">
   <div class="container">
-    <h1 class="page-hero-title">Reservar hora</h1>
-    <p class="page-hero-sub">Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.</p>
+    <h1 class="page-hero-title" id="rs-titulo">Reservar hora</h1>
+    <p class="page-hero-sub" id="rs-sub">Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.</p>
   </div>
 </div>
 
@@ -96,7 +96,7 @@
 
       <!-- Paso 1 -->
       <form id="rs-p1" class="rs-paso" novalidate style="display:flex;flex-direction:column;gap:18px">
-        <fieldset class="rs-fieldset">
+        <fieldset class="rs-fieldset" id="rs-fs-doctora">
           <legend class="rs-legend">Doctora</legend>
           <div class="rs-opciones">
             <label class="rs-op"><input type="radio" name="doctora" value="cortes"><span><b>Dra. Camila Cortés</b>Psiquiatría infantojuvenil</span></label>
@@ -113,6 +113,7 @@
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
+        <button type="button" class="rs-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
       </form>
 
       <!-- Paso 2 -->
@@ -219,8 +220,9 @@
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
       <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
+      <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
+      <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
+      <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>
@@ -256,7 +258,10 @@
   // El enlace del correo trae un token firmado (7 días); se guarda sólo en memoria y se usa en /agenda/oferta.
   est.oferta = new URLSearchParams(window.location.search).get('oferta') || '';
   // «Mis horas»: el enlace ?mis=... (120 días) entra sin pedir datos; la sesión de 30 minutos va sólo en memoria.
-  est.enlaceMis = est.oferta ? '' : (new URLSearchParams(window.location.search).get('mis') || '');
+  // «?mis» sin valor (o «?mis=1») abre la identificación orientada a «Mis horas»; con un valor largo es el enlace firmado.
+  var misParam = new URLSearchParams(window.location.search).get('mis');
+  est.modoMis = !est.oferta && misParam !== null && (misParam === '' || misParam === '1');
+  est.enlaceMis = est.oferta || est.modoMis ? '' : (misParam || '');
   est.sesion = '';
   est.mis = [];
   est.nombreMis = '';
@@ -384,6 +389,25 @@
   }
 
   // ---------- Paso 1 ----------
+  // Modo «Mis horas» del paso 1: sin doctora, con «Ver mis horas» como botón principal.
+  function aplicarModoMis(on) {
+    est.modoMis = on;
+    $('rs-titulo').textContent = on ? 'Cambiar o cancelar una hora' : 'Reservar hora';
+    $('rs-sub').textContent = on
+      ? 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas.'
+      : 'Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.';
+    $('rs-fs-doctora').style.display = on ? 'none' : '';
+    $('rs-b1').style.display = on ? 'none' : '';
+    $('rs-bnueva').hidden = !on;
+    $('rs-bnueva').style.display = on ? '' : 'none';
+    var b = $('rs-bmis');
+    b.className = on ? 'btn-primary rs-btn' : 'rs-btn rs-btn-sec';
+    b.textContent = on ? 'Ver mis horas' : 'Ya tengo una hora: cambiarla o cancelarla';
+    limpiarMsg();
+  }
+  $('rs-bnueva').addEventListener('click', function () { aplicarModoMis(false); });
+  if (est.modoMis) aplicarModoMis(true);
+
   var doctoraUrl = new URLSearchParams(window.location.search).get('doctora');
   if (doctoraUrl === 'cortes' || doctoraUrl === 'badilla') {
     document.querySelector('input[name=doctora][value=' + doctoraUrl + ']').checked = true;
@@ -414,6 +438,7 @@
   $('rs-p1').addEventListener('submit', function (e) {
     e.preventDefault();
     if (est.ocupado) return;
+    if (est.modoMis) { $('rs-bmis').click(); return; }
     limpiarMsg();
     var sel = document.querySelector('input[name=doctora]:checked');
     var rut = $('rs-rut').value;
