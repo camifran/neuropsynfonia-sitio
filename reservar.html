@@ -62,6 +62,21 @@
   .rs-check input{flex:0 0 auto;width:22px;height:22px;margin:2px 0 0}
   .rs-check input:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
   .rs-check a{color:#1d7f86;font-weight:600}
+  .re-caja{position:relative}
+  .re-lista{list-style:none;margin:4px 0 0;padding:4px;position:absolute;left:0;right:0;z-index:20;background:#fff;border:1px solid #cfd8d9;border-radius:9px;box-shadow:0 6px 18px rgba(26,58,60,.15);max-height:320px;overflow-y:auto}
+  .re-lista[hidden],.re-bloque[hidden],.re-check[hidden],.re-enlace[hidden]{display:none}
+  .re-op{padding:10px 12px;border-radius:7px;cursor:pointer;font-size:16px;color:#1A3A3C;line-height:1.35}
+  .re-op[aria-selected=true],.re-op:hover{background:#e6f1f2}
+  .re-op small{display:block;font-size:13px;color:#555;margin-top:2px}
+  .re-nota{padding:10px 12px;font-size:15px;color:#555}
+  .re-elegido{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;border:2px solid #1d7f86;background:#f1f8f8;border-radius:9px;padding:12px 14px;font-size:16px;color:#1A3A3C;line-height:1.4}
+  .re-elegido small[hidden]{display:none}
+  .re-elegido small{display:block;font-size:13px;color:#555;margin-top:2px}
+  .re-enlace{background:none;border:0;padding:8px 0;margin:0;font:inherit;font-size:15px;font-weight:600;color:#1d7f86;text-decoration:underline;cursor:pointer;text-align:left}
+  .re-enlace:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
+  .re-elegido .re-enlace{padding:0;flex:0 0 auto}
+  .re-check{margin:8px 0 0}
+  .re-bloque{margin-top:10px}
 </style>
 </head>
 <body>
@@ -295,15 +310,53 @@
           <p class="rs-error" id="ri-correo-e" hidden></p>
         </div>
         <div data-campo="establecimiento">
-          <label class="rs-label" for="ri-establecimiento">Establecimiento educacional</label>
-          <input class="rs-input" id="ri-establecimiento" type="text" maxlength="160" autocomplete="off" required aria-describedby="ri-establecimiento-e">
+          <label class="rs-label" for="ri-establecimiento" id="re-etiqueta">Establecimiento educacional</label>
+          <div id="re-buscar">
+            <p class="rs-ayuda" id="ri-establecimiento-a">Escriba parte del nombre o de la comuna y elija de la lista.</p>
+            <div class="re-caja">
+              <input class="rs-input" id="ri-establecimiento" type="text" maxlength="160" autocomplete="off" autocapitalize="none" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="re-lista" aria-describedby="ri-establecimiento-a ri-establecimiento-e">
+              <ul class="re-lista" id="re-lista" role="listbox" aria-label="Establecimientos sugeridos" hidden></ul>
+            </div>
+          </div>
+          <div class="re-elegido re-bloque" id="re-elegido" hidden>
+            <div><span id="re-elegido-nombre"></span><small id="re-elegido-tipo"></small></div>
+            <button type="button" class="re-enlace" id="re-cambiar">Cambiar</button>
+          </div>
+          <div class="re-bloque" id="re-libre" hidden>
+            <p class="rs-ayuda" id="ri-establecimientoTexto-a">Escriba el nombre completo y la comuna.</p>
+            <input class="rs-input" id="ri-establecimientoTexto" type="text" maxlength="160" autocomplete="off" aria-label="Nombre del establecimiento educacional" aria-describedby="ri-establecimientoTexto-a ri-establecimiento-e">
+          </div>
+          <label class="rs-check re-check" id="re-sin-caja"><input type="checkbox" id="re-sin"><span>No asiste a un establecimiento</span></label>
+          <button type="button" class="re-enlace" id="re-nolista">Mi establecimiento no está en la lista</button>
           <p class="rs-error" id="ri-establecimiento-e" hidden></p>
+          <div id="re-carrera" hidden>
+            <div class="re-bloque" data-campo="carrera">
+              <label class="rs-label" for="ri-carrera">Carrera (opcional)</label>
+              <input class="rs-input" id="ri-carrera" type="text" maxlength="120" autocomplete="off" aria-describedby="ri-carrera-e">
+              <p class="rs-error" id="ri-carrera-e" hidden></p>
+            </div>
+            <div class="re-bloque" data-campo="anioCarrera">
+              <label class="rs-label" for="ri-anioCarrera">Año que cursa (opcional)</label>
+              <input class="rs-input" id="ri-anioCarrera" type="number" inputmode="numeric" min="1" max="10" step="1" aria-describedby="ri-anioCarrera-e">
+              <p class="rs-error" id="ri-anioCarrera-e" hidden></p>
+            </div>
+          </div>
         </div>
         <div data-campo="profesionalDeriva">
           <label class="rs-label" for="ri-profesionalDeriva">Profesional que deriva (opcional)</label>
-          <p class="rs-ayuda" id="ri-profesionalDeriva-a">En caso de que alguien los haya derivado, especifique su nombre aquí.</p>
+          <p class="rs-ayuda" id="ri-profesionalDeriva-a">Si alguien los derivó, escriba el nombre y apellido del profesional.</p>
           <input class="rs-input" id="ri-profesionalDeriva" type="text" maxlength="160" autocomplete="off" aria-describedby="ri-profesionalDeriva-a ri-profesionalDeriva-e">
           <p class="rs-error" id="ri-profesionalDeriva-e" hidden></p>
+        </div>
+        <div data-campo="tipoProfesionalDeriva">
+          <label class="rs-label" for="ri-tipoProfesionalDeriva">Tipo de profesional (opcional)</label>
+          <select class="rs-input" id="ri-tipoProfesionalDeriva" aria-describedby="ri-tipoProfesionalDeriva-e">
+            <option value="">Seleccione</option>
+            <option>Psicólogo/a</option><option>Neurólogo/a</option><option>Pediatra</option><option>Psiquiatra</option>
+            <option>Médico familiar</option><option>Fonoaudiólogo/a</option><option>Terapeuta ocupacional</option>
+            <option>Psicopedagogo/a</option><option>Educador/a diferencial</option><option>Colegio</option><option>Otro</option>
+          </select>
+          <p class="rs-error" id="ri-tipoProfesionalDeriva-e" hidden></p>
         </div>
         <div data-campo="motivo">
           <label class="rs-label" for="ri-motivo">Motivo de consulta</label>
@@ -603,7 +656,7 @@
   // Los datos viven sólo en los campos del formulario: nada va a localStorage ni a la URL.
   var CAMPOS_INSC = ['modalidadRequerida', 'nombres', 'apellidoPaterno', 'apellidoMaterno', 'genero', 'rut', 'fechaNacimiento',
     'direccion', 'comuna', 'adultoResponsable', 'rutAdulto', 'relacion', 'telefono', 'correo', 'establecimiento',
-    'profesionalDeriva', 'motivo', 'acepta'];
+    'carrera', 'anioCarrera', 'profesionalDeriva', 'tipoProfesionalDeriva', 'motivo', 'acepta'];
   var COMUNAS = ['Ancud', 'Angol', 'Carahue', 'Chol Chol', 'Chonchi', 'Collipulli', 'Cunco', 'Curacautín', 'Imperial', 'Labranza',
     'Lautaro', 'Loncoche', 'Nueva Imperial', 'Padre Las Casas', 'Pitrufquén', 'Pucón', 'Saavedra', 'Teodoro Schmidt', 'Tirúa',
     'Toltén', 'Victoria', 'Vilcún', 'Villarrica', 'Coyhaique', 'Traiguén', 'Osorno', 'Panguipulli', 'Lanco', 'Maipú', 'Lota',
@@ -622,20 +675,33 @@
     direccion: 'la dirección', comuna: 'la comuna', adultoResponsable: 'el nombre del adulto responsable',
     rutAdulto: 'el RUT del adulto responsable', relacion: 'la relación con el adulto responsable', telefono: 'el teléfono',
     correo: 'el correo', establecimiento: 'el establecimiento educacional', profesionalDeriva: 'el profesional que deriva',
+    carrera: 'la carrera', anioCarrera: 'el año que cursa (de 1 a 10)', tipoProfesionalDeriva: 'el tipo de profesional',
     motivo: 'el motivo de consulta', acepta: 'la aceptación del tratamiento de datos'
   };
 
+  // Elemento que lleva la marca de error y el foco: para el establecimiento, el que está a la vista.
+  function elInsc(c) {
+    if (c !== 'establecimiento') return $('ri-' + c);
+    if (estab.modo === 'elegido') return $('re-cambiar');
+    if (estab.modo === 'sin') return $('re-sin');
+    return estab.modo === 'libre' ? $('ri-establecimientoTexto') : $('ri-establecimiento');
+  }
+
   function limpiarErroresInsc() {
     CAMPOS_INSC.forEach(function (c) {
-      var el = $('ri-' + c), er = $('ri-' + c + '-e');
-      el.removeAttribute('aria-invalid');
+      var er = $('ri-' + c + '-e');
+      if (c === 'establecimiento') {
+        ['ri-establecimiento', 'ri-establecimientoTexto'].forEach(function (i) { $(i).removeAttribute('aria-invalid'); });
+      } else {
+        $('ri-' + c).removeAttribute('aria-invalid');
+      }
       er.hidden = true;
       er.textContent = '';
     });
   }
 
   function marcarErrorInsc(campo, texto) {
-    var el = $('ri-' + campo), er = $('ri-' + campo + '-e');
+    var el = elInsc(campo), er = $('ri-' + campo + '-e');
     if (!el || !er) return;
     el.setAttribute('aria-invalid', 'true');
     er.textContent = texto;
@@ -664,6 +730,10 @@
       var el = $('ri-' + c);
       v[c] = c === 'acepta' ? el.checked : el.value.trim();
     });
+    v.establecimiento = estab.modo === 'libre' ? $('ri-establecimientoTexto').value.trim() : '';
+    v.establecimientoId = estab.modo === 'elegido' ? estab.elegido.id : '';
+    v.sinEstablecimiento = estab.modo === 'sin';
+    v.mostrarCarrera = estab.modo === 'elegido' && estab.elegido.tipo === TIPO_UNIVERSIDAD;
     return v;
   }
 
@@ -671,9 +741,15 @@
   function revisarInsc(v) {
     var e = {}, lim = limitesFecha();
     ['modalidadRequerida', 'genero', 'comuna', 'relacion'].forEach(function (c) { if (!v[c]) e[c] = 'Seleccione una opción.'; });
-    ['nombres', 'apellidoPaterno', 'apellidoMaterno', 'direccion', 'adultoResponsable', 'establecimiento', 'motivo'].forEach(function (c) {
+    ['nombres', 'apellidoPaterno', 'apellidoMaterno', 'direccion', 'adultoResponsable', 'motivo'].forEach(function (c) {
       if (!v[c]) e[c] = 'Este dato es obligatorio.';
     });
+    if (estab.modo === 'buscar') e.establecimiento = 'Elija un establecimiento de la lista, marque que no asiste o indique el suyo.';
+    else if (estab.modo === 'libre' && !v.establecimiento) e.establecimiento = 'Este dato es obligatorio.';
+    if (v.mostrarCarrera && v.anioCarrera !== '') {
+      var n = Number(v.anioCarrera);
+      if (!/^\d{1,2}$/.test(v.anioCarrera) || n < 1 || n > 10) e.anioCarrera = 'Ingrese un número del 1 al 10.';
+    }
     if (!rutValido(v.rut)) e.rut = 'El RUT no es válido. Revise los números y el dígito verificador.';
     if (!rutValido(v.rutAdulto)) e.rutAdulto = 'El RUT no es válido. Revise los números y el dígito verificador.';
     if (!fechaValida(v.fechaNacimiento, lim)) e.fechaNacimiento = 'Ingrese una fecha de nacimiento válida.';
@@ -689,12 +765,13 @@
     if (!lista.length) return;
     lista.forEach(function (c) { marcarErrorInsc(c, errores[c]); });
     mostrarMsg('<p>Revise los datos marcados e intente de nuevo.</p>');
-    $('ri-' + lista[0]).focus();
+    elInsc(lista[0]).focus();
   }
 
   function abrirInscripcion() {
     limpiarMsg();
     limpiarErroresInsc();
+    cargarEstablecimientos();
     var lim = limitesFecha();
     $('ri-fechaNacimiento').max = lim.max;
     $('ri-fechaNacimiento').min = lim.min;
@@ -728,9 +805,17 @@
       doctora: est.doctora, modalidadRequerida: v.modalidadRequerida, nombres: v.nombres, apellidoPaterno: v.apellidoPaterno,
       apellidoMaterno: v.apellidoMaterno, genero: v.genero, rut: v.rut, fechaNacimiento: v.fechaNacimiento, direccion: v.direccion,
       comuna: v.comuna, adultoResponsable: v.adultoResponsable, rutAdulto: v.rutAdulto, relacion: v.relacion, telefono: v.telefono,
-      correo: v.correo, establecimiento: v.establecimiento, motivo: v.motivo, acepta: true
+      correo: v.correo, motivo: v.motivo, acepta: true
     };
+    if (v.establecimientoId) cuerpo.establecimientoId = v.establecimientoId;
+    else if (v.sinEstablecimiento) cuerpo.sinEstablecimiento = true;
+    else cuerpo.establecimiento = v.establecimiento;
+    if (v.mostrarCarrera) {
+      if (v.carrera) cuerpo.carrera = v.carrera;
+      if (v.anioCarrera !== '') cuerpo.anioCarrera = Number(v.anioCarrera);
+    }
     if (v.profesionalDeriva) cuerpo.profesionalDeriva = v.profesionalDeriva;
+    if (v.tipoProfesionalDeriva) cuerpo.tipoProfesionalDeriva = v.tipoProfesionalDeriva;
     var b = $('rs-bi');
     bloquear(b, 'Inscribiendo...');
     post('/agenda/inscribir', cuerpo)
@@ -742,6 +827,12 @@
           d.campos.forEach(function (c) {
             if (CAMPOS_INSC.indexOf(c) !== -1) malos[c] = 'Revise ' + ETIQUETAS_INSC[c] + '.';
           });
+          if (malos.establecimiento && estab.modo === 'elegido') {
+            // El elegido ya no está disponible: se vuelve al buscador con la lista al día.
+            estab.lista = null; estab.elegido = null; estab.modo = 'buscar';
+            cargarEstablecimientos();
+            pintarEstab();
+          }
           if (Object.keys(malos).length) { mostrarErroresInsc(malos); return; }
         }
         if (r.ok && d && d.ok === true) {
@@ -775,9 +866,177 @@
       .then(function () { liberar(b); });
   });
 
+  // ---------- Establecimiento educacional: buscador con lista del Worker ----------
+  var TIPO_UNIVERSIDAD = 'Universidad o instituto';
+  var MAX_SUGERENCIAS = 8;
+  // modo: buscar (aún sin elegir), elegido, sin (no asiste) o libre (texto escrito a mano)
+  var estab = { lista: null, cargando: false, modo: 'buscar', elegido: null, abierto: false, sugeridos: [], activo: -1 };
+
+  function plano(t) {
+    var x = String(t || '').toLowerCase();
+    return x.normalize ? x.normalize('NFD').replace(/[̀-ͯ]/g, '') : x;
+  }
+
+  function cargarEstablecimientos() {
+    if (estab.lista || estab.cargando) return;
+    estab.cargando = true;
+    fetch(WORKER_URL + '/agenda/establecimientos', { method: 'GET', credentials: 'omit', referrerPolicy: 'no-referrer' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; })
+      .then(function (d) {
+        estab.cargando = false;
+        if (d && d.ok === true && Array.isArray(d.establecimientos)) {
+          estab.lista = d.establecimientos.filter(function (x) { return x && typeof x.id === 'string' && typeof x.nombre === 'string'; })
+            .map(function (x) { return { id: x.id, nombre: x.nombre, comuna: x.comuna || '', tipo: x.tipo || '', _n: plano(x.nombre + ' ' + (x.comuna || '')) }; });
+          if (!estab.lista.length) { estab.lista = null; estab.fallo = true; }
+        } else {
+          estab.fallo = true;
+        }
+        // Sin lista: se usa directamente el campo de texto libre.
+        if (estab.fallo && estab.modo === 'buscar') estab.modo = 'libre';
+        pintarEstab();
+        if (estab.abierto) mostrarSugerencias();
+      });
+  }
+
+  function etiquetaEstab(x) { return x.nombre + (x.comuna ? ' · ' + x.comuna : ''); }
+
+  function pintarEstab() {
+    var m = estab.modo, falla = !!estab.fallo;
+    $('re-buscar').hidden = m !== 'buscar';
+    $('re-elegido').hidden = m !== 'elegido';
+    $('re-libre').hidden = m !== 'libre';
+    $('re-sin-caja').hidden = false;
+    $('re-sin').checked = m === 'sin';
+    // Si la lista no cargó, no hay a dónde volver: el enlace sólo se ofrece con lista.
+    $('re-nolista').hidden = falla || m === 'sin' || m === 'elegido';
+    $('re-nolista').textContent = m === 'libre' ? 'Buscar en la lista' : 'Mi establecimiento no está en la lista';
+    var tipo = m === 'elegido' ? estab.elegido.tipo : '';
+    $('re-carrera').hidden = tipo !== TIPO_UNIVERSIDAD;
+    if (m === 'elegido') {
+      $('re-elegido-nombre').textContent = etiquetaEstab(estab.elegido);
+      $('re-elegido-tipo').textContent = estab.elegido.tipo;
+      $('re-elegido-tipo').hidden = !estab.elegido.tipo;
+    }
+    if (m !== 'buscar') cerrarSugerencias();
+  }
+
+  function cerrarSugerencias() {
+    estab.abierto = false; estab.activo = -1;
+    var ul = $('re-lista');
+    ul.hidden = true; ul.innerHTML = '';
+    var inp = $('ri-establecimiento');
+    inp.setAttribute('aria-expanded', 'false');
+    inp.removeAttribute('aria-activedescendant');
+  }
+
+  function marcarActivo(i) {
+    estab.activo = i;
+    var ops = $('re-lista').querySelectorAll('[role=option]');
+    Array.prototype.forEach.call(ops, function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+    var inp = $('ri-establecimiento');
+    if (i >= 0 && ops[i]) {
+      inp.setAttribute('aria-activedescendant', ops[i].id);
+      if (ops[i].scrollIntoView) ops[i].scrollIntoView({ block: 'nearest' });
+    } else {
+      inp.removeAttribute('aria-activedescendant');
+    }
+  }
+
+  function mostrarSugerencias() {
+    var ul = $('re-lista'), inp = $('ri-establecimiento');
+    estab.abierto = true;
+    ul.innerHTML = '';
+    estab.sugeridos = [];
+    estab.activo = -1;
+    if (!estab.lista) {
+      if (estab.cargando) {
+        var li = document.createElement('li');
+        li.className = 're-nota'; li.setAttribute('role', 'presentation'); li.textContent = 'Cargando la lista...';
+        ul.appendChild(li);
+      } else { cerrarSugerencias(); return; }
+    } else {
+      var q = plano(inp.value.trim());
+      estab.sugeridos = estab.lista.filter(function (x) { return !q || x._n.indexOf(q) !== -1; }).slice(0, MAX_SUGERENCIAS);
+      if (!estab.sugeridos.length) {
+        var vacio = document.createElement('li');
+        vacio.className = 're-nota'; vacio.setAttribute('role', 'presentation');
+        vacio.textContent = 'No hay coincidencias. Si no lo encuentra, use «Mi establecimiento no está en la lista».';
+        ul.appendChild(vacio);
+      }
+      estab.sugeridos.forEach(function (x, i) {
+        var li = document.createElement('li');
+        li.className = 're-op'; li.id = 're-op-' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
+        li.appendChild(document.createTextNode(etiquetaEstab(x)));
+        if (x.tipo) { var t = document.createElement('small'); t.textContent = x.tipo; li.appendChild(t); }
+        // mousedown (y no click) para elegir antes de que el campo pierda el foco
+        li.addEventListener('mousedown', function (ev) { ev.preventDefault(); elegirEstab(x); });
+        ul.appendChild(li);
+      });
+    }
+    ul.hidden = false;
+    inp.setAttribute('aria-expanded', 'true');
+  }
+
+  function elegirEstab(x) {
+    estab.elegido = x; estab.modo = 'elegido';
+    $('ri-establecimiento').value = '';
+    $('ri-establecimiento-e').hidden = true;
+    $('ri-establecimiento').removeAttribute('aria-invalid');
+    pintarEstab();
+    $('re-cambiar').focus();
+  }
+
+  $('ri-establecimiento').addEventListener('focus', function () { cargarEstablecimientos(); mostrarSugerencias(); });
+  $('ri-establecimiento').addEventListener('input', function () { $('ri-establecimiento-e').hidden = true; mostrarSugerencias(); });
+  $('ri-establecimiento').addEventListener('blur', cerrarSugerencias);
+  $('ri-establecimiento').addEventListener('keydown', function (ev) {
+    var n = estab.sugeridos.length;
+    if (ev.key === 'ArrowDown') {
+      ev.preventDefault();
+      if (!estab.abierto) mostrarSugerencias();
+      if (n) marcarActivo(estab.activo + 1 >= n ? 0 : estab.activo + 1);
+    } else if (ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      if (!estab.abierto) mostrarSugerencias();
+      if (n) marcarActivo(estab.activo <= 0 ? n - 1 : estab.activo - 1);
+    } else if (ev.key === 'Enter') {
+      if (estab.abierto && estab.activo >= 0 && estab.sugeridos[estab.activo]) {
+        ev.preventDefault();
+        elegirEstab(estab.sugeridos[estab.activo]);
+      } else if (estab.abierto) {
+        ev.preventDefault(); // Enter en el buscador no envía el formulario
+      }
+    } else if (ev.key === 'Escape') {
+      if (estab.abierto) { ev.preventDefault(); cerrarSugerencias(); }
+    }
+  });
+  $('re-cambiar').addEventListener('click', function () {
+    estab.elegido = null; estab.modo = 'buscar';
+    pintarEstab();
+    $('ri-establecimiento').focus();
+  });
+  $('re-sin').addEventListener('change', function () {
+    estab.modo = this.checked ? 'sin' : (estab.fallo ? 'libre' : 'buscar');
+    $('ri-establecimiento-e').hidden = true;
+    pintarEstab();
+  });
+  $('re-nolista').addEventListener('click', function () {
+    var aLibre = estab.modo !== 'libre';
+    estab.modo = aLibre ? 'libre' : 'buscar';
+    $('ri-establecimiento-e').hidden = true;
+    pintarEstab();
+    $(aLibre ? 'ri-establecimientoTexto' : 'ri-establecimiento').focus();
+  });
+  $('ri-establecimientoTexto').addEventListener('input', function () {
+    this.removeAttribute('aria-invalid'); $('ri-establecimiento-e').hidden = true;
+  });
+  pintarEstab();
+
   // Al corregir un campo marcado, se le quita la marca.
   CAMPOS_INSC.forEach(function (c) {
     var el = $('ri-' + c);
+    if (c === 'establecimiento') return; // lo maneja pintarEstab
     var quitar = function () { el.removeAttribute('aria-invalid'); $('ri-' + c + '-e').hidden = true; };
     el.addEventListener('input', quitar);
     el.addEventListener('change', quitar);
