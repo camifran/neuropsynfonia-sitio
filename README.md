@@ -65,3 +65,13 @@ git push -u origin main
 - [ ] Formulario de control psiquiatría presencial (cuando esté listo)
 - [ ] Fotos de las consultas y recepción
 - [ ] Actualizar urlReturn de Flow a neuropsynfonia.cl cuando sitio sea productivo
+
+## Reserva de horas con pago (`reservar.html`)
+
+Publicada el 14-11-2026 en `main`, todavía sin enlaces desde el resto del sitio. La familia entra con RUT y correo,
+elige doctora, modalidad y hora, y paga por Flow («Pagar por transferencia» o «Pagar con tarjeta u otro medio»); la
+hora queda retenida 30 minutos. `?mis` abre «Mis horas» (cambiar o cancelar una hora pagada), `?oferta=` el enlace
+de la lista de espera y `?sandbox=1` usa el Worker de pruebas. La lógica vive en el Worker
+(`consulta/neuropsynfonia-flow`, rutas `/agenda/*`). La rama `abrir-reserva` trae los enlaces del sitio, los textos
+nuevos y la inscripción de pacientes nuevos: se publica al abrir, con OK de Camila. Los textos hacia las familias
+van en impersonal.
