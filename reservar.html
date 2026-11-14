@@ -592,7 +592,7 @@
   // ---------- Mis horas: cambiar o cancelar una hora ya pagada ----------
   var MSG_ENLACE_VENCIDO = '<p>Este enlace ya no está vigente. Puede ingresar el RUT del paciente y el correo para ver sus horas.</p><p>' + CONTACTO + '</p>';
   var MSG_SESION = '<p>Pasaron más de 30 minutos y la sesión venció. Por seguridad, vuelva a ingresar los datos para ver sus horas.</p>';
-  var TXT_CANCEL_DENTRO = 'Su hora se cancelará. La devolución de su pago será revisada por la doctora y recibirá un correo con el monto. Si pagó por Flow, se descuentan los costos del medio de pago.';
+  var TXT_CANCEL_DENTRO = 'Su hora se cancelará. Se revisará la devolución de su pago y recibirá un correo con el monto. Si pagó por Flow, se descuentan los costos del medio de pago.';
   var TXT_CANCEL_FUERA = function (plazo) { return 'El plazo para cancelar con devolución venció el ' + plazo + '. Si confirma, su hora se cancela sin devolución, según los términos y condiciones.'; };
 
   function salirDeCambio() {
@@ -841,7 +841,7 @@
           est.mis = est.mis.filter(function (x) { return x.solicitudId !== h.solicitudId; });
           est.cancelar = null;
           mostrarFinal(d.devolucion === 'pendiente'
-            ? '<p>Su hora quedó cancelada. La doctora revisará la devolución de su pago y recibirá un correo con el monto.</p>'
+            ? '<p>Su hora quedó cancelada. Se revisará la devolución de su pago y recibirá un correo con el monto.</p>'
             : '<p>Su hora quedó cancelada, sin devolución.</p>');
           return;
         }
