@@ -181,9 +181,15 @@
 <script src="script.js"></script>
 <script>
 (function () {
-  // URL del Worker. Hoy apunta al sandbox; se cambia a producción
-  // (https://neuropsynfonia-flow.neuropsynfonia.workers.dev) al publicar.
-  var WORKER_URL = 'https://neuropsynfonia-flow-sandbox.neuropsynfonia.workers.dev';
+  // Producción por defecto. Con ?sandbox=1 la página habla con el Worker de pruebas (Flow de prueba, sin
+  // dinero real; sólo acepta al paciente de prueba).
+  var WORKER_URL = /[?&]sandbox=1(&|$)/.test(window.location.search)
+    ? 'https://neuropsynfonia-flow-sandbox.neuropsynfonia.workers.dev'
+    : 'https://neuropsynfonia-flow.neuropsynfonia.workers.dev';
+  if (WORKER_URL.indexOf('sandbox') !== -1) {
+    var tit = document.querySelector('h1');
+    if (tit) tit.textContent += ' (modo de prueba)';
+  }
 
   var WA = 'https://wa.me/56951880121';
   var REGISTRO = 'https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL';
