@@ -137,13 +137,13 @@
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
-        <button type="button" class="rs-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
+        <button type="button" class="rs-btn rs-btn-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
       </form>
 
       <!-- Paso 2 -->
       <div id="rs-p2" class="rs-paso" hidden style="display:none;flex-direction:column;gap:20px">
         <fieldset class="rs-fieldset" id="rs-modalidad">
-          <legend class="rs-legend">Modalidad</legend>
+          <legend class="rs-legend">Primero elija la modalidad</legend>
           <div class="rs-opciones rs-dos">
             <label class="rs-op"><input type="radio" name="modalidad" value="Presencial"><span><b>Presencial</b>En la consulta, Dinamarca 621, Temuco</span></label>
             <label class="rs-op"><input type="radio" name="modalidad" value="Virtual"><span><b>Virtual</b>Por videollamada</span></label>
@@ -1074,11 +1074,21 @@
     var intro = document.createElement('p');
     intro.className = 'rs-nota';
     intro.textContent = est.cambio
-      ? 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para cambiar su hora del ' + est.cambio.inicioChile + '. Elija una y la modalidad.'
+      ? 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para cambiar su hora del ' + est.cambio.inicioChile + '. Elija una.'
       : est.oferta
       ? 'Estas son las horas disponibles para la primera consulta de ' + (nombreVisible(est.paciente) || 'el paciente') + '. La hora queda para la primera familia que complete el pago.'
       : 'Horas disponibles con la ' + DOCTORAS[est.doctora] + ' para ' + (est.paciente || 'el paciente') + '. Elija una.';
+    intro.id = 'rs-horas-intro';
     caja.appendChild(intro);
+    var pista = document.createElement('p');
+    pista.className = 'rs-nota';
+    pista.id = 'rs-horas-pista';
+    pista.textContent = 'Elija arriba si la consulta será presencial o virtual y se mostrarán las horas disponibles.';
+    caja.appendChild(pista);
+    var dias = document.createElement('div');
+    dias.id = 'rs-horas-dias';
+    dias.style.cssText = 'display:flex;flex-direction:column;gap:20px';
+    caja.appendChild(dias);
     grupos.forEach(function (g, gi) {
       var fs = document.createElement('fieldset');
       fs.className = 'rs-fieldset';
@@ -1102,9 +1112,25 @@
         cont.appendChild(lab);
       });
       fs.appendChild(cont);
-      caja.appendChild(fs);
+      dias.appendChild(fs);
     });
+    verHorasSegunModalidad();
   }
+
+  // Las horas se muestran recién cuando hay modalidad elegida (son las mismas para ambas): un paso a la vez.
+  function verHorasSegunModalidad() {
+    var dias = $('rs-horas-dias');
+    if (!dias) return;
+    var hay = !!document.querySelector('input[name=modalidad]:checked');
+    dias.style.display = hay ? 'flex' : 'none';
+    $('rs-horas-intro').style.display = hay ? '' : 'none';
+    $('rs-horas-pista').style.display = hay ? 'none' : '';
+    $('rs-b2').hidden = !hay;
+    $('rs-b2').style.display = hay ? '' : 'none';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=modalidad]'), function (m) {
+    m.addEventListener('change', verHorasSegunModalidad);
+  });
 
   if (est.oferta) $('rs-v1').hidden = true;
   $('rs-v1').addEventListener('click', function () {
