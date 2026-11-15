@@ -62,6 +62,7 @@
   .rs-check input{flex:0 0 auto;width:22px;height:22px;margin:2px 0 0}
   .rs-check input:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
   .rs-check a{color:#1d7f86;font-weight:600}
+  .rs-check-nota{display:block;color:#555}
   .re-caja{position:relative}
   .re-lista{list-style:none;margin:4px 0 0;padding:4px;position:absolute;left:0;right:0;z-index:20;background:#fff;border:1px solid #cfd8d9;border-radius:9px;box-shadow:0 6px 18px rgba(26,58,60,.15);max-height:320px;overflow-y:auto}
   .re-lista[hidden],.re-bloque[hidden],.re-check[hidden],.re-enlace[hidden]{display:none}
@@ -166,6 +167,12 @@
         <div id="rs-sindev" class="rs-msg rs-aviso" hidden><p>Esta hora ya está dentro del plazo de cancelación: si la cancela, no tiene devolución.</p></div>
         <p class="rs-nota">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
         <p class="rs-nota">El pago se procesa por Flow, también cuando es por transferencia. Si más adelante pide la devolución, se descuentan los costos del medio de pago, como indican los <a href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
+        <div id="rs-avisar-caja" hidden>
+          <label class="rs-check" for="rs-avisar">
+            <input type="checkbox" id="rs-avisar">
+            <span>Avísenme si se libera una hora antes. <span class="rs-check-nota">Le escribiremos por correo si se libera una hora anterior a la suya, para que pueda cambiarla.</span></span>
+          </label>
+        </div>
         <div>
           <label class="rs-check" for="rs-acepta">
             <input type="checkbox" id="rs-acepta" required aria-describedby="rs-acepta-e">
@@ -207,6 +214,7 @@
           <dt>Hora nueva</dt><dd id="rs-k-nueva"></dd>
           <dt>Modalidad</dt><dd id="rs-k-modalidad"></dd>
         </dl>
+        <div id="rs-k-sindev" class="rs-msg rs-aviso" hidden><p>La hora nueva ya está dentro del plazo de cancelación: si después la cancela, no tiene devolución.</p></div>
         <p class="rs-nota">No tiene que pagar de nuevo: su pago pasa a la hora nueva.</p>
         <button type="button" class="btn-primary rs-btn" id="rs-bk">Confirmar el cambio</button>
         <button type="button" class="rs-sec" id="rs-k-volver">Volver y elegir otra hora</button>
@@ -573,6 +581,7 @@
         if (r.ok && d && d.ok === true && typeof d.token === 'string' && Array.isArray(d.horas)) {
           est.doctora = 'cortes';
           est.token = d.token;
+          est.avisoAdelantar = d.avisoAdelantar === true;
           est.paciente = (d.paciente && d.paciente.nombre) || '';
           est.horas = d.horas;
           est.hora = null;
@@ -624,6 +633,7 @@
         var d = r.datos;
         if (r.ok && d && d.ok === true && typeof d.token === 'string' && Array.isArray(d.horas)) {
           est.token = d.token;
+          est.avisoAdelantar = d.avisoAdelantar === true;
           est.paciente = (d.paciente && d.paciente.nombre) || '';
           est.horas = d.horas;
           est.hora = null;
@@ -846,6 +856,7 @@
             // Se continúa como si las horas vinieran de /agenda/horas; el correo y el RUT quedan para la reserva.
             est.rut = v.rut; est.correo = v.correo;
             est.token = d.token;
+            est.avisoAdelantar = d.avisoAdelantar === true;
             est.paciente = (d.paciente && d.paciente.nombre) || '';
             est.horas = d.horas;
             est.hora = null;
@@ -1160,6 +1171,7 @@
       $('rs-k-actual').textContent = est.cambio.inicioChile;
       $('rs-k-nueva').textContent = p.dia + ', ' + p.hora;
       $('rs-k-modalidad').textContent = est.modalidad;
+      $('rs-k-sindev').hidden = est.hora.sinDevolucion !== true;
       irAPaso(5);
       return;
     }
@@ -1170,6 +1182,7 @@
     pintarAcepta();
     $('rs-r-valor').textContent = typeof est.hora.valor === 'number' ? CLP.format(est.hora.valor) : '';
     $('rs-sindev').hidden = est.hora.sinDevolucion !== true;
+    $('rs-avisar-caja').hidden = est.avisoAdelantar !== true;
     irAPaso(2);
   });
 
@@ -1208,7 +1221,7 @@
     ocultarErrorAcepta();
     bloquear(b, 'Reservando...');
     var sigue = false;
-    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio, acepta: true })
+    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio, acepta: true, avisarAntes: est.avisoAdelantar === true && $('rs-avisar').checked })
       .then(function (r) {
         var d = r.datos;
         if (r.ok && d && d.ok === true && typeof d.urlPago === 'string' && /^https:\/\//.test(d.urlPago)) {
@@ -1366,6 +1379,7 @@
         nota.textContent = 'El plazo para cambiar esta hora venció el ' + h.plazoTexto + '.';
         card.appendChild(nota);
       }
+      if (typeof h.avisarAntes === 'boolean') card.appendChild(casillaAvisar(h));
       if (h.puedeCancelar) {
         var bx = document.createElement('button');
         bx.type = 'button';
@@ -1377,6 +1391,47 @@
       }
       lista.appendChild(card);
     });
+  }
+
+  // «Avísenme si se libera una hora antes»: se guarda al marcarla o desmarcarla.
+  function casillaAvisar(h) {
+    var caja = document.createElement('div');
+    var label = document.createElement('label');
+    label.className = 'rs-check';
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = h.avisarAntes === true;
+    var span = document.createElement('span');
+    span.textContent = 'Avísenme si se libera una hora antes';
+    var estado = document.createElement('p');
+    estado.className = 'rs-nota';
+    estado.setAttribute('role', 'status');
+    estado.hidden = true;
+    label.appendChild(input); label.appendChild(span);
+    caja.appendChild(label); caja.appendChild(estado);
+    input.addEventListener('change', function () {
+      var quiere = input.checked;
+      limpiarMsg();
+      input.disabled = true;
+      post('/agenda/avisar-antes', { token: est.sesion, solicitudId: h.solicitudId, avisar: quiere })
+        .then(function (r) {
+          var d = r.datos;
+          if (r.status === 401) { sesionVencida(); return; }
+          if (r.ok && d && d.ok === true) {
+            h.avisarAntes = quiere;
+            estado.textContent = quiere
+              ? 'Listo: le escribiremos por correo si se libera una hora anterior a esta.'
+              : 'Listo: ya no le avisaremos por esta hora.';
+            estado.hidden = false;
+            return;
+          }
+          input.checked = !quiere;
+          mostrarMsg(r.status === 429 ? MSG_LIMITE : MSG_RED);
+        })
+        .catch(function () { input.checked = !quiere; mostrarMsg(MSG_RED); })
+        .then(function () { input.disabled = false; });
+    });
+    return caja;
   }
 
   function iniciarCambio(h, boton) {
