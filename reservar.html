@@ -53,6 +53,30 @@
   .rs-hora-card{border:1.5px solid #cfd8d9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff}
   .rs-hora-card .rs-resumen{font-size:15px}
   .rs-titulo{font-size:18px;font-weight:700;color:#1A3A3C;margin:0}
+  .rs-ayuda{font-size:14px;color:#555;line-height:1.5;margin:0 0 6px}
+  .rs-error{font-size:14px;color:#8a1f1f;font-weight:600;margin:5px 0 0}
+  .rs-error[hidden]{display:none}
+  .rs-input[aria-invalid=true]{border-color:#b33a3a;background:#fff8f8}
+  textarea.rs-input{min-height:120px;resize:vertical;line-height:1.5}
+  .rs-check{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.55;color:#1A3A3C}
+  .rs-check input{flex:0 0 auto;width:22px;height:22px;margin:2px 0 0}
+  .rs-check input:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
+  .rs-check a{color:#1d7f86;font-weight:600}
+  .re-caja{position:relative}
+  .re-lista{list-style:none;margin:4px 0 0;padding:4px;position:absolute;left:0;right:0;z-index:20;background:#fff;border:1px solid #cfd8d9;border-radius:9px;box-shadow:0 6px 18px rgba(26,58,60,.15);max-height:320px;overflow-y:auto}
+  .re-lista[hidden],.re-bloque[hidden],.re-check[hidden],.re-enlace[hidden]{display:none}
+  .re-op{padding:10px 12px;border-radius:7px;cursor:pointer;font-size:16px;color:#1A3A3C;line-height:1.35}
+  .re-op[aria-selected=true],.re-op:hover{background:#e6f1f2}
+  .re-op small{display:block;font-size:13px;color:#555;margin-top:2px}
+  .re-nota{padding:10px 12px;font-size:15px;color:#555}
+  .re-elegido{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;border:2px solid #1d7f86;background:#f1f8f8;border-radius:9px;padding:12px 14px;font-size:16px;color:#1A3A3C;line-height:1.4}
+  .re-elegido small[hidden]{display:none}
+  .re-elegido small{display:block;font-size:13px;color:#555;margin-top:2px}
+  .re-enlace{background:none;border:0;padding:8px 0;margin:0;font:inherit;font-size:15px;font-weight:600;color:#1d7f86;text-decoration:underline;cursor:pointer;text-align:left}
+  .re-enlace:focus-visible{outline:3px solid #1A3A3C;outline-offset:2px}
+  .re-elegido .re-enlace{padding:0;flex:0 0 auto}
+  .re-check{margin:8px 0 0}
+  .re-bloque{margin-top:10px}
 </style>
 </head>
 <body>
@@ -76,13 +100,13 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="reservar.html" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
   <div class="container">
-    <h1 class="page-hero-title">Reservar hora</h1>
-    <p class="page-hero-sub">Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.</p>
+    <h1 class="page-hero-title" id="rs-titulo">Reservar hora</h1>
+    <p class="page-hero-sub" id="rs-sub">Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.</p>
   </div>
 </div>
 
@@ -96,7 +120,7 @@
 
       <!-- Paso 1 -->
       <form id="rs-p1" class="rs-paso" novalidate style="display:flex;flex-direction:column;gap:18px">
-        <fieldset class="rs-fieldset">
+        <fieldset class="rs-fieldset" id="rs-fs-doctora">
           <legend class="rs-legend">Doctora</legend>
           <div class="rs-opciones">
             <label class="rs-op"><input type="radio" name="doctora" value="cortes"><span><b>Dra. Camila Cortés</b>Psiquiatría infantojuvenil</span></label>
@@ -113,6 +137,7 @@
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
+        <button type="button" class="rs-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
       </form>
 
       <!-- Paso 2 -->
@@ -187,6 +212,176 @@
         <button type="button" class="rs-sec" id="rs-f-volver">Ver mis horas</button>
       </div>
 
+      <!-- Inscripción del paciente nuevo -->
+      <form id="rs-pi" class="rs-paso" novalidate hidden style="display:none;flex-direction:column;gap:18px" autocomplete="on">
+        <h2 class="rs-titulo" id="rs-pi-titulo" tabindex="-1">Inscripción del paciente</h2>
+        <p class="rs-nota">No encontramos una ficha con ese RUT. Para continuar, complete los datos del paciente.</p>
+        <p class="rs-nota">Por favor no escriba todo el texto en mayúsculas.</p>
+
+        <div data-campo="modalidadRequerida">
+          <label class="rs-label" for="ri-modalidadRequerida">Modalidad requerida</label>
+          <p class="rs-ayuda" id="ri-modalidadRequerida-a">La modalidad de atención que prefiere para la primera sesión. Si necesita una hora pronto, le recomendamos seleccionar "Cualquiera": una vez que ingresa como paciente puede cambiar de modalidad según su preferencia, todas las veces que lo desee.</p>
+          <select class="rs-input" id="ri-modalidadRequerida" required aria-describedby="ri-modalidadRequerida-a ri-modalidadRequerida-e">
+            <option value="">Seleccione</option>
+            <option>Presencial</option>
+            <option>Virtual</option>
+            <option>Cualquiera</option>
+          </select>
+          <p class="rs-error" id="ri-modalidadRequerida-e" hidden></p>
+        </div>
+        <div data-campo="nombres">
+          <label class="rs-label" for="ri-nombres">Nombres</label>
+          <input class="rs-input" id="ri-nombres" type="text" maxlength="80" autocomplete="given-name" required aria-describedby="ri-nombres-e">
+          <p class="rs-error" id="ri-nombres-e" hidden></p>
+        </div>
+        <div data-campo="apellidoPaterno">
+          <label class="rs-label" for="ri-apellidoPaterno">Apellido paterno</label>
+          <input class="rs-input" id="ri-apellidoPaterno" type="text" maxlength="80" autocomplete="off" required aria-describedby="ri-apellidoPaterno-e">
+          <p class="rs-error" id="ri-apellidoPaterno-e" hidden></p>
+        </div>
+        <div data-campo="apellidoMaterno">
+          <label class="rs-label" for="ri-apellidoMaterno">Apellido materno</label>
+          <input class="rs-input" id="ri-apellidoMaterno" type="text" maxlength="80" autocomplete="off" required aria-describedby="ri-apellidoMaterno-e">
+          <p class="rs-error" id="ri-apellidoMaterno-e" hidden></p>
+        </div>
+        <div data-campo="genero">
+          <label class="rs-label" for="ri-genero">Género</label>
+          <select class="rs-input" id="ri-genero" required aria-describedby="ri-genero-e">
+            <option value="">Seleccione</option>
+            <option>Mujer</option>
+            <option>Hombre</option>
+            <option>Mujer Trans</option>
+            <option>Hombre Trans</option>
+            <option>No Binario</option>
+          </select>
+          <p class="rs-error" id="ri-genero-e" hidden></p>
+        </div>
+        <div data-campo="rut">
+          <label class="rs-label" for="ri-rut">RUT del paciente</label>
+          <input class="rs-input" id="ri-rut" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="ri-rut-e">
+          <p class="rs-error" id="ri-rut-e" hidden></p>
+        </div>
+        <div data-campo="fechaNacimiento">
+          <label class="rs-label" for="ri-fechaNacimiento">Fecha de nacimiento</label>
+          <input class="rs-input" id="ri-fechaNacimiento" type="date" autocomplete="off" required aria-describedby="ri-fechaNacimiento-e">
+          <p class="rs-error" id="ri-fechaNacimiento-e" hidden></p>
+        </div>
+        <div data-campo="direccion">
+          <label class="rs-label" for="ri-direccion">Dirección</label>
+          <input class="rs-input" id="ri-direccion" type="text" maxlength="160" autocomplete="street-address" required aria-describedby="ri-direccion-e">
+          <p class="rs-error" id="ri-direccion-e" hidden></p>
+        </div>
+        <div data-campo="comuna">
+          <label class="rs-label" for="ri-comuna">Comuna</label>
+          <select class="rs-input" id="ri-comuna" required aria-describedby="ri-comuna-e"><option value="">Seleccione</option></select>
+          <p class="rs-error" id="ri-comuna-e" hidden></p>
+        </div>
+        <div data-campo="adultoResponsable">
+          <label class="rs-label" for="ri-adultoResponsable">Adulto responsable</label>
+          <p class="rs-ayuda" id="ri-adultoResponsable-a">Nombre completo</p>
+          <input class="rs-input" id="ri-adultoResponsable" type="text" maxlength="160" autocomplete="off" required aria-describedby="ri-adultoResponsable-a ri-adultoResponsable-e">
+          <p class="rs-error" id="ri-adultoResponsable-e" hidden></p>
+        </div>
+        <div data-campo="rutAdulto">
+          <label class="rs-label" for="ri-rutAdulto">RUT del adulto responsable</label>
+          <input class="rs-input" id="ri-rutAdulto" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-describedby="ri-rutAdulto-e">
+          <p class="rs-error" id="ri-rutAdulto-e" hidden></p>
+        </div>
+        <div data-campo="relacion">
+          <label class="rs-label" for="ri-relacion">Relación con el adulto responsable</label>
+          <select class="rs-input" id="ri-relacion" required aria-describedby="ri-relacion-e">
+            <option value="">Seleccione</option>
+            <option>Madre</option><option>Padre</option><option>Abuelo</option><option>Abuela</option>
+            <option>Madrastra</option><option>Padrastro</option><option>Tío</option><option>Tía</option>
+            <option>Tercero Significativo</option><option>Tutor Legal</option>
+          </select>
+          <p class="rs-error" id="ri-relacion-e" hidden></p>
+        </div>
+        <div data-campo="telefono">
+          <label class="rs-label" for="ri-telefono">Teléfono</label>
+          <p class="rs-ayuda" id="ri-telefono-a">Formato +569XXXXXXXX</p>
+          <input class="rs-input" id="ri-telefono" type="tel" inputmode="tel" maxlength="30" autocomplete="tel" required aria-describedby="ri-telefono-a ri-telefono-e">
+          <p class="rs-error" id="ri-telefono-e" hidden></p>
+        </div>
+        <div data-campo="correo">
+          <label class="rs-label" for="ri-correo">Correo</label>
+          <p class="rs-ayuda" id="ri-correo-a">Del adulto responsable</p>
+          <input class="rs-input" id="ri-correo" type="email" inputmode="email" maxlength="120" autocomplete="email" autocapitalize="none" spellcheck="false" required aria-describedby="ri-correo-a ri-correo-e">
+          <p class="rs-error" id="ri-correo-e" hidden></p>
+        </div>
+        <div data-campo="establecimiento">
+          <label class="rs-label" for="ri-establecimiento" id="re-etiqueta">Establecimiento educacional</label>
+          <div id="re-buscar">
+            <p class="rs-ayuda" id="ri-establecimiento-a">Escriba parte del nombre o de la comuna y elija de la lista.</p>
+            <div class="re-caja">
+              <input class="rs-input" id="ri-establecimiento" type="text" maxlength="160" autocomplete="off" autocapitalize="none" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="re-lista" aria-describedby="ri-establecimiento-a ri-establecimiento-e">
+              <ul class="re-lista" id="re-lista" role="listbox" aria-label="Establecimientos sugeridos" hidden></ul>
+            </div>
+          </div>
+          <div class="re-elegido re-bloque" id="re-elegido" hidden>
+            <div><span id="re-elegido-nombre"></span><small id="re-elegido-tipo"></small></div>
+            <button type="button" class="re-enlace" id="re-cambiar">Cambiar</button>
+          </div>
+          <div class="re-bloque" id="re-libre" hidden>
+            <p class="rs-ayuda" id="ri-establecimientoTexto-a">Escriba el nombre completo y la comuna.</p>
+            <input class="rs-input" id="ri-establecimientoTexto" type="text" maxlength="160" autocomplete="off" aria-label="Nombre del establecimiento educacional" aria-describedby="ri-establecimientoTexto-a ri-establecimiento-e">
+          </div>
+          <label class="rs-check re-check" id="re-sin-caja"><input type="checkbox" id="re-sin"><span>No asiste a un establecimiento</span></label>
+          <button type="button" class="re-enlace" id="re-nolista">Mi establecimiento no está en la lista</button>
+          <p class="rs-error" id="ri-establecimiento-e" hidden></p>
+          <div id="re-carrera" hidden>
+            <div class="re-bloque" data-campo="carrera">
+              <label class="rs-label" for="ri-carrera">Carrera (opcional)</label>
+              <input class="rs-input" id="ri-carrera" type="text" maxlength="120" autocomplete="off" aria-describedby="ri-carrera-e">
+              <p class="rs-error" id="ri-carrera-e" hidden></p>
+            </div>
+            <div class="re-bloque" data-campo="anioCarrera">
+              <label class="rs-label" for="ri-anioCarrera">Año que cursa (opcional)</label>
+              <input class="rs-input" id="ri-anioCarrera" type="number" inputmode="numeric" min="1" max="10" step="1" aria-describedby="ri-anioCarrera-e">
+              <p class="rs-error" id="ri-anioCarrera-e" hidden></p>
+            </div>
+          </div>
+        </div>
+        <div data-campo="profesionalDeriva">
+          <label class="rs-label" for="ri-profesionalDeriva">Profesional que deriva (opcional)</label>
+          <p class="rs-ayuda" id="ri-profesionalDeriva-a">Si alguien los derivó, escriba el nombre y apellido del profesional.</p>
+          <input class="rs-input" id="ri-profesionalDeriva" type="text" maxlength="160" autocomplete="off" aria-describedby="ri-profesionalDeriva-a ri-profesionalDeriva-e">
+          <p class="rs-error" id="ri-profesionalDeriva-e" hidden></p>
+        </div>
+        <div data-campo="tipoProfesionalDeriva">
+          <label class="rs-label" for="ri-tipoProfesionalDeriva">Tipo de profesional (opcional)</label>
+          <select class="rs-input" id="ri-tipoProfesionalDeriva" aria-describedby="ri-tipoProfesionalDeriva-e">
+            <option value="">Seleccione</option>
+            <option>Psicólogo/a</option><option>Neurólogo/a</option><option>Pediatra</option><option>Psiquiatra</option>
+            <option>Médico familiar</option><option>Fonoaudiólogo/a</option><option>Terapeuta ocupacional</option>
+            <option>Psicopedagogo/a</option><option>Educador/a diferencial</option><option>Colegio</option><option>Otro</option>
+          </select>
+          <p class="rs-error" id="ri-tipoProfesionalDeriva-e" hidden></p>
+        </div>
+        <div data-campo="motivo">
+          <label class="rs-label" for="ri-motivo">Motivo de consulta</label>
+          <p class="rs-ayuda" id="ri-motivo-a">Breve descripción de su motivo de consulta.</p>
+          <textarea class="rs-input" id="ri-motivo" maxlength="3000" autocomplete="off" required aria-describedby="ri-motivo-a ri-motivo-e"></textarea>
+          <p class="rs-error" id="ri-motivo-e" hidden></p>
+        </div>
+        <div data-campo="acepta">
+          <label class="rs-check" for="ri-acepta">
+            <input type="checkbox" id="ri-acepta" required aria-describedby="ri-acepta-e">
+            <span>Acepto que Badilla &amp; Cortés Servicios Neuropsiquiátricos Infantiles SpA (NeuroPsynfonía) trate los datos personales y de salud proporcionados en este formulario con el fin de gestionar la inscripción, coordinar atenciones médicas, mantener registros clínicos y administrativos, y comunicarse conmigo respecto del proceso de atención. Declaro haber leído y aceptado la <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a>.</span>
+          </label>
+          <p class="rs-error" id="ri-acepta-e" hidden></p>
+        </div>
+
+        <button type="submit" class="btn-primary rs-btn" id="rs-bi">Inscribir y continuar</button>
+        <button type="button" class="rs-sec" id="rs-vi">Volver</button>
+      </form>
+
+      <!-- Inscripción: pantalla final (lista de espera o modo de prueba) -->
+      <div id="rs-pl" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <div class="rs-msg" id="rs-l-msg" tabindex="-1"></div>
+        <a class="rs-sec" href="index.html">Ir al inicio</a>
+      </div>
+
       <noscript>
         <p class="rs-nota">Esta página necesita JavaScript. Si no puede activarlo, escríbanos por <a class="rs-link" href="https://wa.me/56951880121" target="_blank" rel="noopener">WhatsApp al +56 9 5188 0121</a>.</p>
       </noscript>
@@ -218,9 +413,10 @@
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
+      <a href="reservar.html" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
+      <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
+      <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>
@@ -241,14 +437,14 @@
   }
 
   var WA = 'https://wa.me/56951880121';
-  var REGISTRO = 'https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL';
+  var REGISTRO = 'reservar.html';
   var DOCTORAS = { cortes: 'Dra. Camila Cortés', badilla: 'Dra. Ximena Badilla' };
   var PASOS = ['Paso 1 de 3: identificación', 'Paso 2 de 3: elegir hora', 'Paso 3 de 3: resumen y pago'];
   // Con el enlace del correo de la lista de espera (?oferta=...) no hay identificación: son 2 pasos.
   var PASOS_OFERTA = ['', 'Paso 1 de 2: elegir hora', 'Paso 2 de 2: resumen y pago'];
   // Cambio de una hora ya pagada («Mis horas»): no se paga de nuevo.
   var PASOS_CAMBIO = { 1: 'Paso 1 de 2: elegir la hora nueva', 5: 'Paso 2 de 2: confirmar el cambio' };
-  var PASOS_MIS = { 3: 'Mis horas', 4: 'Cancelar la hora', 6: '' };
+  var PASOS_MIS = { 3: 'Mis horas', 4: 'Cancelar la hora', 6: '', 7: 'Inscripción del paciente', 8: '' };
   var CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
   // Estado sólo en memoria: nada de RUT, correo ni token va a localStorage.
@@ -256,7 +452,10 @@
   // El enlace del correo trae un token firmado (7 días); se guarda sólo en memoria y se usa en /agenda/oferta.
   est.oferta = new URLSearchParams(window.location.search).get('oferta') || '';
   // «Mis horas»: el enlace ?mis=... (120 días) entra sin pedir datos; la sesión de 30 minutos va sólo en memoria.
-  est.enlaceMis = est.oferta ? '' : (new URLSearchParams(window.location.search).get('mis') || '');
+  // «?mis» sin valor (o «?mis=1») abre la identificación orientada a «Mis horas»; con un valor largo es el enlace firmado.
+  var misParam = new URLSearchParams(window.location.search).get('mis');
+  est.modoMis = !est.oferta && misParam !== null && (misParam === '' || misParam === '1');
+  est.enlaceMis = est.oferta || est.modoMis ? '' : (misParam || '');
   est.sesion = '';
   est.mis = [];
   est.nombreMis = '';
@@ -264,7 +463,7 @@
   est.cancelar = null; // la hora que se está cancelando
 
   var $ = function (id) { return document.getElementById(id); };
-  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf')];
+  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf'), $('rs-pi'), $('rs-pl')];
   var msg = $('rs-msg');
 
   function enlace(url, texto) { return '<a href="' + url + '" target="_blank" rel="noopener">' + texto + '</a>'; }
@@ -341,8 +540,12 @@
 
   var MSG_RED = '<p>No pudimos completar la operación en este momento. Revise su conexión y vuelva a intentar.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
   var MSG_LIMITE = '<p>Demasiados intentos. Espere un minuto y vuelva a probar.</p>';
+  // Con ficha y otro correo no tiene sentido ofrecer inscribirse: sin el enlace al formulario.
+  var MSG_NEGATIVA_FICHA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
+    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
+  // «Mis horas» no distingue si hay ficha: ahí se mantiene el enlace a la inscripción (la misma página, sin «?mis»).
   var MSG_NEGATIVA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
-    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'este formulario') + '.</p>';
+    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'la página de reserva') + '.</p>';
 
   // ---------- Oferta de la lista de espera ----------
   var MSG_OFERTA_VENCIDA = '<p>Este enlace ya no está vigente. Sigue en la lista de espera y le avisaremos cuando se libere otra hora.</p><p>' + CONTACTO + '</p>';
@@ -384,6 +587,25 @@
   }
 
   // ---------- Paso 1 ----------
+  // Modo «Mis horas» del paso 1: sin doctora, con «Ver mis horas» como botón principal.
+  function aplicarModoMis(on) {
+    est.modoMis = on;
+    $('rs-titulo').textContent = on ? 'Cambiar o cancelar una hora' : 'Reservar hora';
+    $('rs-sub').textContent = on
+      ? 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas.'
+      : 'Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.';
+    $('rs-fs-doctora').style.display = on ? 'none' : '';
+    $('rs-b1').style.display = on ? 'none' : '';
+    $('rs-bnueva').hidden = !on;
+    $('rs-bnueva').style.display = on ? '' : 'none';
+    var b = $('rs-bmis');
+    b.className = on ? 'btn-primary rs-btn' : 'rs-btn rs-btn-sec';
+    b.textContent = on ? 'Ver mis horas' : 'Ya tengo una hora: cambiarla o cancelarla';
+    limpiarMsg();
+  }
+  $('rs-bnueva').addEventListener('click', function () { aplicarModoMis(false); });
+  if (est.modoMis) aplicarModoMis(true);
+
   var doctoraUrl = new URLSearchParams(window.location.search).get('doctora');
   if (doctoraUrl === 'cortes' || doctoraUrl === 'badilla') {
     document.querySelector('input[name=doctora][value=' + doctoraUrl + ']').checked = true;
@@ -404,7 +626,8 @@
           if (alTerminar) alTerminar();
           return true;
         }
-        if (r.ok && d && d.ok === false) { mostrarMsg(MSG_NEGATIVA); return false; }
+        if (r.ok && d && d.ok === false && d.inscribir === true) { abrirInscripcion(); return false; }
+        if (r.ok && d && d.ok === false) { mostrarMsg(MSG_NEGATIVA_FICHA); return false; }
         mostrarMsg(MSG_RED);
         return false;
       })
@@ -414,6 +637,7 @@
   $('rs-p1').addEventListener('submit', function (e) {
     e.preventDefault();
     if (est.ocupado) return;
+    if (est.modoMis) { $('rs-bmis').click(); return; }
     limpiarMsg();
     var sel = document.querySelector('input[name=doctora]:checked');
     var rut = $('rs-rut').value;
@@ -425,6 +649,397 @@
     var b = $('rs-b1');
     bloquear(b, 'Buscando horas...');
     cargarHoras(b).then(function () { liberar(b); });
+  });
+
+
+  // ---------- Inscripción de un paciente nuevo ----------
+  // Los datos viven sólo en los campos del formulario: nada va a localStorage ni a la URL.
+  var CAMPOS_INSC = ['modalidadRequerida', 'nombres', 'apellidoPaterno', 'apellidoMaterno', 'genero', 'rut', 'fechaNacimiento',
+    'direccion', 'comuna', 'adultoResponsable', 'rutAdulto', 'relacion', 'telefono', 'correo', 'establecimiento',
+    'carrera', 'anioCarrera', 'profesionalDeriva', 'tipoProfesionalDeriva', 'motivo', 'acepta'];
+  var COMUNAS = ['Ancud', 'Angol', 'Carahue', 'Chol Chol', 'Chonchi', 'Collipulli', 'Cunco', 'Curacautín', 'Imperial', 'Labranza',
+    'Lautaro', 'Loncoche', 'Nueva Imperial', 'Padre Las Casas', 'Pitrufquén', 'Pucón', 'Saavedra', 'Teodoro Schmidt', 'Tirúa',
+    'Toltén', 'Victoria', 'Vilcún', 'Villarrica', 'Coyhaique', 'Traiguén', 'Osorno', 'Panguipulli', 'Lanco', 'Maipú', 'Lota',
+    'Puerto Natales', 'Quellón', 'Ercilla'];
+  // Temuco primero, el resto en orden alfabético y «Otra» al final.
+  COMUNAS.sort(function (a, b) { return a.localeCompare(b, 'es'); });
+  ['Temuco'].concat(COMUNAS, ['Otra']).forEach(function (c) {
+    var o = document.createElement('option');
+    o.textContent = c;
+    $('ri-comuna').appendChild(o);
+  });
+
+  var ETIQUETAS_INSC = {
+    modalidadRequerida: 'la modalidad requerida', nombres: 'los nombres', apellidoPaterno: 'el apellido paterno',
+    apellidoMaterno: 'el apellido materno', genero: 'el género', rut: 'el RUT del paciente', fechaNacimiento: 'la fecha de nacimiento',
+    direccion: 'la dirección', comuna: 'la comuna', adultoResponsable: 'el nombre del adulto responsable',
+    rutAdulto: 'el RUT del adulto responsable', relacion: 'la relación con el adulto responsable', telefono: 'el teléfono',
+    correo: 'el correo', establecimiento: 'el establecimiento educacional', profesionalDeriva: 'el profesional que deriva',
+    carrera: 'la carrera', anioCarrera: 'el año que cursa (de 1 a 10)', tipoProfesionalDeriva: 'el tipo de profesional',
+    motivo: 'el motivo de consulta', acepta: 'la aceptación del tratamiento de datos'
+  };
+
+  // Elemento que lleva la marca de error y el foco: para el establecimiento, el que está a la vista.
+  function elInsc(c) {
+    if (c !== 'establecimiento') return $('ri-' + c);
+    if (estab.modo === 'elegido') return $('re-cambiar');
+    if (estab.modo === 'sin') return $('re-sin');
+    return estab.modo === 'libre' ? $('ri-establecimientoTexto') : $('ri-establecimiento');
+  }
+
+  function limpiarErroresInsc() {
+    CAMPOS_INSC.forEach(function (c) {
+      var er = $('ri-' + c + '-e');
+      if (c === 'establecimiento') {
+        ['ri-establecimiento', 'ri-establecimientoTexto'].forEach(function (i) { $(i).removeAttribute('aria-invalid'); });
+      } else {
+        $('ri-' + c).removeAttribute('aria-invalid');
+      }
+      er.hidden = true;
+      er.textContent = '';
+    });
+  }
+
+  function marcarErrorInsc(campo, texto) {
+    var el = elInsc(campo), er = $('ri-' + campo + '-e');
+    if (!el || !er) return;
+    el.setAttribute('aria-invalid', 'true');
+    er.textContent = texto;
+    er.hidden = false;
+  }
+
+  // Fecha de hoy y de hace 30 años, AAAA-MM-DD, para limitar el selector de fecha.
+  function limitesFecha() {
+    var hoy = new Date();
+    function f(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+    var min = new Date(hoy.getFullYear() - 30, hoy.getMonth(), hoy.getDate());
+    return { max: f(hoy), min: f(min) };
+  }
+
+  function fechaValida(v, lim) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+    if (!m) return false;
+    var d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (d.getFullYear() !== Number(m[1]) || d.getMonth() !== Number(m[2]) - 1 || d.getDate() !== Number(m[3])) return false;
+    return v <= lim.max && v >= lim.min;
+  }
+
+  function leerInsc() {
+    var v = {};
+    CAMPOS_INSC.forEach(function (c) {
+      var el = $('ri-' + c);
+      v[c] = c === 'acepta' ? el.checked : el.value.trim();
+    });
+    v.establecimiento = estab.modo === 'libre' ? $('ri-establecimientoTexto').value.trim() : '';
+    v.establecimientoId = estab.modo === 'elegido' ? estab.elegido.id : '';
+    v.sinEstablecimiento = estab.modo === 'sin';
+    v.mostrarCarrera = estab.modo === 'elegido' && estab.elegido.tipo === TIPO_UNIVERSIDAD;
+    return v;
+  }
+
+  // Devuelve { campo: mensaje } con lo que no pasa la revisión.
+  function revisarInsc(v) {
+    var e = {}, lim = limitesFecha();
+    ['modalidadRequerida', 'genero', 'comuna', 'relacion'].forEach(function (c) { if (!v[c]) e[c] = 'Seleccione una opción.'; });
+    ['nombres', 'apellidoPaterno', 'apellidoMaterno', 'direccion', 'adultoResponsable', 'motivo'].forEach(function (c) {
+      if (!v[c]) e[c] = 'Este dato es obligatorio.';
+    });
+    if (estab.modo === 'buscar') e.establecimiento = 'Elija un establecimiento de la lista, marque que no asiste o indique el suyo.';
+    else if (estab.modo === 'libre' && !v.establecimiento) e.establecimiento = 'Este dato es obligatorio.';
+    if (v.mostrarCarrera && v.anioCarrera !== '') {
+      var n = Number(v.anioCarrera);
+      if (!/^\d{1,2}$/.test(v.anioCarrera) || n < 1 || n > 10) e.anioCarrera = 'Ingrese un número del 1 al 10.';
+    }
+    if (!rutValido(v.rut)) e.rut = 'El RUT no es válido. Revise los números y el dígito verificador.';
+    if (!rutValido(v.rutAdulto)) e.rutAdulto = 'El RUT no es válido. Revise los números y el dígito verificador.';
+    if (!fechaValida(v.fechaNacimiento, lim)) e.fechaNacimiento = 'Ingrese una fecha de nacimiento válida.';
+    var digitos = v.telefono.replace(/\D/g, '').length;
+    if (digitos < 8 || digitos > 15) e.telefono = 'Ingrese un teléfono válido, por ejemplo +56912345678.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.correo)) e.correo = 'El correo no es válido. Escríbalo completo, por ejemplo nombre@correo.cl.';
+    if (!v.acepta) e.acepta = 'Para continuar debe aceptar el tratamiento de los datos.';
+    return e;
+  }
+
+  function mostrarErroresInsc(errores) {
+    var lista = CAMPOS_INSC.filter(function (c) { return errores[c]; });
+    if (!lista.length) return;
+    lista.forEach(function (c) { marcarErrorInsc(c, errores[c]); });
+    mostrarMsg('<p>Revise los datos marcados e intente de nuevo.</p>');
+    elInsc(lista[0]).focus();
+  }
+
+  function abrirInscripcion() {
+    limpiarMsg();
+    limpiarErroresInsc();
+    cargarEstablecimientos();
+    var lim = limitesFecha();
+    $('ri-fechaNacimiento').max = lim.max;
+    $('ri-fechaNacimiento').min = lim.min;
+    $('ri-rut').value = est.rut;
+    $('ri-correo').value = est.correo;
+    $('rs-bi').textContent = est.doctora === 'badilla' ? 'Inscribir y continuar' : 'Inscribir';
+    irAPaso(7, false);
+    var t = $('rs-pi-titulo');
+    t.focus();
+    if (window.scrollTo) window.scrollTo({ top: 0 });
+  }
+
+  function mostrarFinalInsc(html) {
+    $('rs-l-msg').innerHTML = html;
+    irAPaso(8, false);
+    $('rs-l-msg').focus();
+    if (window.scrollTo) window.scrollTo({ top: 0 });
+  }
+
+  $('rs-vi').addEventListener('click', function () { limpiarMsg(); irAPaso(0); });
+
+  $('rs-pi').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (est.ocupado) return;
+    limpiarMsg();
+    limpiarErroresInsc();
+    var v = leerInsc();
+    var errores = revisarInsc(v);
+    if (Object.keys(errores).length) { mostrarErroresInsc(errores); return; }
+    var cuerpo = {
+      doctora: est.doctora, modalidadRequerida: v.modalidadRequerida, nombres: v.nombres, apellidoPaterno: v.apellidoPaterno,
+      apellidoMaterno: v.apellidoMaterno, genero: v.genero, rut: v.rut, fechaNacimiento: v.fechaNacimiento, direccion: v.direccion,
+      comuna: v.comuna, adultoResponsable: v.adultoResponsable, rutAdulto: v.rutAdulto, relacion: v.relacion, telefono: v.telefono,
+      correo: v.correo, motivo: v.motivo, acepta: true
+    };
+    if (v.establecimientoId) cuerpo.establecimientoId = v.establecimientoId;
+    else if (v.sinEstablecimiento) cuerpo.sinEstablecimiento = true;
+    else cuerpo.establecimiento = v.establecimiento;
+    if (v.mostrarCarrera) {
+      if (v.carrera) cuerpo.carrera = v.carrera;
+      if (v.anioCarrera !== '') cuerpo.anioCarrera = Number(v.anioCarrera);
+    }
+    if (v.profesionalDeriva) cuerpo.profesionalDeriva = v.profesionalDeriva;
+    if (v.tipoProfesionalDeriva) cuerpo.tipoProfesionalDeriva = v.tipoProfesionalDeriva;
+    var b = $('rs-bi');
+    bloquear(b, 'Inscribiendo...');
+    post('/agenda/inscribir', cuerpo)
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 400 && d && Array.isArray(d.campos) && d.campos.length) {
+          var malos = {};
+          d.campos.forEach(function (c) {
+            if (CAMPOS_INSC.indexOf(c) !== -1) malos[c] = 'Revise ' + ETIQUETAS_INSC[c] + '.';
+          });
+          if (malos.establecimiento && estab.modo === 'elegido') {
+            // El elegido ya no está disponible: se vuelve al buscador con la lista al día.
+            estab.lista = null; estab.elegido = null; estab.modo = 'buscar';
+            cargarEstablecimientos();
+            pintarEstab();
+          }
+          if (Object.keys(malos).length) { mostrarErroresInsc(malos); return; }
+        }
+        if (r.ok && d && d.ok === true) {
+          if (d.siguiente === 'horas' && typeof d.token === 'string' && Array.isArray(d.horas)) {
+            // Se continúa como si las horas vinieran de /agenda/horas; el correo y el RUT quedan para la reserva.
+            est.rut = v.rut; est.correo = v.correo;
+            est.token = d.token;
+            est.paciente = (d.paciente && d.paciente.nombre) || '';
+            est.horas = d.horas;
+            est.hora = null;
+            pintarHoras();
+            irAPaso(1);
+            return;
+          }
+          if (d.siguiente === 'lista_espera') {
+            mostrarFinalInsc('<p>La inscripción quedó registrada. El paciente queda en lista de espera con la Dra. Camila Cortés: cuando se libere una hora, recibirá un correo para reservarla y pagarla en línea.</p>');
+            return;
+          }
+          if (d.siguiente === 'prueba') {
+            mostrarFinalInsc('<p>Modo de prueba: los datos son válidos, pero no se creó ninguna ficha.</p>');
+            return;
+          }
+        }
+        if (d && d.motivo === 'ya_inscrito') {
+          mostrarMsg('<p>Ya existe una ficha con ese RUT. Si el correo que ingresó no es el registrado, escríbanos por ' + enlace(WA, 'WhatsApp al +56 9 5188 0121') + ' y secretaría le ayudará.</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(b); });
+  });
+
+  // ---------- Establecimiento educacional: buscador con lista del Worker ----------
+  var TIPO_UNIVERSIDAD = 'Universidad o instituto';
+  var MAX_SUGERENCIAS = 8;
+  // modo: buscar (aún sin elegir), elegido, sin (no asiste) o libre (texto escrito a mano)
+  var estab = { lista: null, cargando: false, modo: 'buscar', elegido: null, abierto: false, sugeridos: [], activo: -1 };
+
+  function plano(t) {
+    var x = String(t || '').toLowerCase();
+    return x.normalize ? x.normalize('NFD').replace(/[̀-ͯ]/g, '') : x;
+  }
+
+  function cargarEstablecimientos() {
+    if (estab.lista || estab.cargando) return;
+    estab.cargando = true;
+    fetch(WORKER_URL + '/agenda/establecimientos', { method: 'GET', credentials: 'omit', referrerPolicy: 'no-referrer' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; })
+      .then(function (d) {
+        estab.cargando = false;
+        if (d && d.ok === true && Array.isArray(d.establecimientos)) {
+          estab.lista = d.establecimientos.filter(function (x) { return x && typeof x.id === 'string' && typeof x.nombre === 'string'; })
+            .map(function (x) { return { id: x.id, nombre: x.nombre, comuna: x.comuna || '', tipo: x.tipo || '', _n: plano(x.nombre + ' ' + (x.comuna || '') + ' ' + (Array.isArray(x.alias) ? x.alias.join(' ') : '')) }; });
+          if (!estab.lista.length) { estab.lista = null; estab.fallo = true; }
+        } else {
+          estab.fallo = true;
+        }
+        // Sin lista: se usa directamente el campo de texto libre.
+        if (estab.fallo && estab.modo === 'buscar') estab.modo = 'libre';
+        pintarEstab();
+        if (estab.abierto) mostrarSugerencias();
+      });
+  }
+
+  function etiquetaEstab(x) { return x.nombre + (x.comuna ? ' · ' + x.comuna : ''); }
+
+  function pintarEstab() {
+    var m = estab.modo, falla = !!estab.fallo;
+    $('re-buscar').hidden = m !== 'buscar';
+    $('re-elegido').hidden = m !== 'elegido';
+    $('re-libre').hidden = m !== 'libre';
+    $('re-sin-caja').hidden = false;
+    $('re-sin').checked = m === 'sin';
+    // Si la lista no cargó, no hay a dónde volver: el enlace sólo se ofrece con lista.
+    $('re-nolista').hidden = falla || m === 'sin' || m === 'elegido';
+    $('re-nolista').textContent = m === 'libre' ? 'Buscar en la lista' : 'Mi establecimiento no está en la lista';
+    var tipo = m === 'elegido' ? estab.elegido.tipo : '';
+    $('re-carrera').hidden = tipo !== TIPO_UNIVERSIDAD;
+    if (m === 'elegido') {
+      $('re-elegido-nombre').textContent = etiquetaEstab(estab.elegido);
+      $('re-elegido-tipo').textContent = estab.elegido.tipo;
+      $('re-elegido-tipo').hidden = !estab.elegido.tipo;
+    }
+    if (m !== 'buscar') cerrarSugerencias();
+  }
+
+  function cerrarSugerencias() {
+    estab.abierto = false; estab.activo = -1;
+    var ul = $('re-lista');
+    ul.hidden = true; ul.innerHTML = '';
+    var inp = $('ri-establecimiento');
+    inp.setAttribute('aria-expanded', 'false');
+    inp.removeAttribute('aria-activedescendant');
+  }
+
+  function marcarActivo(i) {
+    estab.activo = i;
+    var ops = $('re-lista').querySelectorAll('[role=option]');
+    Array.prototype.forEach.call(ops, function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+    var inp = $('ri-establecimiento');
+    if (i >= 0 && ops[i]) {
+      inp.setAttribute('aria-activedescendant', ops[i].id);
+      if (ops[i].scrollIntoView) ops[i].scrollIntoView({ block: 'nearest' });
+    } else {
+      inp.removeAttribute('aria-activedescendant');
+    }
+  }
+
+  function mostrarSugerencias() {
+    var ul = $('re-lista'), inp = $('ri-establecimiento');
+    estab.abierto = true;
+    ul.innerHTML = '';
+    estab.sugeridos = [];
+    estab.activo = -1;
+    if (!estab.lista) {
+      if (estab.cargando) {
+        var li = document.createElement('li');
+        li.className = 're-nota'; li.setAttribute('role', 'presentation'); li.textContent = 'Cargando la lista...';
+        ul.appendChild(li);
+      } else { cerrarSugerencias(); return; }
+    } else {
+      var q = plano(inp.value.trim());
+      estab.sugeridos = estab.lista.filter(function (x) { return !q || x._n.indexOf(q) !== -1; }).slice(0, MAX_SUGERENCIAS);
+      if (!estab.sugeridos.length) {
+        var vacio = document.createElement('li');
+        vacio.className = 're-nota'; vacio.setAttribute('role', 'presentation');
+        vacio.textContent = 'No hay coincidencias. Si no lo encuentra, use «Mi establecimiento no está en la lista».';
+        ul.appendChild(vacio);
+      }
+      estab.sugeridos.forEach(function (x, i) {
+        var li = document.createElement('li');
+        li.className = 're-op'; li.id = 're-op-' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
+        li.appendChild(document.createTextNode(etiquetaEstab(x)));
+        if (x.tipo) { var t = document.createElement('small'); t.textContent = x.tipo; li.appendChild(t); }
+        // mousedown (y no click) para elegir antes de que el campo pierda el foco
+        li.addEventListener('mousedown', function (ev) { ev.preventDefault(); elegirEstab(x); });
+        ul.appendChild(li);
+      });
+    }
+    ul.hidden = false;
+    inp.setAttribute('aria-expanded', 'true');
+  }
+
+  function elegirEstab(x) {
+    estab.elegido = x; estab.modo = 'elegido';
+    $('ri-establecimiento').value = '';
+    $('ri-establecimiento-e').hidden = true;
+    $('ri-establecimiento').removeAttribute('aria-invalid');
+    pintarEstab();
+    $('re-cambiar').focus();
+  }
+
+  $('ri-establecimiento').addEventListener('focus', function () { cargarEstablecimientos(); mostrarSugerencias(); });
+  $('ri-establecimiento').addEventListener('input', function () { $('ri-establecimiento-e').hidden = true; mostrarSugerencias(); });
+  $('ri-establecimiento').addEventListener('blur', cerrarSugerencias);
+  $('ri-establecimiento').addEventListener('keydown', function (ev) {
+    var n = estab.sugeridos.length;
+    if (ev.key === 'ArrowDown') {
+      ev.preventDefault();
+      if (!estab.abierto) mostrarSugerencias();
+      if (n) marcarActivo(estab.activo + 1 >= n ? 0 : estab.activo + 1);
+    } else if (ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      if (!estab.abierto) mostrarSugerencias();
+      if (n) marcarActivo(estab.activo <= 0 ? n - 1 : estab.activo - 1);
+    } else if (ev.key === 'Enter') {
+      if (estab.abierto && estab.activo >= 0 && estab.sugeridos[estab.activo]) {
+        ev.preventDefault();
+        elegirEstab(estab.sugeridos[estab.activo]);
+      } else if (estab.abierto) {
+        ev.preventDefault(); // Enter en el buscador no envía el formulario
+      }
+    } else if (ev.key === 'Escape') {
+      if (estab.abierto) { ev.preventDefault(); cerrarSugerencias(); }
+    }
+  });
+  $('re-cambiar').addEventListener('click', function () {
+    estab.elegido = null; estab.modo = 'buscar';
+    pintarEstab();
+    $('ri-establecimiento').focus();
+  });
+  $('re-sin').addEventListener('change', function () {
+    estab.modo = this.checked ? 'sin' : (estab.fallo ? 'libre' : 'buscar');
+    $('ri-establecimiento-e').hidden = true;
+    pintarEstab();
+  });
+  $('re-nolista').addEventListener('click', function () {
+    var aLibre = estab.modo !== 'libre';
+    estab.modo = aLibre ? 'libre' : 'buscar';
+    $('ri-establecimiento-e').hidden = true;
+    pintarEstab();
+    $(aLibre ? 'ri-establecimientoTexto' : 'ri-establecimiento').focus();
+  });
+  $('ri-establecimientoTexto').addEventListener('input', function () {
+    this.removeAttribute('aria-invalid'); $('ri-establecimiento-e').hidden = true;
+  });
+  pintarEstab();
+
+  // Al corregir un campo marcado, se le quita la marca.
+  CAMPOS_INSC.forEach(function (c) {
+    var el = $('ri-' + c);
+    if (c === 'establecimiento') return; // lo maneja pintarEstab
+    var quitar = function () { el.removeAttribute('aria-invalid'); $('ri-' + c + '-e').hidden = true; };
+    el.addEventListener('input', quitar);
+    el.addEventListener('change', quitar);
   });
 
   // ---------- Paso 2 ----------
@@ -561,7 +1176,7 @@
           mostrarMsg('<p>Pasaron más de 30 minutos desde que verificó los datos y la sesión venció. Por seguridad, vuelva a ingresarlos para ver las horas.</p>');
           return;
         }
-        if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA); return; }
+        if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA_FICHA); return; }
         if (motivo === 'flow_no_disponible') {
           mostrarMsg('<p>El sistema de pago no está disponible en este momento. Su hora no quedó retenida. Vuelva a intentar en unos minutos.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>');
           return;

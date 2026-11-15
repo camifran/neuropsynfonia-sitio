@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2AADB5">
-  <meta name="description" content="Agende su hora en NeuroPsynfonía — inscríbase como paciente o solicite hora con la Dra. Badilla o la Dra. Cortés.">
+  <meta name="description" content="Reserve y pague su hora en NeuroPsynfonía en un solo paso, con la Dra. Badilla o la Dra. Cortés. Presencial o virtual.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Agendar hora | NeuroPsynfonía">
   <meta property="og:description" content="Agende su hora en NeuroPsynfonía — Neurología $65.000 / Psiquiatría $95.000. Presencial o virtual, Temuco.">
@@ -41,13 +41,13 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="reservar.html" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
   <div class="container">
     <h1 class="page-hero-title">Agendar hora</h1>
-    <p class="page-hero-sub">El proceso es distinto según la especialidad — elija a continuación.</p>
+    <p class="page-hero-sub">Se reserva y se paga en línea, en un solo paso. El proceso varía según la especialidad.</p>
   </div>
 </div>
 
@@ -62,12 +62,12 @@
           <span class="agendar-dot" style="background:var(--teal);width:10px;height:10px;border-radius:50%;flex-shrink:0"></span>
           <div class="qa-label" style="color:var(--teal-d)">Neurología pediátrica</div>
         </div>
-        <div class="qa-desc">Puede agendar directamente, sin inscripción previa.</div>
+        <div class="qa-desc">Reserve y pague su hora en línea, presencial o virtual. El paciente debe estar inscrito; si aún no lo está, puede inscribirse primero.</div>
         <div class="espera-badge espera-t"><i class="ti ti-check"></i> Sin lista de espera</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-t" style="text-align:center">Solicitar hora — Dra. Badilla (presencial/virtual) →</a>
+          <a href="reservar.html?doctora=badilla" class="btn-reserva btn-reserva-t" style="text-align:center">Reservar hora con la Dra. Badilla (presencial/virtual) →</a>
         </div>
-        <div style="font-size:13px;color:#888;margin-top:6px">Recibirá confirmación por correo.</div>
+        <div style="font-size:13px;color:#888;margin-top:6px">La hora queda confirmada al pagar y recibirá un correo. <a href="reservar.html?mis">Cambiar o cancelar una hora</a></div>
       </div>
 
       <!-- PSIQUIATRÍA: inscripción primero -->
@@ -76,13 +76,13 @@
           <span class="agendar-dot" style="background:var(--rosa);width:10px;height:10px;border-radius:50%;flex-shrink:0"></span>
           <div class="qa-label" style="color:var(--rosa-d)">Psiquiatría infantil y adolescente</div>
         </div>
-        <div class="qa-desc">Paciente nuevo: primero inscríbase. Le contactamos en ~10 días hábiles para la primera hora presencial. Para teleconsulta, puede agendar directamente.</div>
-        <div class="espera-badge espera-r"><i class="ti ti-clock"></i> ~10 días hábiles para presencial</div>
+        <div class="qa-desc">Paciente nuevo: primero inscríbase. Queda en lista de espera y, cuando se libera una hora, recibe un correo para reservarla y pagarla en línea. Quienes ya tuvieron su primera sesión con la Dra. Cortés pueden reservar y pagar su hora en línea, presencial o virtual.</div>
+        <div class="espera-badge espera-r"><i class="ti ti-clock"></i> Lista de espera</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse (paciente nuevo) →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa — Dra. Cortés →</a>
+          <a href="reservar.html" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse (paciente nuevo) →</a>
+          <a href="reservar.html?doctora=cortes" class="btn-reserva btn-reserva-r" style="text-align:center">Reservar hora con la Dra. Cortés (ya soy paciente) →</a>
         </div>
-        <div style="font-size:13px;color:#888;margin-top:6px">¿Ya es paciente? Solicite hora igual que para teleconsulta.</div>
+        <div style="font-size:13px;color:#888;margin-top:6px">¿Ya tuvo su primera sesión? Reserve y pague su hora en línea. <a href="reservar.html?mis">Cambiar o cancelar una hora</a></div>
       </div>
 
     </div>
@@ -104,14 +104,14 @@
         <div class="eval-timeline" style="margin-top:16px">
           <div class="eval-step">
             <div class="eval-left"><div class="eval-num en-t">1</div><div class="eval-line"></div></div>
-            <div class="eval-body"><div class="etitle">Solicite su hora</div><div class="edesc">Complete el formulario de solicitud de hora de la Dra. Badilla — presencial u online. No se requiere inscripción previa.</div></div>
+            <div class="eval-body"><div class="etitle">Reserve y pague su hora</div><div class="edesc">Ingrese el RUT del paciente y su correo, elija presencial o virtual y escoja una hora disponible de la Dra. Badilla. El pago se hace en el mismo paso, por transferencia o tarjeta, a través de Flow. Si el paciente aún no está inscrito, puede hacerlo primero en <a href="reservar.html">el formulario de inscripción</a>.</div></div>
           </div>
           <div class="eval-step">
             <div class="eval-left"><div class="eval-num en-t">2</div></div>
-            <div class="eval-body"><div class="etitle">Confirmación por correo</div><div class="edesc">Recibirá un correo con la confirmación. Si no llega, contáctenos por WhatsApp.</div></div>
+            <div class="eval-body"><div class="etitle">Confirmación por correo</div><div class="edesc">La hora queda confirmada al pagar y llega un correo con el detalle. Si no llega, contáctenos por WhatsApp. Para cambiarla o cancelarla, use «Cambiar o cancelar una hora».</div></div>
           </div>
         </div>
-        <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-t" style="text-align:center;margin-top:16px">Solicitar hora →</a>
+        <a href="reservar.html?doctora=badilla" class="btn-reserva btn-reserva-t" style="text-align:center;margin-top:16px">Reservar hora →</a>
       </div>
 
       <div class="agendar-col agendar-col-r">
@@ -126,16 +126,16 @@
           </div>
           <div class="eval-step">
             <div class="eval-left"><div class="eval-num en-r2">2</div><div class="eval-line"></div></div>
-            <div class="eval-body"><div class="etitle">Le contactamos</div><div class="edesc">Revisamos su solicitud y le contactamos en <strong>aproximadamente 10 días hábiles</strong> para coordinar la primera hora presencial.</div></div>
+            <div class="eval-body"><div class="etitle">Le avisamos por correo</div><div class="edesc">Queda en lista de espera. Cuando se libera una hora, recibe un correo con las horas disponibles para la primera consulta. La hora se reserva pagándola en línea y queda para la primera familia que complete el pago.</div></div>
           </div>
           <div class="eval-step">
             <div class="eval-left"><div class="eval-num en-r3">3</div></div>
-            <div class="eval-body"><div class="etitle">Solicite su hora</div><div class="edesc">Una vez inscrito, puede solicitar horas de seguimiento directamente. Recibirá confirmación por correo.</div></div>
+            <div class="eval-body"><div class="etitle">Reserve y pague su hora</div><div class="edesc">Una vez que ya tuvo su primera sesión con la Dra. Cortés, puede reservar y pagar sus horas de seguimiento en línea, presencial o virtual. La hora queda confirmada al pagar y recibirá un correo.</div></div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
-          <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="btn-reserva btn-reserva-r" style="text-align:center">Teleconsulta directa →</a>
+          <a href="reservar.html" class="btn-primary" style="background:var(--rosa);text-align:center">Inscribirse →</a>
+          <a href="reservar.html?doctora=cortes" class="btn-reserva btn-reserva-r" style="text-align:center">Reservar hora (ya soy paciente) →</a>
         </div>
       </div>
 
@@ -147,7 +147,7 @@
 <section class="section bg-gray" id="formularios">
   <div class="container">
     <h2 class="section-title">Valores y pago</h2>
-    <p class="section-sub">Atención particular · pago por transferencia o tarjeta</p>
+    <p class="section-sub">Atención particular · pago en línea por transferencia o tarjeta, a través de Flow</p>
     <div class="quickaccess-grid" style="margin-bottom:20px">
       <div class="quickaccess-card qa-new">
         <div class="qa-label" style="color:var(--teal-d)">Neurología pediátrica</div>
@@ -162,7 +162,7 @@
     </div>
     <p style="font-size:14px;color:#888;line-height:1.7">
       Atendemos de forma particular. Si tiene Isapre, puede solicitar reembolso según las condiciones de su plan.<br>
-      El pago por sí solo no completa el agendamiento — debe completar el formulario y esperar confirmación por correo.
+      La hora queda reservada y confirmada al completar el pago en la página de reserva. Mientras se paga, la hora queda retenida 30 minutos; si el pago no se completa, queda libre. Si no puede usar la página, puede pedir su hora por el <a href="https://wa.me/56951880121" target="_blank" rel="noopener">WhatsApp de secretaría</a>.
     </p>
   </div>
 </section>
@@ -175,11 +175,11 @@
     <div class="faq-list">
       <div class="faq-item open" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cómo es el agendamiento en neurología? <span class="faq-toggle">+</span></div>
-        <div class="faq-a">En neurología puede agendar directamente: complete el formulario de solicitud de hora y recibirá confirmación por correo. No hay inscripción previa ni lista de espera.</div>
+        <div class="faq-a">En neurología puede reservar directamente en la página de reserva, si el paciente está inscrito: elige la modalidad y la hora, paga en el mismo paso y la hora queda confirmada, con un correo de aviso. No hay lista de espera.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cómo es el agendamiento en psiquiatría? <span class="faq-toggle">+</span></div>
-        <div class="faq-a">Para psiquiatría presencial, el proceso tiene dos pasos: inscríbase y le contactaremos en aproximadamente 10 días hábiles para la primera hora. Para teleconsulta con la Dra. Cortés, puede solicitar hora directamente sin esperar.</div>
+        <div class="faq-a">En psiquiatría, el paciente nuevo se inscribe y queda en lista de espera. Cuando se libera una hora, recibe un correo para reservarla y pagarla en línea. Quienes ya tuvieron su primera sesión con la Dra. Cortés pueden reservar y pagar sus horas en línea, presencial o virtual, sin esperar.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cuánto dura una consulta? <span class="faq-toggle">+</span></div>
@@ -199,7 +199,11 @@
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Cómo se realiza el pago? <span class="faq-toggle">+</span></div>
-        <div class="faq-a">Puede pagar por transferencia bancaria o a través de Flow (tarjeta u otros medios), sin recargo: el valor de la consulta es el mismo con cualquier medio de pago. El detalle del pago se entrega dentro del proceso de agendamiento. Importante: el pago por sí solo no completa el agendamiento — debe completar también el formulario de solicitud de hora y esperar la confirmación por correo.</div>
+        <div class="faq-a">El pago se hace en la misma página de reserva, a través de Flow, por transferencia o tarjeta, sin recargo: el valor de la consulta es el mismo con cualquier medio de pago. La hora queda confirmada al completar el pago y llega un correo a la dirección de la ficha. Si no puede usar la página, puede pedir su hora por el WhatsApp de secretaría.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">¿Puedo cambiar o cancelar mi hora? <span class="faq-toggle">+</span></div>
+        <div class="faq-a">Sí. Desde <a href="reservar.html?mis">Cambiar o cancelar una hora</a> puede ver sus horas, cambiarlas por otra o cancelarlas, dentro del plazo que indican los <a href="terminos.html">términos y condiciones</a>.</div>
       </div>
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">¿Emiten informes para colegios o SENADIS? <span class="faq-toggle">+</span></div>
@@ -246,9 +250,10 @@
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagiDKIL3EeL7fdU0/form" target="_blank" rel="noopener" class="footer-link">Hora Neurología</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/pagQHD0CK3rYef9oD/form" target="_blank" rel="noopener" class="footer-link">Teleconsulta Psiquiatría</a>
+      <a href="reservar.html" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
+      <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
+      <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>
