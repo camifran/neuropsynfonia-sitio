@@ -138,6 +138,7 @@
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
+        <button type="button" class="rs-btn rs-btn-sec" id="rs-bpagar">Pagar una hora pendiente</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
       </form>
 
@@ -165,7 +166,8 @@
           <dt>Valor</dt><dd class="rs-total" id="rs-r-valor"></dd>
         </dl>
         <div id="rs-sindev" class="rs-msg rs-aviso" hidden><p>Esta hora ya está dentro del plazo de cancelación: si la cancela, no tiene devolución.</p></div>
-        <p class="rs-nota">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
+        <p class="rs-nota" id="rs-nota-30">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
+        <p class="rs-nota" id="rs-nota-plazo" hidden></p>
         <p class="rs-nota">El pago se procesa por Flow, también cuando es por transferencia. Si más adelante pide la devolución, se descuentan los costos del medio de pago, como indican los <a href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
         <div id="rs-avisar-caja" hidden>
           <label class="rs-check" for="rs-avisar">
@@ -468,8 +470,11 @@
   // «Mis horas»: el enlace ?mis=... (120 días) entra sin pedir datos; la sesión de 30 minutos va sólo en memoria.
   // «?mis» sin valor (o «?mis=1») abre la identificación orientada a «Mis horas»; con un valor largo es el enlace firmado.
   var misParam = new URLSearchParams(window.location.search).get('mis');
-  est.modoMis = !est.oferta && misParam !== null && (misParam === '' || misParam === '1');
+  est.modoPagar = !est.oferta && new URLSearchParams(window.location.search).get('pagar') !== null;
+  est.modoMis = !est.oferta && (est.modoPagar || (misParam !== null && (misParam === '' || misParam === '1')));
   est.enlaceMis = est.oferta || est.modoMis ? '' : (misParam || '');
+  est.pendientes = [];
+  est.pendiente = null; // la hora pendiente que se está pagando
   est.sesion = '';
   est.mis = [];
   est.nombreMis = '';
@@ -605,9 +610,12 @@
   // Modo «Mis horas» del paso 1: sin doctora, con «Ver mis horas» como botón principal.
   function aplicarModoMis(on) {
     est.modoMis = on;
-    $('rs-titulo').textContent = on ? 'Cambiar o cancelar una hora' : 'Reservar hora';
+    if (!on) est.modoPagar = false;
+    $('rs-titulo').textContent = on ? (est.modoPagar ? 'Pagar una hora pendiente' : 'Cambiar o cancelar una hora') : 'Reservar hora';
     $('rs-sub').textContent = on
-      ? 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas.'
+      ? (est.modoPagar
+        ? 'Escriba el RUT del paciente y el correo del adulto responsable para ver la hora que tiene reservada y pagarla.'
+        : 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas.')
       : 'Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.';
     $('rs-fs-doctora').style.display = on ? 'none' : '';
     $('rs-b1').style.display = on ? 'none' : '';
@@ -615,7 +623,8 @@
     $('rs-bnueva').style.display = on ? '' : 'none';
     var b = $('rs-bmis');
     b.className = on ? 'btn-primary rs-btn' : 'rs-btn rs-btn-sec';
-    b.textContent = on ? 'Ver mis horas' : 'Ya tengo una hora: cambiarla o cancelarla';
+    b.textContent = on ? (est.modoPagar ? 'Ver mi hora pendiente' : 'Ver mis horas') : 'Ya tengo una hora: cambiarla o cancelarla';
+    $('rs-bpagar').style.display = on ? 'none' : '';
     limpiarMsg();
   }
   $('rs-bnueva').addEventListener('click', function () { aplicarModoMis(false); });
@@ -1187,7 +1196,11 @@
   });
 
   // ---------- Paso 3 ----------
-  $('rs-v2').addEventListener('click', function () { limpiarMsg(); irAPaso(1); });
+  $('rs-v2').addEventListener('click', function () {
+    limpiarMsg();
+    if (est.pendiente) { est.pendiente = null; notasDePago(null); irAPaso(3); return; }
+    irAPaso(1);
+  });
 
   // Casilla de términos del paso 3: parte desmarcada y su texto depende de la modalidad elegida.
   var MSG_ACEPTA = 'Marque la casilla para continuar con el pago.';
@@ -1219,6 +1232,7 @@
     limpiarMsg();
     if (!$('rs-acepta').checked) { mostrarErrorAcepta(); return; }
     ocultarErrorAcepta();
+    if (est.pendiente) { pagarPendiente(b, medio); return; }
     bloquear(b, 'Reservando...');
     var sigue = false;
     post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio, acepta: true, avisarAntes: est.avisoAdelantar === true && $('rs-avisar').checked })
@@ -1321,6 +1335,7 @@
           est.sesion = d.token;
           est.nombreMis = (d.paciente && d.paciente.nombre) || '';
           est.mis = d.horas;
+          est.pendientes = Array.isArray(d.pendientes) ? d.pendientes : [];
           pintarMis();
           irAPaso(3);
           if (alTerminar) alTerminar();
@@ -1349,10 +1364,41 @@
     lista.innerHTML = '';
     var nombre = nombreVisible(est.nombreMis);
     $('rs-pm-titulo').textContent = nombre ? 'Horas de ' + nombre : 'Sus horas';
-    if (!est.mis.length) {
+    est.pendientes.forEach(function (h) {
+      var card = document.createElement('div');
+      card.className = 'rs-hora-card';
+      var t = document.createElement('p');
+      t.className = 'rs-nota';
+      t.innerHTML = '<b>Hora pendiente de pago</b>';
+      card.appendChild(t);
+      var dl = document.createElement('dl');
+      dl.className = 'rs-resumen';
+      filaResumen(dl, 'Doctora', h.doctoraNombre || DOCTORAS[h.doctora]);
+      filaResumen(dl, 'Día y hora', lineaHora(h));
+      filaResumen(dl, 'Modalidad', h.modalidad);
+      if (typeof h.valor === 'number') filaResumen(dl, 'Valor', CLP.format(h.valor));
+      card.appendChild(dl);
+      if (h.plazoTexto) {
+        var np = document.createElement('p');
+        np.className = 'rs-nota';
+        np.textContent = 'La hora se confirma con el pago, que puede hacerse hasta el ' + h.plazoTexto + '.';
+        card.appendChild(np);
+      }
+      var bp = document.createElement('button');
+      bp.type = 'button';
+      bp.className = 'btn-primary rs-btn';
+      bp.textContent = 'Pagar esta hora';
+      bp.setAttribute('aria-label', 'Pagar la hora del ' + lineaHora(h));
+      bp.addEventListener('click', function () { iniciarPagoPendiente(h); });
+      card.appendChild(bp);
+      lista.appendChild(card);
+    });
+    if (!est.mis.length && !est.pendientes.length) {
       var vacio = document.createElement('div');
       vacio.className = 'rs-msg';
-      vacio.innerHTML = '<p>No encontramos horas pagadas y vigentes para cambiar o cancelar desde aquí.</p><p>' + CONTACTO + '</p>';
+      vacio.innerHTML = est.modoPagar
+        ? '<p>No encontramos una hora pendiente de pago con estos datos. Si ya la pagó, no necesita hacer nada más.</p><p>' + CONTACTO + '</p>'
+        : '<p>No encontramos horas pagadas y vigentes para cambiar o cancelar desde aquí.</p><p>' + CONTACTO + '</p>';
       lista.appendChild(vacio);
       return;
     }
@@ -1391,6 +1437,69 @@
       }
       lista.appendChild(card);
     });
+  }
+
+  // Pago de una hora pendiente (la pidió secretaría): usa el mismo paso de pago de la reserva.
+  function notasDePago(pendiente) {
+    $('rs-nota-30').hidden = !!pendiente;
+    var np = $('rs-nota-plazo');
+    np.hidden = !pendiente;
+    np.textContent = pendiente
+      ? 'Su hora sigue reservada' + (pendiente.plazoTexto ? ' hasta el ' + pendiente.plazoTexto : '') + '. Se confirma cuando el pago se completa.'
+      : '';
+    $('rs-v2').textContent = pendiente ? 'Volver a mis horas' : 'Volver y elegir otra hora';
+  }
+  function iniciarPagoPendiente(h) {
+    if (est.ocupado) return;
+    limpiarMsg();
+    est.pendiente = h;
+    est.modalidad = h.modalidad;
+    $('rs-r-paciente').textContent = nombreVisible(est.nombreMis) || 'Paciente';
+    $('rs-r-doctora').textContent = h.doctoraNombre || DOCTORAS[h.doctora];
+    $('rs-r-hora').textContent = lineaHora(h);
+    $('rs-r-modalidad').textContent = h.modalidad;
+    $('rs-r-valor').textContent = typeof h.valor === 'number' ? CLP.format(h.valor) : '';
+    $('rs-sindev').hidden = true;
+    $('rs-avisar-caja').hidden = true;
+    pintarAcepta();
+    notasDePago(h);
+    irAPaso(2);
+    $('rs-pasos').textContent = 'Pagar una hora pendiente';
+  }
+  function pagarPendiente(b, medio) {
+    var h = est.pendiente;
+    bloquear(b, 'Abriendo el pago...');
+    var sigue = false;
+    post('/agenda/pagar-pendiente', { token: est.sesion, solicitudId: h.solicitudId, medio: medio, acepta: true })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.ok && d && d.ok === true && typeof d.urlPago === 'string' && /^https:\/\//.test(d.urlPago)) {
+          sigue = true;
+          window.location.assign(d.urlPago);
+          return;
+        }
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        var motivo = d && d.motivo;
+        if (r.status === 401 || motivo === 'token_vencido' || motivo === 'token_invalido') {
+          liberar(b); est.pendiente = null; notasDePago(null); sesionVencida(); return;
+        }
+        if (motivo === 'falta_aceptar') { mostrarErrorAcepta(); return; }
+        if (motivo === 'no_disponible') {
+          est.pendientes = est.pendientes.filter(function (x) { return x.solicitudId !== h.solicitudId; });
+          est.pendiente = null; notasDePago(null);
+          pintarMis();
+          irAPaso(3);
+          mostrarMsg('<p>Esta hora ya no se puede pagar desde la página; puede que ya esté pagada o que el plazo haya vencido.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        if (motivo === 'flow_no_disponible') {
+          mostrarMsg('<p>El sistema de pago no está disponible en este momento. Su hora sigue reservada. Vuelva a intentar en unos minutos.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>');
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { if (!sigue) liberar(b); });
   }
 
   // «Avísenme si se libera una hora antes»: se guarda al marcarla o desmarcarla.
@@ -1602,6 +1711,14 @@
     est.enlaceMis = '';
     est.sesion = '';
     irAPaso(0);
+  });
+
+  // «Pagar una hora pendiente»: el mismo ingreso que «Ya tengo una hora»; la hora pendiente sale primero.
+  $('rs-bpagar').addEventListener('click', function () {
+    if (est.ocupado) return;
+    est.modoPagar = true;
+    aplicarModoMis(true);
+    $('rs-rut').focus();
   });
 
   // Desde el paso 1: "Ya tengo una hora" usa el mismo RUT y correo.
