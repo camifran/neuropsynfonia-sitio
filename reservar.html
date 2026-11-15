@@ -887,7 +887,7 @@
         estab.cargando = false;
         if (d && d.ok === true && Array.isArray(d.establecimientos)) {
           estab.lista = d.establecimientos.filter(function (x) { return x && typeof x.id === 'string' && typeof x.nombre === 'string'; })
-            .map(function (x) { return { id: x.id, nombre: x.nombre, comuna: x.comuna || '', tipo: x.tipo || '', _n: plano(x.nombre + ' ' + (x.comuna || '')) }; });
+            .map(function (x) { return { id: x.id, nombre: x.nombre, comuna: x.comuna || '', tipo: x.tipo || '', _n: plano(x.nombre + ' ' + (x.comuna || '') + ' ' + (Array.isArray(x.alias) ? x.alias.join(' ') : '')) }; });
           if (!estab.lista.length) { estab.lista = null; estab.fallo = true; }
         } else {
           estab.fallo = true;
