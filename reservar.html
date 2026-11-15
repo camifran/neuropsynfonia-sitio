@@ -164,9 +164,15 @@
           <dt>Valor</dt><dd class="rs-total" id="rs-r-valor"></dd>
         </dl>
         <div id="rs-sindev" class="rs-msg rs-aviso" hidden><p>Esta hora ya está dentro del plazo de cancelación: si la cancela, no tiene devolución.</p></div>
-        <p class="rs-nota">Antes de pagar, lea nuestra política de cancelación y devoluciones en los <a class="rs-link" href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
         <p class="rs-nota">Tendrá 30 minutos para completar el pago. Si no lo completa, la hora queda libre para otra familia.</p>
         <p class="rs-nota">El pago se procesa por Flow, también cuando es por transferencia. Si más adelante pide la devolución, se descuentan los costos del medio de pago, como indican los <a href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>.</p>
+        <div>
+          <label class="rs-check" for="rs-acepta">
+            <input type="checkbox" id="rs-acepta" required aria-describedby="rs-acepta-e">
+            <span id="rs-acepta-t"></span>
+          </label>
+          <p class="rs-error" id="rs-acepta-e" hidden></p>
+        </div>
         <button type="button" class="btn-primary rs-btn" id="rs-b3">Pagar por transferencia</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-b3b">Pagar con tarjeta u otro medio</button>
         <button type="button" class="rs-sec" id="rs-v2">Volver y elegir otra hora</button>
@@ -1161,6 +1167,7 @@
     $('rs-r-doctora').textContent = DOCTORAS[est.doctora];
     $('rs-r-hora').textContent = p.dia + ', ' + p.hora;
     $('rs-r-modalidad').textContent = est.modalidad;
+    pintarAcepta();
     $('rs-r-valor').textContent = typeof est.hora.valor === 'number' ? CLP.format(est.hora.valor) : '';
     $('rs-sindev').hidden = est.hora.sinDevolucion !== true;
     irAPaso(2);
@@ -1169,12 +1176,39 @@
   // ---------- Paso 3 ----------
   $('rs-v2').addEventListener('click', function () { limpiarMsg(); irAPaso(1); });
 
+  // Casilla de términos del paso 3: parte desmarcada y su texto depende de la modalidad elegida.
+  var MSG_ACEPTA = 'Marque la casilla para continuar con el pago.';
+  function pintarAcepta() {
+    var enlaceTerminos = '<a class="rs-link" href="terminos.html" target="_blank" rel="noopener">términos y condiciones</a>';
+    var enlaceTele = '<a class="rs-link" href="como-funciona.html#teleconsulta" target="_blank" rel="noopener">condiciones para la teleconsulta</a>';
+    $('rs-acepta-t').innerHTML = 'Leí y acepto los ' + enlaceTerminos + ' de la atención, incluida la política de cancelación y devoluciones' +
+      (est.modalidad === 'Virtual' ? ', y las ' + enlaceTele : '') + '.';
+    $('rs-acepta').checked = false;
+    ocultarErrorAcepta();
+  }
+  function mostrarErrorAcepta() {
+    var e = $('rs-acepta-e');
+    e.textContent = MSG_ACEPTA;
+    e.hidden = false;
+    $('rs-acepta').setAttribute('aria-invalid', 'true');
+    $('rs-acepta').focus();
+  }
+  function ocultarErrorAcepta() {
+    var e = $('rs-acepta-e');
+    e.textContent = '';
+    e.hidden = true;
+    $('rs-acepta').removeAttribute('aria-invalid');
+  }
+  $('rs-acepta').addEventListener('change', function () { if (this.checked) ocultarErrorAcepta(); });
+
   function pagar(b, medio) {
     if (est.ocupado) return;
     limpiarMsg();
+    if (!$('rs-acepta').checked) { mostrarErrorAcepta(); return; }
+    ocultarErrorAcepta();
     bloquear(b, 'Reservando...');
     var sigue = false;
-    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio })
+    post('/agenda/reservar', { token: est.token, bloqueId: est.hora.bloqueId, modalidad: est.modalidad, medio: medio, acepta: true })
       .then(function (r) {
         var d = r.datos;
         if (r.ok && d && d.ok === true && typeof d.urlPago === 'string' && /^https:\/\//.test(d.urlPago)) {
@@ -1202,6 +1236,7 @@
           mostrarMsg('<p>Pasaron más de 30 minutos desde que verificó los datos y la sesión venció. Por seguridad, vuelva a ingresarlos para ver las horas.</p>');
           return;
         }
+        if (motivo === 'falta_aceptar') { mostrarErrorAcepta(); return; }
         if (motivo === 'paciente_no_permitido') { mostrarMsg(MSG_NEGATIVA_FICHA); return; }
         if (motivo === 'flow_no_disponible') {
           mostrarMsg('<p>El sistema de pago no está disponible en este momento. Su hora no quedó retenida. Vuelva a intentar en unos minutos.</p><p>Si el problema sigue, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>');
