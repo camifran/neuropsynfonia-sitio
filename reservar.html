@@ -393,6 +393,13 @@
       </form>
 
       <!-- Inscripción: pantalla final (lista de espera o modo de prueba) -->
+      <!-- Lista de espera: «¿Sigue necesitando la hora?» (enlace del correo) -->
+      <div id="rs-pe" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
+        <p class="rs-nota" id="rs-e-texto"></p>
+        <button type="button" class="btn-primary rs-btn" id="rs-e-ok"></button>
+        <button type="button" class="rs-sec" id="rs-e-otra"></button>
+      </div>
+
       <div id="rs-pl" class="rs-paso" hidden style="display:none;flex-direction:column;gap:18px">
         <div class="rs-msg" id="rs-l-msg" tabindex="-1"></div>
         <a class="rs-sec" href="index.html">Ir al inicio</a>
@@ -482,7 +489,7 @@
   est.cancelar = null; // la hora que se está cancelando
 
   var $ = function (id) { return document.getElementById(id); };
-  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf'), $('rs-pi'), $('rs-pl')];
+  var pasos = [$('rs-p1'), $('rs-p2'), $('rs-p3'), $('rs-pm'), $('rs-pc'), $('rs-pk'), $('rs-pf'), $('rs-pi'), $('rs-pl'), $('rs-pe')];
   var msg = $('rs-msg');
 
   function enlace(url, texto) { return '<a href="' + url + '" target="_blank" rel="noopener">' + texto + '</a>'; }
@@ -1740,7 +1747,56 @@
     if (e.persisted) { liberar($('rs-b3')); liberar($('rs-b3b')); liberar($('rs-b1')); }
   });
 
-  if (est.oferta) {
+  // ---------- Lista de espera: respuesta al correo «¿Sigue necesitando la hora?» ----------
+  // El enlace no responde solo: la familia confirma con el botón (un lector de correo que abra el enlace no cuenta).
+  var esperaToken = new URLSearchParams(window.location.search).get('espera') || '';
+  var esperaR = new URLSearchParams(window.location.search).get('r') === 'no' ? 'no' : 'si';
+  function pintarEspera() {
+    var si = esperaR === 'si';
+    $('rs-e-texto').textContent = si
+      ? 'Confirme que todavía necesita la hora con la Dra. Camila Cortés. El paciente sigue en la lista de espera y le escribiremos cuando haya una hora disponible.'
+      : 'Confirme que ya no necesita la hora con la Dra. Camila Cortés. El paciente saldrá de la lista de espera.';
+    $('rs-e-ok').textContent = si ? 'Sí, sigo esperando' : 'Ya no la necesito';
+    $('rs-e-otra').textContent = si ? 'En realidad ya no la necesito' : 'En realidad sigo esperando';
+  }
+  $('rs-e-otra').addEventListener('click', function () { if (est.ocupado) return; limpiarMsg(); esperaR = esperaR === 'si' ? 'no' : 'si'; pintarEspera(); });
+  $('rs-e-ok').addEventListener('click', function () {
+    if (est.ocupado) return;
+    limpiarMsg();
+    var b = $('rs-e-ok');
+    bloquear(b, 'Guardando...');
+    post('/agenda/espera-respuesta', { token: esperaToken, respuesta: esperaR })
+      .then(function (r) {
+        var d = r.datos;
+        if (r.status === 429) { mostrarMsg(MSG_LIMITE); return; }
+        if (r.status === 401) {
+          ocultarPasos('');
+          mostrarMsg('<p>Este enlace ya no está vigente.</p><p>' + CONTACTO + '</p>');
+          return;
+        }
+        if (r.ok && d && d.ok === true) {
+          $('rs-f-volver').style.display = 'none';
+          mostrarFinal(d.respuesta === 'si' && d.enLista !== false
+            ? '<p>Gracias. El paciente sigue en la lista de espera; le escribiremos por correo cuando haya una hora disponible.</p>'
+            : d.respuesta === 'no'
+              ? '<p>Gracias por avisar. El paciente ya no está en la lista de espera. Si más adelante necesita una hora, puede inscribirse de nuevo en esta página.</p>'
+              : '<p>Gracias. El paciente ya no figura en la lista de espera: puede que ya tenga una hora. ' + CONTACTO + '</p>');
+          $('rs-pasos').textContent = '';
+          return;
+        }
+        mostrarMsg(MSG_RED);
+      })
+      .catch(function () { mostrarMsg(MSG_RED); })
+      .then(function () { liberar(b); });
+  });
+
+  if (esperaToken) {
+    $('rs-titulo').textContent = 'Lista de espera';
+    $('rs-sub').textContent = '';
+    pintarEspera();
+    irAPaso(9, false);
+    $('rs-pasos').textContent = '';
+  } else if (est.oferta) {
     // Entra por el enlace del correo: salta la identificación y pide las horas ofrecidas.
     est.doctora = 'cortes';
     ocultarPasos('Cargando las horas disponibles...');
