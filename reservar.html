@@ -100,7 +100,7 @@
     <li><a href="pacientes.html">Para pacientes</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
-  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
+  <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="reservar.html" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
 </nav>
 
 <div class="page-hero">
@@ -413,7 +413,7 @@
     <div class="footer-col">
       <div class="footer-col-title">Agendar hora</div>
       <a href="agendar.html" class="footer-link">Cómo agendar</a>
-      <a href="https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL" target="_blank" rel="noopener" class="footer-link">Inscribirse (nuevo paciente)</a>
+      <a href="reservar.html" class="footer-link">Inscribirse (nuevo paciente)</a>
       <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
       <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
       <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
@@ -437,7 +437,7 @@
   }
 
   var WA = 'https://wa.me/56951880121';
-  var REGISTRO = 'https://airtable.com/appo5rFiYgYkeThb0/shrFRuK7Zxr8UaGOL';
+  var REGISTRO = 'reservar.html';
   var DOCTORAS = { cortes: 'Dra. Camila Cortés', badilla: 'Dra. Ximena Badilla' };
   var PASOS = ['Paso 1 de 3: identificación', 'Paso 2 de 3: elegir hora', 'Paso 3 de 3: resumen y pago'];
   // Con el enlace del correo de la lista de espera (?oferta=...) no hay identificación: son 2 pasos.
@@ -543,9 +543,9 @@
   // Con ficha y otro correo no tiene sentido ofrecer inscribirse: sin el enlace al formulario.
   var MSG_NEGATIVA_FICHA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
     '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + '</p>';
-  // «Mis horas» no distingue si hay ficha: ahí se mantiene el enlace al formulario.
+  // «Mis horas» no distingue si hay ficha: ahí se mantiene el enlace a la inscripción (la misma página, sin «?mis»).
   var MSG_NEGATIVA = '<p>No pudimos abrir la agenda con estos datos. Revise que el RUT sea el del paciente y que el correo sea el que registró en NeuroPsynfonía.</p>' +
-    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'este formulario') + '.</p>';
+    '<p>Si los datos están correctos, ' + CONTACTO.charAt(0).toLowerCase() + CONTACTO.slice(1) + ' Si el paciente aún no se ha inscrito, puede hacerlo en ' + enlace(REGISTRO, 'la página de reserva') + '.</p>';
 
   // ---------- Oferta de la lista de espera ----------
   var MSG_OFERTA_VENCIDA = '<p>Este enlace ya no está vigente. Sigue en la lista de espera y le avisaremos cuando se libere otra hora.</p><p>' + CONTACTO + '</p>';
