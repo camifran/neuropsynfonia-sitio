@@ -52,6 +52,11 @@
   .rs-mis{display:flex;flex-direction:column;gap:14px}
   .rs-hora-card{border:1.5px solid #cfd8d9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff}
   .rs-hora-card .rs-resumen{font-size:15px}
+  .rs-subt{font-size:17px;font-weight:700;color:#2b3a3b;margin:8px 0 0}
+  .rs-docs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.5}
+  .rs-docs li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px}
+  .rs-estado{font-weight:600;color:#1d7f86}
+  .rs-listo{font-size:15px;color:#1d6b4f;font-weight:600;margin:0}
   .rs-titulo{font-size:18px;font-weight:700;color:#1A3A3C;margin:0}
   .rs-ayuda{font-size:14px;color:#555;line-height:1.5;margin:0 0 6px}
   .rs-error{font-size:14px;color:#8a1f1f;font-weight:600;margin:5px 0 0}
@@ -99,6 +104,7 @@
     <li><a href="como-funciona.html">Cómo funciona</a></li>
     <li><a href="agendar.html">Agendar hora</a></li>
     <li><a href="pacientes.html">Para pacientes</a></li>
+    <li><a href="reservar.html?mis">Mis horas</a></li>
     <li><a href="colegios.html">Para colegios</a></li>
   </ul>
   <div class="nav-ctas"><span class="nav-ctas-label">¿Necesita hora?</span><div class="nav-ctas-btns"><a href="reservar.html" class="nav-cta">Inscríbase</a><a href="pacientes.html" class="nav-cta-outline">Ya soy paciente</a></div></div>
@@ -137,7 +143,7 @@
           <input class="rs-input" id="rs-correo" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="254" required>
         </div>
         <button type="submit" class="btn-primary rs-btn" id="rs-b1">Ver horas disponibles</button>
-        <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Ya tengo una hora: cambiarla o cancelarla</button>
+        <button type="button" class="rs-btn rs-btn-sec" id="rs-bmis">Mis horas: ver, cambiar o cancelar</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bpagar">Pagar una hora pendiente</button>
         <button type="button" class="rs-btn rs-btn-sec" id="rs-bnueva" hidden style="display:none">Quiero reservar una hora nueva</button>
       </form>
@@ -439,7 +445,7 @@
       <a href="reservar.html" class="footer-link">Inscribirse (nuevo paciente)</a>
       <a href="reservar.html?doctora=badilla" class="footer-link">Hora Neurología</a>
       <a href="reservar.html?doctora=cortes" class="footer-link">Hora Psiquiatría</a>
-      <a href="reservar.html?mis" class="footer-link">Cambiar o cancelar una hora</a>
+      <a href="reservar.html?mis" class="footer-link">Mis horas: ver, cambiar o cancelar</a>
       <a href="pacientes.html" class="footer-link" style="margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.15)">Para pacientes actuales</a>
     </div>
   </div>
@@ -485,6 +491,8 @@
   est.sesion = '';
   est.mis = [];
   est.nombreMis = '';
+  est.ultima = null;     // la última atención (boleta e indicaciones se reenvían al correo de la ficha)
+  est.documentos = [];   // recetas e informes pedidos: recibidos o enviados
   est.cambio = null;   // la hora que se está cambiando
   est.cancelar = null; // la hora que se está cancelando
 
@@ -618,11 +626,11 @@
   function aplicarModoMis(on) {
     est.modoMis = on;
     if (!on) est.modoPagar = false;
-    $('rs-titulo').textContent = on ? (est.modoPagar ? 'Pagar una hora pendiente' : 'Cambiar o cancelar una hora') : 'Reservar hora';
+    $('rs-titulo').textContent = on ? (est.modoPagar ? 'Pagar una hora pendiente' : 'Mis horas') : 'Reservar hora';
     $('rs-sub').textContent = on
       ? (est.modoPagar
         ? 'Escriba el RUT del paciente y el correo del adulto responsable para ver la hora que tiene reservada y pagarla.'
-        : 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas.')
+        : 'Escriba el RUT del paciente y el correo del adulto responsable para ver sus horas, dónde es cada una y los documentos de su última atención.')
       : 'Elija la hora y páguela en el mismo paso. Al terminar, la hora queda reservada a nombre del paciente.';
     $('rs-fs-doctora').style.display = on ? 'none' : '';
     $('rs-b1').style.display = on ? 'none' : '';
@@ -630,7 +638,7 @@
     $('rs-bnueva').style.display = on ? '' : 'none';
     var b = $('rs-bmis');
     b.className = on ? 'btn-primary rs-btn' : 'rs-btn rs-btn-sec';
-    b.textContent = on ? (est.modoPagar ? 'Ver mi hora pendiente' : 'Ver mis horas') : 'Ya tengo una hora: cambiarla o cancelarla';
+    b.textContent = on ? (est.modoPagar ? 'Ver mi hora pendiente' : 'Ver mis horas') : 'Mis horas: ver, cambiar o cancelar';
     $('rs-bpagar').style.display = on ? 'none' : '';
     limpiarMsg();
   }
@@ -1343,6 +1351,8 @@
           est.nombreMis = (d.paciente && d.paciente.nombre) || '';
           est.mis = d.horas;
           est.pendientes = Array.isArray(d.pendientes) ? d.pendientes : [];
+          est.ultima = d.ultima && typeof d.ultima.citaId === 'string' ? d.ultima : null;
+          est.documentos = Array.isArray(d.documentos) ? d.documentos : [];
           pintarMis();
           irAPaso(3);
           if (alTerminar) alTerminar();
@@ -1376,7 +1386,7 @@
       card.className = 'rs-hora-card';
       var t = document.createElement('p');
       t.className = 'rs-nota';
-      t.innerHTML = '<b>Hora pendiente de pago</b>';
+      t.innerHTML = h.conCita ? '<b>Hora agendada, pendiente de pago</b>' : '<b>Hora pendiente de pago</b>';
       card.appendChild(t);
       var dl = document.createElement('dl');
       dl.className = 'rs-resumen';
@@ -1390,6 +1400,12 @@
         np.className = 'rs-nota';
         np.textContent = 'La hora se confirma con el pago, que puede hacerse hasta el ' + h.plazoTexto + '.';
         card.appendChild(np);
+      }
+      if (h.conCita) {
+        var nt = document.createElement('p');
+        nt.className = 'rs-nota';
+        nt.textContent = 'Si ya la pagó por transferencia a la cuenta de la consulta, no la pague de nuevo: secretaría está revisando su pago.';
+        card.appendChild(nt);
       }
       var bp = document.createElement('button');
       bp.type = 'button';
@@ -1407,7 +1423,6 @@
         ? '<p>No encontramos una hora pendiente de pago con estos datos. Si ya la pagó, no necesita hacer nada más.</p><p>' + CONTACTO + '</p>'
         : '<p>No encontramos horas pagadas y vigentes para cambiar o cancelar desde aquí.</p><p>' + CONTACTO + '</p>';
       lista.appendChild(vacio);
-      return;
     }
     est.mis.forEach(function (h) {
       var card = document.createElement('div');
@@ -1417,7 +1432,26 @@
       filaResumen(dl, 'Doctora', h.doctoraNombre || DOCTORAS[h.doctora]);
       filaResumen(dl, 'Día y hora', lineaHora(h));
       filaResumen(dl, 'Modalidad', h.modalidad);
+      if (h.lugar) filaResumen(dl, 'Lugar', h.lugar);
       card.appendChild(dl);
+      if (h.modalidad === 'Virtual') {
+        if (typeof h.meet === 'string' && /^https:\/\/meet\.google\.com\//.test(h.meet)) {
+          var am = document.createElement('a');
+          am.className = 'rs-btn rs-btn-sec';
+          am.href = h.meet;
+          am.target = '_blank';
+          am.rel = 'noopener';
+          am.style.textAlign = 'center';
+          am.style.textDecoration = 'none';
+          am.textContent = 'Entrar a la videollamada';
+          card.appendChild(am);
+        } else {
+          var nm = document.createElement('p');
+          nm.className = 'rs-nota';
+          nm.textContent = 'El enlace de la videollamada le llegará por correo, en un evento de Google Calendar.';
+          card.appendChild(nm);
+        }
+      }
       if (h.puedeCambiar) {
         var bc = document.createElement('button');
         bc.type = 'button';
@@ -1444,6 +1478,100 @@
       }
       lista.appendChild(card);
     });
+    if (!est.modoPagar) {
+      if (est.ultima) lista.appendChild(tarjetaUltima(est.ultima));
+      if (est.documentos.length) lista.appendChild(tarjetaDocumentos(est.documentos));
+    }
+  }
+
+  // Última atención: la boleta y (sólo en psiquiatría) las indicaciones se reenvían al correo de la ficha.
+  function tarjetaUltima(u) {
+    var card = document.createElement('div');
+    card.className = 'rs-hora-card';
+    var t = document.createElement('p');
+    t.className = 'rs-subt';
+    t.textContent = 'Su última atención';
+    card.appendChild(t);
+    var dl = document.createElement('dl');
+    dl.className = 'rs-resumen';
+    filaResumen(dl, 'Doctora', u.doctoraNombre || DOCTORAS[u.doctora]);
+    filaResumen(dl, 'Día', u.inicioChile);
+    card.appendChild(dl);
+    if (!u.boleta && !u.indicaciones) {
+      var n0 = document.createElement('p');
+      n0.className = 'rs-nota';
+      n0.textContent = 'La boleta de esta atención todavía no está disponible. Cuando lo esté, le llegará por correo.';
+      card.appendChild(n0);
+      return card;
+    }
+    var nota = document.createElement('p');
+    nota.className = 'rs-nota';
+    nota.textContent = 'Se envían al correo registrado en la ficha del paciente y llegan en unos minutos.';
+    card.appendChild(nota);
+    if (u.boleta) card.appendChild(botonEnviar(u, 'boleta', 'Enviarme la boleta'));
+    if (u.indicaciones) card.appendChild(botonEnviar(u, 'indicaciones', 'Enviarme las indicaciones'));
+    return card;
+  }
+
+  function botonEnviar(u, tipo, rotulo) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'rs-btn rs-btn-sec';
+    b.textContent = rotulo;
+    b.addEventListener('click', function () {
+      if (est.ocupado) return;
+      est.ocupado = true;
+      b.disabled = true;
+      limpiarMsg();
+      post('/agenda/enviar-documento', { token: est.sesion, citaId: u.citaId, tipo: tipo })
+        .then(function (r) {
+          est.ocupado = false;
+          var d = r.datos;
+          if (r.status === 429) { b.disabled = false; mostrarMsg(MSG_LIMITE); return; }
+          if (r.status === 401) { sesionVencida(); return; }
+          if (r.ok && d && d.ok === true) {
+            var ok = document.createElement('p');
+            ok.className = 'rs-listo';
+            ok.setAttribute('role', 'status');
+            ok.textContent = (tipo === 'boleta' ? 'Listo: la boleta' : 'Listo: las indicaciones') + ' le llegará' + (tipo === 'boleta' ? '' : 'n') + ' al correo de la ficha en unos minutos. Si no aparece, revise su correo no deseado.';
+            b.replaceWith(ok);
+            return;
+          }
+          b.disabled = false;
+          if (d && d.motivo === 'sin_correo') { mostrarMsg('<p>La ficha no tiene un correo registrado. ' + CONTACTO + '</p>'); return; }
+          if (d && d.motivo === 'no_disponible') { mostrarMsg('<p>Este documento ya no está disponible para reenviar desde aquí. ' + CONTACTO + '</p>'); return; }
+          mostrarMsg(MSG_RED);
+        })
+        .catch(function () { est.ocupado = false; b.disabled = false; mostrarMsg(MSG_RED); });
+    });
+    return b;
+  }
+
+  // Recetas e informes pedidos: sólo si se recibieron o ya se enviaron, sin plazos.
+  function tarjetaDocumentos(docs) {
+    var card = document.createElement('div');
+    card.className = 'rs-hora-card';
+    var t = document.createElement('p');
+    t.className = 'rs-subt';
+    t.textContent = 'Recetas e informes';
+    card.appendChild(t);
+    var ul = document.createElement('ul');
+    ul.className = 'rs-docs';
+    docs.forEach(function (x) {
+      var li = document.createElement('li');
+      var a = document.createElement('span');
+      var fem = x.tipo === 'Receta';
+      a.textContent = x.tipo + (x.pedidoEl ? (fem ? ' pedida el ' : ' pedido el ') + x.pedidoEl : '') + (x.doctoraNombre ? ', ' + x.doctoraNombre : '');
+      var e = document.createElement('span');
+      e.className = 'rs-estado';
+      e.textContent = x.enviadoEl
+        ? (x.enviadoEl === '—' ? (fem ? 'Entregada' : 'Entregado') : (fem ? 'Enviada' : 'Enviado') + ' a su correo el ' + x.enviadoEl)
+        : (fem ? 'Recibida' : 'Recibido');
+      li.appendChild(a); li.appendChild(e);
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
+    return card;
   }
 
   // Pago de una hora pendiente (la pidió secretaría): usa el mismo paso de pago de la reserva.
