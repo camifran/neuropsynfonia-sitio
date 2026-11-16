@@ -105,6 +105,8 @@ a { color: inherit; text-decoration: none; }
 .quickaccess-card { background: #fff; border-radius: 16px; border: 0.5px solid var(--border); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
 .qa-new { border-top: 3px solid var(--teal); }
 .qa-existing { border-top: 3px solid var(--rosa); }
+.qa-mis { border-top: 3px solid var(--gold); }
+.quickaccess-card .btn-reserva { margin-top: auto; }
 .qa-label { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--dark); }
 .qa-desc { font-size: 15px; color: var(--text-muted); line-height: 1.65; }
 .qa-sublink { font-size: 14px; color: #aaa; }
@@ -190,6 +192,7 @@ a { color: inherit; text-decoration: none; }
 .btn-reserva:hover { opacity: 0.85; }
 .btn-reserva-t { background: var(--teal-l); color: var(--teal-d); }
 .btn-reserva-r { background: var(--rosa-l); color: var(--rosa-d); }
+.btn-reserva-g { background: var(--gold-l); color: var(--gold-d); }
 .reserva-nota { font-size: 13px; color: #888; margin-top: 4px; line-height: 1.5; }
 
 /* CONSULTAS */
