@@ -493,6 +493,7 @@
   est.nombreMis = '';
   est.ultima = null;     // la última atención (boleta e indicaciones se reenvían al correo de la ficha)
   est.documentos = [];   // recetas e informes pedidos: recibidos o enviados
+  est.recibidos = [];    // documentos que llegaron (subidos aquí o por correo): tipo y fecha
   est.cambio = null;   // la hora que se está cambiando
   est.cancelar = null; // la hora que se está cancelando
 
@@ -1353,6 +1354,7 @@
           est.pendientes = Array.isArray(d.pendientes) ? d.pendientes : [];
           est.ultima = d.ultima && typeof d.ultima.citaId === 'string' ? d.ultima : null;
           est.documentos = Array.isArray(d.documentos) ? d.documentos : [];
+          est.recibidos = Array.isArray(d.documentosRecibidos) ? d.documentosRecibidos : [];
           pintarMis();
           irAPaso(3);
           if (alTerminar) alTerminar();
@@ -1481,6 +1483,7 @@
     if (!est.modoPagar) {
       if (est.ultima) lista.appendChild(tarjetaUltima(est.ultima));
       if (est.documentos.length) lista.appendChild(tarjetaDocumentos(est.documentos));
+      lista.appendChild(tarjetaSubir());
     }
   }
 
@@ -1571,6 +1574,190 @@
       ul.appendChild(li);
     });
     card.appendChild(ul);
+    return card;
+  }
+
+  // ---------- Enviar documentos (decidido por Camila el 17-11-2026) ----------
+  // Exámenes, informes y pautas que la familia sube: entran a la ficha y los revisa la consulta.
+  // Sólo PDF, JPG o PNG hasta 5 MB; las fotos se achican aquí antes de subir. Los archivos no se pueden abrir desde la página.
+  var TIPOS_SUBIR = ['Examen', 'Informe de otro profesional', 'Informe o pauta del colegio', 'Cuestionario', 'Otro'];
+  var MAX_SUBIR = 5 * 1024 * 1024;
+
+  function listaRecibidos(ul) {
+    ul.innerHTML = '';
+    est.recibidos.forEach(function (x) {
+      var li = document.createElement('li');
+      var a = document.createElement('span');
+      a.textContent = x.tipo;
+      var e = document.createElement('span');
+      e.className = 'rs-estado';
+      e.textContent = 'Recibido el ' + x.fecha;
+      li.appendChild(a); li.appendChild(e);
+      ul.appendChild(li);
+    });
+  }
+
+  // Foto: a lo más 2000 px por lado, en JPEG; si todavía pesa mucho, se achica otra vez.
+  function achicarImagen(file) {
+    return new Promise(function (ok, mal) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var intentos = [[2000, 0.82], [1600, 0.72], [1200, 0.65]];
+        (function probar(i) {
+          var lado = intentos[i][0];
+          var k = Math.min(1, lado / Math.max(img.naturalWidth, img.naturalHeight));
+          var c = document.createElement('canvas');
+          c.width = Math.round(img.naturalWidth * k);
+          c.height = Math.round(img.naturalHeight * k);
+          var g = c.getContext('2d');
+          g.fillStyle = '#fff';
+          g.fillRect(0, 0, c.width, c.height);
+          g.drawImage(img, 0, 0, c.width, c.height);
+          c.toBlob(function (b) {
+            if (!b) { mal(new Error('imagen')); return; }
+            if (b.size <= MAX_SUBIR || i === intentos.length - 1) ok(b); else probar(i + 1);
+          }, 'image/jpeg', intentos[i][1]);
+        })(0);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); mal(new Error('imagen')); };
+      img.src = url;
+    });
+  }
+
+  function aBase64(blob) {
+    return new Promise(function (ok, mal) {
+      var r = new FileReader();
+      r.onload = function () { var t = String(r.result); ok(t.slice(t.indexOf(',') + 1)); };
+      r.onerror = function () { mal(new Error('lectura')); };
+      r.readAsDataURL(blob);
+    });
+  }
+
+  function tarjetaSubir() {
+    var card = document.createElement('div');
+    card.className = 'rs-hora-card';
+    var t = document.createElement('p');
+    t.className = 'rs-subt';
+    t.textContent = 'Enviar documentos';
+    card.appendChild(t);
+    var ayuda = document.createElement('p');
+    ayuda.className = 'rs-nota';
+    ayuda.textContent = 'Exámenes, informes de otros profesionales, pautas del colegio o cuestionarios del paciente. En PDF, JPG o PNG, hasta 5 MB cada uno y hasta 5 por día. Los comprobantes de pago no se envían por aquí.';
+    card.appendChild(ayuda);
+
+    var dTipo = document.createElement('div');
+    dTipo.innerHTML = '<label class="rs-label" for="rs-sub-tipo">Qué documento es</label>';
+    var sel = document.createElement('select');
+    sel.className = 'rs-input';
+    sel.id = 'rs-sub-tipo';
+    sel.innerHTML = '<option value="">Seleccione</option>';
+    TIPOS_SUBIR.forEach(function (x) { var o = document.createElement('option'); o.value = x; o.textContent = x; sel.appendChild(o); });
+    dTipo.appendChild(sel);
+    card.appendChild(dTipo);
+
+    var dArch = document.createElement('div');
+    dArch.innerHTML = '<label class="rs-label" for="rs-sub-archivo">Archivo o foto</label>';
+    var inp = document.createElement('input');
+    inp.type = 'file';
+    inp.id = 'rs-sub-archivo';
+    inp.className = 'rs-input';
+    inp.accept = 'application/pdf,image/jpeg,image/png';
+    dArch.appendChild(inp);
+    card.appendChild(dArch);
+
+    var dNota = document.createElement('div');
+    dNota.innerHTML = '<label class="rs-label" for="rs-sub-nota">Comentario (opcional)</label>';
+    var ta = document.createElement('textarea');
+    ta.className = 'rs-input';
+    ta.id = 'rs-sub-nota';
+    ta.maxLength = 500;
+    ta.style.minHeight = '70px';
+    ta.placeholder = 'Por ejemplo: informe de la fonoaudióloga de octubre';
+    dNota.appendChild(ta);
+    card.appendChild(dNota);
+
+    var estado = document.createElement('p');
+    estado.className = 'rs-nota';
+    estado.id = 'rs-sub-estado';
+    estado.setAttribute('role', 'status');
+    estado.hidden = true;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn-primary rs-btn';
+    b.textContent = 'Enviar documento';
+    card.appendChild(b);
+    card.appendChild(estado);
+
+    var tRec = document.createElement('p');
+    tRec.className = 'rs-subt';
+    tRec.textContent = 'Documentos recibidos';
+    var ul = document.createElement('ul');
+    ul.className = 'rs-docs';
+    listaRecibidos(ul);
+    tRec.hidden = ul.hidden = !est.recibidos.length;
+    card.appendChild(tRec);
+    card.appendChild(ul);
+
+    function decir(texto, bien) {
+      estado.hidden = false;
+      estado.className = bien ? 'rs-listo' : 'rs-error';
+      estado.textContent = texto;
+    }
+
+    b.addEventListener('click', function () {
+      if (est.ocupado) return;
+      var tipo = sel.value;
+      var file = inp.files && inp.files[0];
+      if (!tipo) { decir('Elija qué documento es.', false); sel.focus(); return; }
+      if (!file) { decir('Elija el archivo o la foto.', false); inp.focus(); return; }
+      var esPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      var esImagen = /^image\//.test(file.type);
+      if (!esPdf && !esImagen) { decir('Sólo se pueden enviar archivos PDF, JPG o PNG.', false); return; }
+      if (esPdf && file.size > MAX_SUBIR) { decir('El PDF pesa más de 5 MB. Puede enviarlo en partes, o como fotos de cada página.', false); return; }
+      est.ocupado = true;
+      b.disabled = true;
+      decir('Enviando…', true);
+      estado.className = 'rs-nota';
+      (esPdf ? Promise.resolve(file) : achicarImagen(file))
+        .then(function (blob) {
+          if (blob.size > MAX_SUBIR) throw new Error('grande');
+          return aBase64(blob);
+        })
+        .then(function (base64) {
+          return post('/agenda/subir-documento', { token: est.sesion, tipo: tipo, nota: ta.value.trim(), archivo: { base64: base64 } });
+        })
+        .then(function (r) {
+          est.ocupado = false;
+          b.disabled = false;
+          var d = r.datos;
+          if (r.status === 401) { sesionVencida(); return; }
+          if (r.status === 429) { decir('Demasiados envíos seguidos. Espere un minuto y vuelva a probar.', false); return; }
+          if (r.ok && d && d.ok === true) {
+            var hoy = new Date();
+            var f = ('0' + hoy.getDate()).slice(-2) + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + hoy.getFullYear();
+            est.recibidos.unshift({ tipo: tipo, fecha: f, desdePagina: true });
+            listaRecibidos(ul);
+            tRec.hidden = ul.hidden = false;
+            sel.value = ''; inp.value = ''; ta.value = '';
+            decir('Listo: recibimos el documento. Le llegará un correo de confirmación.' + (d.restantesHoy === 0 ? ' Por hoy no se pueden enviar más.' : ''), true);
+            return;
+          }
+          var m = d && d.motivo;
+          if (m === 'muy_grande' || r.status === 413) { decir('El archivo pesa más de 5 MB.', false); return; }
+          if (m === 'formato') { decir('Sólo se pueden enviar archivos PDF, JPG o PNG.', false); return; }
+          if (m === 'tope_diario') { decir('Ya envió 5 documentos hoy. Puede enviar más mañana.', false); return; }
+          decir('No pudimos recibir el documento en este momento. Vuelva a intentar en unos minutos.', false);
+        })
+        .catch(function (e) {
+          est.ocupado = false;
+          b.disabled = false;
+          if (e && e.message === 'grande') { decir('La foto pesa demasiado incluso achicada. Pruebe con una foto más cercana al documento.', false); return; }
+          if (e && e.message === 'imagen') { decir('No pudimos leer esa imagen. Pruebe con otra foto o con un PDF.', false); return; }
+          decir('No pudimos recibir el documento en este momento. Revise su conexión y vuelva a intentar.', false);
+        });
+    });
     return card;
   }
 
