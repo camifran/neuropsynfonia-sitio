@@ -1646,6 +1646,11 @@
     ayuda.className = 'rs-nota';
     ayuda.textContent = 'Exámenes, informes de otros profesionales, pautas del colegio o cuestionarios del paciente. En PDF, JPG o PNG, hasta 5 MB cada uno y hasta 5 por día. Los comprobantes de pago no se envían por aquí.';
     card.appendChild(ayuda);
+    // Lo que se sube aquí son antecedentes: se ven en la próxima atención (decidido por Camila el 18-11-2026).
+    var ayudaRespuesta = document.createElement('p');
+    ayudaRespuesta.className = 'rs-nota';
+    ayudaRespuesta.innerHTML = 'Los documentos quedan en la ficha del paciente y se revisan en la próxima atención. Si necesita que la doctora le responda algo, use el <a href="pacientes.html" style="color:#1d7f86;font-weight:600">formulario de solicitudes</a>.';
+    card.appendChild(ayudaRespuesta);
 
     var dTipo = document.createElement('div');
     dTipo.innerHTML = '<label class="rs-label" for="rs-sub-tipo">Qué documento es</label>';
